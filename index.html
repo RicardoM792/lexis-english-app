@@ -10,6 +10,7 @@
 <title>LEXIS PRO · AI English Intelligence</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Syne+Mono&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet"/>
 <style>
+/* [MANTÉN TODOS TUS ESTILOS EXACTAMENTE COMO ESTÁN] */
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
   --void:#0a0908;
@@ -51,7 +52,6 @@ body.light-theme {
   --gold2: #d49c54;
   --gold-dim: #c49a6c;
 }
-
 html,body{height:100%;overflow:hidden;background:var(--void)}
 body{font-family:'Syne',sans-serif;color:var(--text);overscroll-behavior:none}
 @media(max-width:768px){body{overflow:auto;height:auto}}
@@ -410,12 +410,12 @@ body::before{
         </div>
         <div class="section-title">Quick Access</div>
         <div class="cards-row">
-          <div class="mini-card" onclick="goPage('vocab')"><div class="mc-icon">📖</div><div class="mc-title">Vocabulary</div><div class="mc-sub" id="mcVocabSub">0 words total</div><div class="mc-badge">EXPLORE</div></div>
-          <div class="mini-card" onclick="goPage('verbs')"><div class="mc-icon">⚡</div><div class="mc-title">Irregular Verbs</div><div class="mc-sub" id="mcVerbsSub">0 verbs</div><div class="mc-badge">STUDY</div></div>
-          <div class="mini-card" onclick="goPage('grammar')"><div class="mc-icon">📐</div><div class="mc-title">Grammar</div><div class="mc-sub" id="mcGrammarSub">0 rules</div><div class="mc-badge">REVIEW</div></div>
-          <div class="mini-card" onclick="goPage('library')"><div class="mc-icon">📚</div><div class="mc-title">Library</div><div class="mc-sub" id="mcLibrarySub">Oxford + Classics</div><div class="mc-badge">NEW</div></div>
-          <div class="mini-card" onclick="goPage('practice')"><div class="mc-icon">🎯</div><div class="mc-title">Practice</div><div class="mc-sub">Test your knowledge</div><div class="mc-badge">TRAIN</div></div>
-          <div class="mini-card" onclick="goPage('chat')"><div class="mc-icon">🤖</div><div class="mc-title">AI Tutor</div><div class="mc-sub">Corrections & explanations</div><div class="mc-badge">POWERED</div></div>
+          <div class="mini-card" data-page="vocab"><div class="mc-icon">📖</div><div class="mc-title">Vocabulary</div><div class="mc-sub" id="mcVocabSub">0 words total</div><div class="mc-badge">EXPLORE</div></div>
+          <div class="mini-card" data-page="verbs"><div class="mc-icon">⚡</div><div class="mc-title">Irregular Verbs</div><div class="mc-sub" id="mcVerbsSub">0 verbs</div><div class="mc-badge">STUDY</div></div>
+          <div class="mini-card" data-page="grammar"><div class="mc-icon">📐</div><div class="mc-title">Grammar</div><div class="mc-sub" id="mcGrammarSub">0 rules</div><div class="mc-badge">REVIEW</div></div>
+          <div class="mini-card" data-page="library"><div class="mc-icon">📚</div><div class="mc-title">Library</div><div class="mc-sub" id="mcLibrarySub">Oxford + Classics</div><div class="mc-badge">NEW</div></div>
+          <div class="mini-card" data-page="practice"><div class="mc-icon">🎯</div><div class="mc-title">Practice</div><div class="mc-sub">Test your knowledge</div><div class="mc-badge">TRAIN</div></div>
+          <div class="mini-card" data-page="chat"><div class="mc-icon">🤖</div><div class="mc-title">AI Tutor</div><div class="mc-sub">Corrections & explanations</div><div class="mc-badge">POWERED</div></div>
         </div>
       </div>
 
@@ -460,8 +460,8 @@ body::before{
           </div>
           <div class="ol-sub">Load the official Oxford word lists to expand your vocabulary with the most essential English words, classified by CEFR level (A1–C1).</div>
           <div class="ol-btns">
-            <button class="ol-btn" id="loadOxford3000Btn" onclick="loadOxfordList('3000')">📖 Load Oxford 3000</button>
-            <button class="ol-btn" id="loadOxford5000Btn" onclick="loadOxfordList('5000')">📗 Load Oxford 5000</button>
+            <button class="ol-btn" id="loadOxford3000Btn">📖 Load Oxford 3000</button>
+            <button class="ol-btn" id="loadOxford5000Btn">📗 Load Oxford 5000</button>
           </div>
           <div class="ol-progress" id="olProgress"><div class="ol-progress-fill" id="olProgressFill"></div></div>
           <div class="ol-status" id="olStatus"></div>
@@ -499,11 +499,11 @@ body::before{
       <div class="page" id="page-chat">
         <div class="chat-shell">
           <div class="chat-suggestions" id="chatSugg">
-            <button class="sugg-chip" onclick="sendSugg(this)">Correct my sentence</button>
-            <button class="sugg-chip" onclick="sendSugg(this)">Explain Present Perfect</button>
-            <button class="sugg-chip" onclick="sendSugg(this)">Give me 5 new words</button>
-            <button class="sugg-chip" onclick="sendSugg(this)">make vs do — difference?</button>
-            <button class="sugg-chip" onclick="sendSugg(this)">Practice conversation</button>
+            <button class="sugg-chip">Correct my sentence</button>
+            <button class="sugg-chip">Explain Present Perfect</button>
+            <button class="sugg-chip">Give me 5 new words</button>
+            <button class="sugg-chip">make vs do — difference?</button>
+            <button class="sugg-chip">Practice conversation</button>
           </div>
           <div class="chat-messages" id="chatMessages">
             <div class="msg ai">
@@ -1190,11 +1190,7 @@ async function sendChat(msg){
   document.getElementById('chatSendBtn').disabled=true;
   const typEl=appendTyping();
   try{
-    // NOTE: You must provide a valid Anthropic API key for this to work.
-    // Replace 'YOUR_ANTHROPIC_API_KEY' with your actual key.
-    // If you don't have a key, the AI feature will show a demo error message.
-    const apiKey = 'YOUR_ANTHROPIC_API_KEY'; // <-- ADD YOUR KEY HERE
-
+    const apiKey = 'YOUR_ANTHROPIC_API_KEY';
     const systemPrompt=`You are LEXIS, an expert English tutor built into a learning app. The user is ${userName}, currently at ${userLevel} level.
 Rules:
 - Be concise, helpful, and encouraging
@@ -1330,7 +1326,6 @@ function loadFilters() {
     vocabLevelFilter = f.level;
     showMasteredOnly = f.masteredOnly;
     showOxfordOnly = f.oxfordOnly;
-    // Update UI to reflect loaded filters
     const levelBtn = document.querySelector(`.filter-chip[data-lvl="${f.level}"]`);
     if(levelBtn) {
         document.querySelectorAll('.filter-chip[data-lvl]').forEach(b=>b.classList.remove('active'));
@@ -1339,7 +1334,6 @@ function loadFilters() {
     if(f.masteredOnly) document.getElementById('masteredFilter').classList.add('active');
     if(f.oxfordOnly) document.getElementById('oxfordFilter').classList.add('active');
   } else {
-      // Set default active state for 'All' if no filters saved
       const allBtn = document.querySelector('.filter-chip[data-lvl="all"]');
       if(allBtn) allBtn.classList.add('active');
   }
@@ -1353,11 +1347,16 @@ function initApp(){
   renderVerbs();
   renderGrammar();
   initQQ();
-  loadFilters(); // Load saved filters state
+  loadFilters();
 
   document.querySelectorAll('.nav-item[data-page]').forEach(n=>{
     n.onclick=()=>goPage(n.dataset.page);
   });
+  
+  document.querySelectorAll('.mini-card').forEach(card=>{
+    card.onclick=()=>goPage(card.dataset.page);
+  });
+  
   document.querySelectorAll('#levelFilters .filter-chip').forEach(btn=>{
     btn.onclick=()=>{
       document.querySelectorAll('#levelFilters .filter-chip').forEach(b=>b.classList.remove('active'));
@@ -1395,6 +1394,13 @@ function initApp(){
     toast('Progress reset','var(--text2)');
   };
   document.getElementById('switchUserBtn').onclick=()=>showLogin();
+  
+  document.querySelectorAll('.sugg-chip').forEach(btn=>{
+    btn.onclick=()=>sendSugg(btn);
+  });
+  
+  document.getElementById('loadOxford3000Btn').onclick=()=>loadOxfordList('3000');
+  document.getElementById('loadOxford5000Btn').onclick=()=>loadOxfordList('5000');
   
   const themeBtn = document.getElementById('themeToggleBtn');
   if(themeBtn) themeBtn.onclick = toggleTheme;
