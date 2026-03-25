@@ -2,11 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover"/>
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="LEXIS">
-<link rel="manifest" href="manifest.json">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>LEXIS PRO · AI English Intelligence</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Syne+Mono&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet"/>
 <style>
@@ -37,21 +33,6 @@
   --r2:12px;
   --t:all 0.3s cubic-bezier(0.4,0,0.2,1);
 }
-body.light-theme {
-  --void: #f8f6f2;
-  --surface: #ffffff;
-  --card: #ffffff;
-  --card2: #fefaf5;
-  --border: rgba(0,0,0,0.08);
-  --border2: rgba(0,0,0,0.12);
-  --text: #1a1612;
-  --text2: #5c554b;
-  --text3: #8e867c;
-  --gold: #b87c3a;
-  --gold2: #d49c54;
-  --gold-dim: #c49a6c;
-}
-
 html,body{height:100%;overflow:hidden;background:var(--void)}
 body{font-family:'Syne',sans-serif;color:var(--text);overscroll-behavior:none}
 @media(max-width:768px){body{overflow:auto;height:auto}}
@@ -360,7 +341,6 @@ body::before{
     <div class="nav-item" data-page="library">📚<span class="tooltip">Library</span></div>
     <div class="nav-item" data-page="practice">🎯<span class="tooltip">Practice</span></div>
     <div class="nav-item" data-page="chat">🤖<span class="tooltip">AI Tutor</span></div>
-    <div class="nav-item" id="themeToggleBtn">🌓<span class="tooltip">Theme</span></div>
     <div class="sidebar-spacer"></div>
     <div class="nav-item" id="switchUserBtn" title="Switch user">👤<span class="tooltip">Switch user</span></div>
   </aside>
@@ -549,7 +529,7 @@ const CORE_VOCAB = [
   { word:"Ennui", level:"C1", topic:"philosophy", ipa:"/ɒnˈwiː/", meaning:"a feeling of listless dissatisfaction; boredom", example:"A profound ennui settled over the city.", source:"core" },
   { word:"Zeitgeist", level:"C2", topic:"philosophy", ipa:"/ˈzaɪt.ɡaɪst/", meaning:"the defining spirit of a particular time", example:"That film captured the zeitgeist perfectly.", source:"core" },
   { word:"Palimpsest", level:"C2", topic:"literature", ipa:"/ˈpæl.ɪmp.sest/", meaning:"something altered but still bearing visible traces of earlier form", example:"The city is a palimpsest of its own history.", source:"core" },
-  { word:"Apophenia", level:"C2", topic:"philosophy", ipa:"/æpəˈfiːnɪə/", meaning:"tendency to perceive meaningful connections between unrelated things", example:"Conspiracy theories thrive on apophenia.", source:"core" }
+  { word:"Apophenia", level:"C2", topic:"philosophy", ipa:"/æpəˈfiːnɪə/", meaning:"tendency to perceive meaningful connections between unrelated things", example:"Conspiracy theories thrive on apophenia.", source:"core" },
 ];
 
 // Dynamic vocab (Oxford words added at runtime)
@@ -575,7 +555,7 @@ const VERBS = [
   { base:"give",    past:"gave",     part:"given",    meaning:"dar / give" },
   { base:"hide",    past:"hid",      part:"hidden",   meaning:"esconder / hide" },
   { base:"rise",    past:"rose",     part:"risen",    meaning:"subir / rise" },
-  { base:"take",    past:"took",     part:"taken",    meaning:"tomar / take" }
+  { base:"take",    past:"took",     part:"taken",    meaning:"tomar / take" },
 ];
 
 const GRAMMAR = [
@@ -586,7 +566,7 @@ const GRAMMAR = [
   { tag:"PASSIVE", title:"Passive Voice", rule:"Shifts the focus from the doer to the action or receiver. Often used in formal writing. Form: BE + past participle (+ by + agent).", example:"The novel <em>was written</em> by Borges in 1944." },
   { tag:"CLAUSES", title:"Relative Clauses", rule:"Adds information about a noun. Defining clauses (no commas) restrict the meaning; non-defining clauses (with commas) add extra info.", example:"The book <em>that changed my life</em> is here. My father, <em>who is an engineer</em>, disagrees." },
   { tag:"TENSES", title:"Past Perfect", rule:"Describes an action completed BEFORE another past action. Form: HAD + past participle. Often used with 'before', 'after', 'when', 'already', 'just', 'never'.", example:"By the time she arrived, he <em>had already left</em>." },
-  { tag:"PREPOSITIONS", title:"In / On / At — Time", rule:"Use 'in' for months, years, seasons, centuries. Use 'on' for days and dates. Use 'at' for specific times and holiday periods.", example:"<em>In</em> July, <em>on</em> Monday, <em>at</em> 9pm, <em>at</em> Christmas." }
+  { tag:"PREPOSITIONS", title:"In / On / At — Time", rule:"Use 'in' for months, years, seasons, centuries. Use 'on' for days and dates. Use 'at' for specific times and holiday periods.", example:"<em>In</em> July, <em>on</em> Monday, <em>at</em> 9pm, <em>at</em> Christmas." },
 ];
 
 const PUBLIC_DOMAIN_BOOKS = [
@@ -595,16 +575,20 @@ const PUBLIC_DOMAIN_BOOKS = [
   { title:"Sherlock Holmes", author:"Arthur Conan Doyle", year:1892, color:"#ff9a3c", url:"https://www.gutenberg.org/files/1661/1661-0.txt", desc:"Twelve classic adventures with the world's greatest detective." },
   { title:"Alice in Wonderland", author:"Lewis Carroll", year:1865, color:"#3ddc84", url:"https://www.gutenberg.org/files/11/11-0.txt", desc:"A fantastical journey through a world of impossible logic and wonder." },
   { title:"The Great Gatsby", author:"F. Scott Fitzgerald", year:1925, color:"#ff5a1f", url:"https://www.gutenberg.org/files/64317/64317-0.txt", desc:"The Jazz Age, excess, and the impossibility of the American Dream." },
-  { title:"Frankenstein", author:"Mary Shelley", year:1818, color:"#9b59b6", url:"https://www.gutenberg.org/files/84/84-0.txt", desc:"The original science-fiction horror story about creation and responsibility." }
+  { title:"Frankenstein", author:"Mary Shelley", year:1818, color:"#9b59b6", url:"https://www.gutenberg.org/files/84/84-0.txt", desc:"The original science-fiction horror story about creation and responsibility." },
 ];
 
 // ============================================================
 // MULTI-USER STATE SYSTEM
 // ============================================================
+// Structure: each user gets their own key in localStorage
+// lxp_users = { "UserName": { level, mastered, xp, streak, oxford3000loaded, oxford5000loaded, chatHistory } }
+// lxp_active_user = "UserName"
+
 let userName = '', userLevel = 'A1';
 let mastered = [], xp = 0, streak = 0;
 let oxford3000Loaded = false, oxford5000Loaded = false;
-let oxfordWords = [];
+let oxfordWords = []; // words loaded for current user
 let qqCorrect=0, qqWrong=0, qqStreak=0, qqCurrent=null;
 let pracCorrect=0, pracWrong=0, pracStreak=0, pracCurrent=null, pracTotal=0, pracDone=0;
 let showMasteredOnly=false, showOxfordOnly=false, vocabLevelFilter='all', vocabSearch='';
@@ -644,6 +628,7 @@ function loadUser(name){
   oxford3000Loaded = u.oxford3000loaded || false;
   oxford5000Loaded = u.oxford5000loaded || false;
   oxfordWords = u.oxfordWords || [];
+  // Restore oxford words into VOCAB
   VOCAB = [...CORE_VOCAB];
   if(oxfordWords.length){
     VOCAB.push(...oxfordWords);
@@ -671,24 +656,11 @@ function toast(msg, color='var(--gold)'){
   setTimeout(()=>t.remove(),2600);
 }
 function shuffle(arr){return [...arr].sort(()=>Math.random()-0.5)}
-function masterWord(word) {
+function masterWord(word){
   if(!mastered.includes(word)){
     mastered.push(word); xp+=15; streak++;
     saveCurrentUser(); updateUI();
-    const cards = document.querySelectorAll('.word-card');
-    let card = null;
-    for (let c of cards) {
-      const wordElement = c.querySelector('.wc-word');
-      if (wordElement && wordElement.textContent === word) {
-        card = c;
-        break;
-      }
-    }
-    if(card) {
-      card.style.transform = 'scale(0.98)';
-      setTimeout(() => card.style.transform = '', 200);
-    }
-    toast(`✦ "${word}" mastered +15 XP`,'var(--gold)');
+    toast(`✦ "${word}" mastered  +15 XP`,'var(--gold)');
   }
 }
 function getLevelThreshold(lv){
@@ -720,16 +692,7 @@ function updateUI(){
   document.getElementById('mcGrammarSub').textContent=GRAMMAR.length+' rules';
   document.getElementById('mcLibrarySub').textContent=
     (oxford3000Loaded||oxford5000Loaded)?`${VOCAB.length} words loaded`:'Oxford + Classics';
-  const nextLevelName = {
-    A1: 'A2', A2: 'B1', B1: 'B2', B2: 'C1', C1: 'C2', C2: 'Master'
-  }[userLevel];
-  document.getElementById('heroXPNext').innerHTML = `${xp} / ${nxt} XP para ${nextLevelName}`;
-  const hour = new Date().getHours();
-  let greeting = 'Welcome back';
-  if (hour < 12) greeting = 'Good morning';
-  else if (hour < 18) greeting = 'Good afternoon';
-  else greeting = 'Good evening';
-  document.getElementById('heroGreeting').textContent = greeting;
+  // Update Oxford buttons
   const b3=document.getElementById('loadOxford3000Btn');
   const b5=document.getElementById('loadOxford5000Btn');
   if(b3){ b3.textContent = oxford3000Loaded ? '✅ Oxford 3000 loaded' : '📖 Load Oxford 3000'; b3.disabled=oxford3000Loaded; }
@@ -827,7 +790,7 @@ function renderGrammar(){
 // LIBRARY RENDER
 // ============================================================
 function renderLibrary(){
-  updateUI();
+  updateUI(); // refresh Oxford buttons
   document.getElementById('libraryGrid').innerHTML=PUBLIC_DOMAIN_BOOKS.map(b=>`
     <div class="book-card">
       <div class="book-spine" style="background:${b.color}"></div>
@@ -861,6 +824,7 @@ async function loadOxfordList(version){
   status.textContent = 'Connecting to Oxford word list…';
   fill.style.width = '10%';
 
+  // Oxford word list via proxy-friendly raw GitHub
   const urls = {
     '3000': 'https://raw.githubusercontent.com/ittuann/The-Oxford-5000-Word-Lists/main/The%20Oxford%203000.txt',
     '5000': 'https://raw.githubusercontent.com/ittuann/The-Oxford-5000-Word-Lists/main/The%20Oxford%205000.txt'
@@ -883,6 +847,7 @@ async function loadOxfordList(version){
 
     await new Promise(r=>setTimeout(r,100));
 
+    // Merge without duplicates
     let added = 0;
     for(const w of newWords){
       if(!VOCAB.some(v=>v.word.toLowerCase()===w.word.toLowerCase())){
@@ -898,6 +863,7 @@ async function loadOxfordList(version){
     saveCurrentUser();
     updateUI();
 
+    // Show preview modal
     showOxfordModal(newWords.slice(0,40), added, version);
 
     status.textContent = `✅ Added ${added} new words from Oxford ${version}!`;
@@ -923,6 +889,7 @@ function parseOxfordList(text, version){
     const trimmed = line.trim();
     if(!trimmed || trimmed.startsWith('#') || trimmed.startsWith('The Oxford')) continue;
 
+    // Try to parse: word  pos  LEVEL (various formats)
     const match = trimmed.match(/^([a-zA-Z][a-zA-Z\-']*)\s+([a-z.,]+(?:\s+[a-z.,]+)*)\s+([A-C][12])/i);
     if(match){
       const word = match[1];
@@ -939,6 +906,7 @@ function parseOxfordList(text, version){
         topic: 'oxford'
       });
     } else {
+      // Fallback: just the word
       const wordMatch = trimmed.match(/^([a-zA-Z][a-zA-Z\-']+)/);
       if(wordMatch && wordMatch[1].length > 2){
         words.push({
@@ -957,6 +925,7 @@ function parseOxfordList(text, version){
 }
 
 function showOxfordModal(sampleWords, totalAdded, version){
+  // Remove existing modal
   const existing = document.getElementById('oxfordModal');
   if(existing) existing.remove();
 
@@ -1000,10 +969,12 @@ async function loadGutenbergBook(url, title){
 }
 
 function extractAdvancedVocabulary(text){
+  // Remove Gutenberg boilerplate
   const start = text.indexOf('*** START OF');
   const end = text.indexOf('*** END OF');
   const content = start>-1 ? text.slice(start, end>-1?end:undefined) : text;
 
+  // Extract unique words 7+ letters, not already in VOCAB
   const wordMatches = content.match(/\b[A-Za-z]{7,}\b/g)||[];
   const freq = {};
   for(const w of wordMatches){
@@ -1011,6 +982,7 @@ function extractAdvancedVocabulary(text){
     freq[lower] = (freq[lower]||0)+1;
   }
 
+  // Filter: frequency 3-20 (common enough but not basic), not in vocab
   const existing = new Set(VOCAB.map(v=>v.word.toLowerCase()));
   const candidates = Object.entries(freq)
     .filter(([w,c]) => c>=3 && c<=30 && w.length>=7 && !existing.has(w))
@@ -1061,7 +1033,7 @@ function addBookWords(words){
   for(const w of words){
     if(!VOCAB.some(v=>v.word.toLowerCase()===w.word.toLowerCase())){
       VOCAB.push(w);
-      oxfordWords.push(w);
+      oxfordWords.push(w); // reuse same storage
       added++;
     }
   }
@@ -1132,10 +1104,6 @@ function nextPrac(){
     document.getElementById('pracWord').textContent='🎉';
     document.getElementById('pracIpa').textContent='Session complete!';
     document.getElementById('pracOpts').innerHTML='<button class="prac-next-btn show" onclick="initPractice()" style="display:block">Start new session</button>';
-    const remaining = pracQueue.length - pracIdx;
-    if (remaining > 0) {
-      document.getElementById('pracCount').textContent = `${pracDone}/${pracTotal} (${remaining} left)`;
-    }
     return;
   }
   pracCurrent=pracQueue[pracIdx++]; pracDone++;
@@ -1274,49 +1242,9 @@ function initVoice(){
 // ============================================================
 document.addEventListener('mousemove',e=>{
   const el=document.getElementById('ambient');
-  if(el){
-    el.style.left=(e.clientX-300)+'px';
-    el.style.top=(e.clientY-300)+'px';
-  }
+  el.style.left=(e.clientX-300)+'px';
+  el.style.top=(e.clientY-300)+'px';
 });
-
-// ============================================================
-// THEME SYSTEM
-// ============================================================
-function toggleTheme() {
-  document.body.classList.toggle('light-theme');
-  const isLight = document.body.classList.contains('light-theme');
-  localStorage.setItem('lexis_theme', isLight ? 'light' : 'dark');
-  const themeBtn = document.getElementById('themeToggleBtn');
-  if(themeBtn) {
-    themeBtn.innerHTML = isLight ? '🌙' : '☀️';
-  }
-}
-
-// ============================================================
-// FILTERS PERSISTENCE
-// ============================================================
-function saveFilters() {
-  localStorage.setItem('lexis_filters', JSON.stringify({
-    level: vocabLevelFilter,
-    masteredOnly: showMasteredOnly,
-    oxfordOnly: showOxfordOnly
-  }));
-}
-
-function loadFilters() {
-  const savedFilters = localStorage.getItem('lexis_filters');
-  if (savedFilters) {
-    const f = JSON.parse(savedFilters);
-    vocabLevelFilter = f.level;
-    showMasteredOnly = f.masteredOnly;
-    showOxfordOnly = f.oxfordOnly;
-    const levelBtn = document.querySelector(`.filter-chip[data-lvl="${f.level}"]`);
-    if(levelBtn) levelBtn.classList.add('active');
-    if(f.masteredOnly) document.getElementById('masteredFilter').classList.add('active');
-    if(f.oxfordOnly) document.getElementById('oxfordFilter').classList.add('active');
-  }
-}
 
 // ============================================================
 // INIT APP
@@ -1326,7 +1254,6 @@ function initApp(){
   renderVerbs();
   renderGrammar();
   initQQ();
-  loadFilters();
 
   document.querySelectorAll('.nav-item[data-page]').forEach(n=>{
     n.onclick=()=>goPage(n.dataset.page);
@@ -1337,20 +1264,17 @@ function initApp(){
       btn.classList.add('active');
       vocabLevelFilter=btn.dataset.lvl;
       renderVocab();
-      saveFilters();
     };
   });
   document.getElementById('masteredFilter').onclick=function(){
     showMasteredOnly=!showMasteredOnly;
     this.classList.toggle('active',showMasteredOnly);
     renderVocab();
-    saveFilters();
   };
   document.getElementById('oxfordFilter').onclick=function(){
     showOxfordOnly=!showOxfordOnly;
     this.classList.toggle('active',showOxfordOnly);
     renderVocab();
-    saveFilters();
   };
   document.getElementById('vocabSearch').oninput=e=>{
     vocabSearch=e.target.value.toLowerCase();
@@ -1368,13 +1292,6 @@ function initApp(){
     toast('Progress reset','var(--text2)');
   };
   document.getElementById('switchUserBtn').onclick=()=>showLogin();
-  
-  const themeBtn = document.getElementById('themeToggleBtn');
-  if(themeBtn) themeBtn.onclick = toggleTheme;
-  
-  const savedTheme = localStorage.getItem('lexis_theme');
-  if(savedTheme === 'light') document.body.classList.add('light-theme');
-  
   initVoice();
 }
 
@@ -1428,6 +1345,7 @@ if(activeUser && loadUser(activeUser)){
     const n=document.getElementById('loginName').value.trim();
     const l=document.getElementById('loginLevel').value;
     if(!n){toast('Enter your name','var(--red)');return;}
+    // Check if user exists
     const users=getAllUsers();
     if(users[n]){
       continueAsUser(n);
