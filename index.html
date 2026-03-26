@@ -19,15 +19,29 @@
   --glow:rgba(232,184,109,0.15);--r:16px;--r2:12px;--t:all 0.3s cubic-bezier(0.4,0,0.2,1);
 }
 body.light-theme{--void:#f8f6f2;--surface:#ffffff;--card:#ffffff;--card2:#fefaf5;--border:rgba(0,0,0,0.08);--border2:rgba(0,0,0,0.12);--text:#1a1612;--text2:#5c554b;--text3:#8e867c;--gold:#b87c3a;--gold2:#d49c54;--gold-dim:#c49a6c;}
-html,body{height:100%;overflow:hidden;background:var(--void)}
-body{font-family:'Syne',sans-serif;color:var(--text);overscroll-behavior:none}
-@media(max-width:768px){body{overflow:auto;height:auto}}
+html{background:var(--void)}
+body{font-family:'Syne',sans-serif;color:var(--text);background:var(--void)}
+/* Desktop: body fijo, scroll solo en .content */
+@media(min-width:769px){
+  html,body{height:100%;overflow:hidden}
+  body{overscroll-behavior:none}
+}
+/* MÓVIL FIX: scroll nativo dentro de .main, sin interferencia de barra fija */
+@media(max-width:768px){
+  html,body{height:100%;overflow:hidden} /* fijamos viewport */
+  .shell{height:100svh;display:flex;flex-direction:column}
+  .main{flex:1;display:flex;flex-direction:column;min-height:0} /* min-height:0 permite scroll */
+  .content{flex:1;overflow-y:auto;padding:14px;padding-bottom:76px;-webkit-overflow-scrolling:touch}
+  .sidebar{position:fixed;bottom:0;left:0;right:0;z-index:100;order:0} /* se mantiene fijo abajo */
+  .topbar{position:sticky;top:0;z-index:50}
+  .sidebar-spacer{display:none}
+}
 body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;opacity:0.4}
 .ambient{position:fixed;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(232,184,109,0.06) 0%,transparent 70%);pointer-events:none;z-index:0;transition:transform 0.8s ease}
-.shell{display:grid;grid-template-columns:72px 1fr;grid-template-rows:100vh;height:100vh;position:relative;z-index:1}
-@media(max-width:768px){.shell{grid-template-columns:1fr;grid-template-rows:auto 1fr 64px;height:auto;min-height:100svh}}
+.shell{display:grid;grid-template-columns:72px 1fr;height:100vh;position:relative;z-index:1}
+@media(max-width:768px){.shell{grid-template-columns:1fr;height:100svh}}
 .sidebar{background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;align-items:center;padding:24px 0;gap:8px;position:relative;z-index:10}
-@media(max-width:768px){.sidebar{order:3;flex-direction:row;justify-content:space-around;padding:0 16px;border-right:none;border-top:1px solid var(--border);height:64px;position:fixed;bottom:0;left:0;right:0;z-index:100}}
+@media(max-width:768px){.sidebar{flex-direction:row;justify-content:space-around;padding:0 8px;border-right:none;border-top:1px solid var(--border);height:58px;background:var(--surface)}}
 .logo-s{font-family:'DM Serif Display',serif;font-size:22px;background:linear-gradient(135deg,var(--gold),var(--amber));-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:16px;writing-mode:vertical-rl;text-orientation:mixed;letter-spacing:2px}
 @media(max-width:768px){.logo-s{display:none}}
 .nav-item{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;transition:var(--t);color:var(--text3);position:relative;border:1px solid transparent}
@@ -37,24 +51,24 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .nav-item:hover .tooltip{opacity:1}
 @media(max-width:768px){.nav-item .tooltip{display:none}}
 .sidebar-spacer{flex:1}
-@media(max-width:768px){.sidebar-spacer{display:none}}
-.main{display:grid;grid-template-rows:64px 1fr;overflow:hidden}
-@media(max-width:768px){.main{grid-template-rows:auto 1fr;overflow:visible;padding-bottom:80px}}
-.topbar{display:flex;align-items:center;gap:16px;padding:0 28px;border-bottom:1px solid var(--border);background:var(--surface)}
+.main{display:grid;grid-template-rows:64px 1fr;overflow:hidden;height:100vh}
+@media(max-width:768px){.main{display:flex;flex-direction:column;height:100%;min-height:0}}
+.topbar{display:flex;align-items:center;gap:12px;padding:0 20px;border-bottom:1px solid var(--border);background:var(--surface);min-height:64px;flex-shrink:0}
+@media(max-width:768px){.topbar{padding:0 14px;min-height:54px}}
 .topbar-logo{font-family:'DM Serif Display',serif;font-size:20px;background:linear-gradient(135deg,var(--gold),var(--amber));-webkit-background-clip:text;background-clip:text;color:transparent;display:none}
 @media(max-width:768px){.topbar-logo{display:block}}
 .page-title{font-size:14px;font-weight:600;color:var(--text2);letter-spacing:0.08em;text-transform:uppercase}
 .topbar-spacer{flex:1}
-.streak-pill{display:flex;align-items:center;gap:6px;background:rgba(255,90,31,0.12);border:1px solid rgba(255,90,31,0.2);padding:5px 14px;border-radius:40px;font-size:12px;font-weight:700;color:var(--amber)}
-.xp-pill{display:flex;align-items:center;gap:6px;background:rgba(232,184,109,0.1);border:1px solid rgba(232,184,109,0.2);padding:5px 14px;border-radius:40px;font-size:12px;font-weight:700;color:var(--gold)}
-.topbar-btn{width:36px;height:36px;border-radius:10px;border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;transition:var(--t);display:flex;align-items:center;justify-content:center;font-size:16px}
+.streak-pill{display:flex;align-items:center;gap:6px;background:rgba(255,90,31,0.12);border:1px solid rgba(255,90,31,0.2);padding:5px 10px;border-radius:40px;font-size:11px;font-weight:700;color:var(--amber)}
+.xp-pill{display:flex;align-items:center;gap:6px;background:rgba(232,184,109,0.1);border:1px solid rgba(232,184,109,0.2);padding:5px 10px;border-radius:40px;font-size:11px;font-weight:700;color:var(--gold)}
+.topbar-btn{width:34px;height:34px;border-radius:10px;border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;transition:var(--t);display:flex;align-items:center;justify-content:center;font-size:15px}
 .topbar-btn:hover{border-color:var(--gold);color:var(--gold)}
-.content{overflow-y:auto;overflow-x:hidden;scroll-behavior:smooth;padding:28px}
-@media(max-width:768px){.content{padding:16px}}
+.content{overflow-y:auto;overflow-x:hidden;scroll-behavior:smooth;padding:28px;-webkit-overflow-scrolling:touch}
+@media(max-width:768px){.content{overflow-y:auto;padding:14px;padding-bottom:76px}}
 .page{display:none;animation:fadeIn 0.3s ease}
 .page.active{display:block}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-/* HOME */
+/* HERO */
 .hero-section{display:grid;grid-template-columns:1fr 340px;gap:24px;margin-bottom:28px}
 @media(max-width:1100px){.hero-section{grid-template-columns:1fr}}
 .hero-card{background:linear-gradient(135deg,var(--card) 0%,rgba(30,24,16,1) 100%);border:1px solid var(--border2);border-radius:24px;padding:32px;position:relative;overflow:hidden}
@@ -227,6 +241,17 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .ol-progress{height:3px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden;margin-top:12px;display:none}
 .ol-progress-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--gold));border-radius:4px;transition:width 0.3s ease;width:0%}
 .ol-status{font-size:11px;color:var(--text3);margin-top:8px;display:none}
+.cors-info{background:rgba(94,174,255,0.08);border:1px solid rgba(94,174,255,0.2);border-radius:12px;padding:12px 16px;margin-bottom:16px;font-size:12px;color:var(--blue);line-height:1.6;display:none}
+.cors-info.show{display:block}
+/* TRADUCCIÓN ESPAÑOL */
+.wc-es{font-size:12px;color:#7ecb9a;background:rgba(61,220,132,0.06);border:1px solid rgba(61,220,132,0.15);border-radius:8px;padding:6px 10px;margin-bottom:8px;display:none;line-height:1.5}
+.wc-es.show{display:block}
+.wc-es .es-label{font-size:9px;font-weight:700;letter-spacing:0.08em;color:rgba(61,220,132,0.5);display:block;margin-bottom:2px;text-transform:uppercase}
+.wc-btn.es-btn{background:rgba(61,220,132,0.08);border-color:rgba(61,220,132,0.2);color:#7ecb9a}
+.wc-btn.es-btn:hover{background:rgba(61,220,132,0.15)}
+.wc-btn.es-btn.active{background:rgba(61,220,132,0.2);border-color:rgba(61,220,132,0.4)}
+.lang-pill{display:flex;align-items:center;gap:5px;background:rgba(126,203,154,0.08);border:1px solid rgba(61,220,132,0.2);padding:4px 10px;border-radius:40px;font-size:11px;font-weight:700;color:#7ecb9a;cursor:pointer;transition:var(--t);white-space:nowrap}
+.lang-pill:hover,.lang-pill.on{background:rgba(61,220,132,0.18);border-color:rgba(61,220,132,0.4)}
 /* LOGIN */
 .login-overlay{position:fixed;inset:0;background:rgba(10,9,8,0.97);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;z-index:10000;animation:fadeIn 0.4s ease}
 .login-box{background:var(--card);border:1px solid var(--border2);border-radius:28px;padding:40px 36px;max-width:380px;width:90%;text-align:center;position:relative}
@@ -262,9 +287,6 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .word-preview-pill.new{border-color:rgba(94,174,255,0.3);color:var(--blue);background:rgba(94,174,255,0.06)}
 .modal-btn{padding:10px 24px;border-radius:40px;border:none;background:linear-gradient(135deg,var(--gold),var(--amber));color:var(--void);font-family:'Syne',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:var(--t)}
 .modal-btn:hover{transform:scale(1.02)}
-/* CORS info banner */
-.cors-info{background:rgba(94,174,255,0.08);border:1px solid rgba(94,174,255,0.2);border-radius:12px;padding:12px 16px;margin-bottom:16px;font-size:12px;color:var(--blue);line-height:1.6;display:none}
-.cors-info.show{display:block}
 </style>
 </head>
 <body>
@@ -317,12 +339,12 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
       <div class="topbar-spacer"></div>
       <div class="streak-pill">🔥 <span id="streakDisplay">0</span></div>
       <div class="xp-pill">✦ <span id="xpDisplay">0</span> XP</div>
+      <div class="lang-pill" id="langToggleBtn" title="Mostrar traducción al español">🇪🇸 ES</div>
       <button class="topbar-btn" id="resetBtn" title="Reset progress">↺</button>
     </header>
 
     <div class="content" id="content">
-
-      <!-- HOME -->
+      <!-- HOME (unchanged) -->
       <div class="page active" id="page-home">
         <div class="hero-section">
           <div class="hero-card">
@@ -379,6 +401,8 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
           </div>
           <button class="filter-chip" id="masteredFilter">✓ Mastered only</button>
           <button class="filter-chip" id="oxfordFilter">📘 Oxford only</button>
+          <!-- ADDED: translate missing words button -->
+          <button class="filter-chip" id="translateMissingBtn" title="Translate missing Spanish meanings">🌐 Translate missing ES</button>
         </div>
         <div class="vocab-grid" id="vocabGrid"></div>
       </div>
@@ -393,7 +417,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
         <div class="grammar-grid" id="grammarGrid"></div>
       </div>
 
-      <!-- LIBRARY -->
+      <!-- LIBRARY (added more books) -->
       <div class="page" id="page-library">
         <div class="oxford-load-section">
           <div class="ol-header">
@@ -405,7 +429,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
           </div>
           <div class="ol-sub">Load the official Oxford word lists to expand your vocabulary with the most essential English words, classified by CEFR level (A1–C1).</div>
           <div class="cors-info" id="corsInfo">
-            ⚠️ <strong>Si ves errores de red:</strong> GitHub y Gutenberg pueden bloquearse por CORS en algunos navegadores cuando el archivo se abre localmente. Sube el archivo a GitHub Pages, Netlify o cualquier hosting para que funcione perfectamente.
+            ⚠️ <strong>If you see network errors:</strong> GitHub and Gutenberg may block CORS when opened locally. Upload to GitHub Pages or any hosting for perfect functionality.
           </div>
           <div class="ol-btns">
             <button class="ol-btn" id="loadOxford3000Btn">📖 Load Oxford 3000</button>
@@ -473,9 +497,8 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 
 <script>
 // ============================================================
-// CORS PROXY — resuelve el problema de GitHub y Gutenberg
+// CORS PROXY
 // ============================================================
-// Se intentan múltiples proxies en orden hasta que uno funcione
 const CORS_PROXIES = [
   url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
   url => `https://corsproxy.io/?${encodeURIComponent(url)}`,
@@ -483,13 +506,10 @@ const CORS_PROXIES = [
 ];
 
 async function fetchWithProxy(originalUrl) {
-  // Primero intentar directamente (funciona en GitHub Pages y servidores con CORS)
   try {
     const res = await fetch(originalUrl, { signal: AbortSignal.timeout(6000) });
     if (res.ok) return res;
-  } catch(e) { /* silencioso — intentar proxies */ }
-
-  // Intentar cada proxy en orden
+  } catch(e) { }
   for (const proxyFn of CORS_PROXIES) {
     try {
       const proxyUrl = proxyFn(originalUrl);
@@ -497,39 +517,123 @@ async function fetchWithProxy(originalUrl) {
       if (res.ok) return res;
     } catch(e) { continue; }
   }
-  throw new Error('No se pudo conectar. Verifica tu conexión.');
+  throw new Error('Network error');
 }
 
 // ============================================================
-// CORE VOCAB DATA
+// CORE VOCAB DATA (with ES translations)
 // ============================================================
 const CORE_VOCAB = [
-  { word:"Ephemeral", level:"A1", topic:"philosophy", ipa:"/ɪˈfem.ər.əl/", meaning:"lasting for a very short time", example:"The beauty of cherry blossoms is ephemeral.", source:"core" },
-  { word:"Ubiquitous", level:"A1", topic:"basics", ipa:"/juːˈbɪk.wɪ.təs/", meaning:"present, appearing, or found everywhere", example:"Smartphones have become ubiquitous.", source:"core" },
-  { word:"Serendipity", level:"A1", topic:"basics", ipa:"/ˌser.ənˈdɪp.ə.ti/", meaning:"fortunate chance; pleasant surprise", example:"Finding that book was pure serendipity.", source:"core" },
-  { word:"Cogent", level:"A1", topic:"philosophy", ipa:"/ˈkoʊ.dʒənt/", meaning:"clear, logical, and convincing", example:"Her argument was cogent and well-structured.", source:"core" },
-  { word:"Nuance", level:"A1", topic:"basics", ipa:"/ˈnjuː.ɑːns/", meaning:"a subtle distinction or variation", example:"He understood every nuance of the negotiation.", source:"core" },
-  { word:"Allusion", level:"A2", topic:"literature", ipa:"/əˈluː.ʒən/", meaning:"an indirect or passing reference", example:"The poem contains classical allusions.", source:"core" },
-  { word:"Metaphor", level:"A2", topic:"literature", ipa:"/ˈmet.ə.fɔːr/", meaning:"a figure of speech — an implicit comparison", example:"Life is a journey is a classic metaphor.", source:"core" },
-  { word:"Resilience", level:"A2", topic:"basics", ipa:"/rɪˈzɪl.i.əns/", meaning:"ability to recover from difficulties", example:"Her resilience inspired everyone around her.", source:"core" },
-  { word:"Ambiguous", level:"A2", topic:"basics", ipa:"/æmˈbɪɡ.ju.əs/", meaning:"having more than one possible meaning", example:"His response was deliberately ambiguous.", source:"core" },
-  { word:"Aesthetic", level:"B1", topic:"art", ipa:"/esˈθet.ɪk/", meaning:"concerned with beauty or the appreciation of beauty", example:"The gallery has a minimalist aesthetic.", source:"core" },
-  { word:"Avant-garde", level:"B1", topic:"art", ipa:"/ˌæv.ɒ̃ˈɡɑːd/", meaning:"innovative and experimental; ahead of its time", example:"Her work is truly avant-garde.", source:"core" },
-  { word:"Dichotomy", level:"B1", topic:"philosophy", ipa:"/daɪˈkɒt.ə.mi/", meaning:"a division into two contrasting things", example:"There is a stark dichotomy between theory and practice.", source:"core" },
-  { word:"Eloquent", level:"B1", topic:"literature", ipa:"/ˈel.ə.kwənt/", meaning:"fluent and persuasive in speech or writing", example:"She gave an eloquent speech.", source:"core" },
-  { word:"Solipsism", level:"B2", topic:"philosophy", ipa:"/ˈsɒl.ɪp.sɪ.z(ə)m/", meaning:"the view that the self is all that can be known", example:"He descended into a kind of solipsism.", source:"core" },
-  { word:"Perspicacious", level:"B2", topic:"basics", ipa:"/ˌpɜːr.spɪˈkeɪ.ʃəs/", meaning:"having a ready insight; shrewd", example:"The perspicacious investor saw the crash coming.", source:"core" },
-  { word:"Mellifluous", level:"B2", topic:"art", ipa:"/məˈlɪf.lu.əs/", meaning:"sweet or musical; pleasant to hear", example:"Her mellifluous voice calmed the room.", source:"core" },
-  { word:"Sycophant", level:"C1", topic:"basics", ipa:"/ˈsɪk.ə.fənt/", meaning:"a person who flatters powerful people for gain", example:"The leader was surrounded by sycophants.", source:"core" },
-  { word:"Laconic", level:"C1", topic:"literature", ipa:"/ləˈkɒn.ɪk/", meaning:"using very few words", example:"His laconic reply ended the debate.", source:"core" },
-  { word:"Ennui", level:"C1", topic:"philosophy", ipa:"/ɒnˈwiː/", meaning:"a feeling of listless dissatisfaction; boredom", example:"A profound ennui settled over the city.", source:"core" },
-  { word:"Zeitgeist", level:"C2", topic:"philosophy", ipa:"/ˈzaɪt.ɡaɪst/", meaning:"the defining spirit of a particular time", example:"That film captured the zeitgeist perfectly.", source:"core" },
-  { word:"Palimpsest", level:"C2", topic:"literature", ipa:"/ˈpæl.ɪmp.sest/", meaning:"something altered but still bearing visible traces of earlier form", example:"The city is a palimpsest of its own history.", source:"core" },
-  { word:"Apophenia", level:"C2", topic:"philosophy", ipa:"/æpəˈfiːnɪə/", meaning:"tendency to perceive meaningful connections between unrelated things", example:"Conspiracy theories thrive on apophenia.", source:"core" }
+  { word:"Ephemeral",      level:"A1", topic:"philosophy", ipa:"/ɪˈfem.ər.əl/",          meaning:"lasting for a very short time",                    es:"efímero — que dura muy poco tiempo",                         example:"The beauty of cherry blossoms is ephemeral.", source:"core" },
+  { word:"Ubiquitous",     level:"A1", topic:"basics",     ipa:"/juːˈbɪk.wɪ.təs/",       meaning:"present, appearing, or found everywhere",          es:"ubicuo — que está o aparece en todas partes",                example:"Smartphones have become ubiquitous.", source:"core" },
+  { word:"Serendipity",    level:"A1", topic:"basics",     ipa:"/ˌser.ənˈdɪp.ə.ti/",     meaning:"fortunate chance; a happy accident",               es:"serendipia — hallazgo afortunado por casualidad",            example:"Finding that book was pure serendipity.", source:"core" },
+  { word:"Cogent",         level:"A1", topic:"philosophy", ipa:"/ˈkoʊ.dʒənt/",           meaning:"clear, logical, and convincing",                   es:"convincente / sólido — claro y lógico",                      example:"Her argument was cogent and well-structured.", source:"core" },
+  { word:"Nuance",         level:"A1", topic:"basics",     ipa:"/ˈnjuː.ɑːns/",           meaning:"a subtle distinction or variation in meaning",     es:"matiz — diferencia sutil de significado",                    example:"He understood every nuance of the negotiation.", source:"core" },
+  { word:"Allusion",       level:"A2", topic:"literature", ipa:"/əˈluː.ʒən/",            meaning:"an indirect or passing reference to something",   es:"alusión — referencia indirecta a algo",                      example:"The poem contains classical allusions.", source:"core" },
+  { word:"Metaphor",       level:"A2", topic:"literature", ipa:"/ˈmet.ə.fɔːr/",         meaning:"a figure of speech — an implied comparison",      es:"metáfora — comparación implícita entre dos cosas",           example:"Life is a journey is a classic metaphor.", source:"core" },
+  { word:"Resilience",     level:"A2", topic:"basics",     ipa:"/rɪˈzɪl.i.əns/",        meaning:"ability to recover quickly from difficulties",    es:"resiliencia — capacidad de recuperarse de dificultades",     example:"Her resilience inspired everyone around her.", source:"core" },
+  { word:"Ambiguous",      level:"A2", topic:"basics",     ipa:"/æmˈbɪɡ.ju.əs/",        meaning:"open to more than one interpretation",            es:"ambiguo — que puede interpretarse de varias formas",         example:"His response was deliberately ambiguous.", source:"core" },
+  { word:"Eloquent",       level:"A2", topic:"literature", ipa:"/ˈel.ə.kwənt/",         meaning:"fluent and persuasive in speech or writing",      es:"elocuente — que habla o escribe con claridad y persuasión",  example:"She gave an eloquent speech.", source:"core" },
+  { word:"Aesthetic",      level:"B1", topic:"art",        ipa:"/esˈθet.ɪk/",           meaning:"concerned with beauty or artistic appreciation",  es:"estético — relativo a la belleza o al arte",                 example:"The gallery has a minimalist aesthetic.", source:"core" },
+  { word:"Avant-garde",    level:"B1", topic:"art",        ipa:"/ˌæv.ɒ̃ˈɡɑːd/",         meaning:"innovative and experimental; ahead of its time", es:"vanguardista — innovador, adelantado a su época",            example:"Her work is truly avant-garde.", source:"core" },
+  { word:"Dichotomy",      level:"B1", topic:"philosophy", ipa:"/daɪˈkɒt.ə.mi/",        meaning:"a division into two contrasting categories",      es:"dicotomía — división en dos partes opuestas",                example:"There is a stark dichotomy between theory and practice.", source:"core" },
+  { word:"Pragmatic",      level:"B1", topic:"basics",     ipa:"/præɡˈmæt.ɪk/",         meaning:"dealing with things sensibly and practically",    es:"pragmático — que actúa de manera práctica y sensata",        example:"We need a pragmatic approach to this problem.", source:"core" },
+  { word:"Imply",          level:"B1", topic:"basics",     ipa:"/ɪmˈplaɪ/",             meaning:"to suggest without saying directly",              es:"implicar / sugerir — dar a entender sin decirlo",            example:"His silence implied that he agreed.", source:"core" },
+  { word:"Contrary",       level:"B1", topic:"basics",     ipa:"/ˈkɒn.trər.i/",         meaning:"opposite in nature, direction, or meaning",       es:"contrario — opuesto en naturaleza o significado",            example:"Contrary to popular belief, it is safe.", source:"core" },
+  { word:"Solipsism",      level:"B2", topic:"philosophy", ipa:"/ˈsɒl.ɪp.sɪ.z(ə)m/",   meaning:"belief that only one's own mind is certain",      es:"solipsismo — creencia de que solo existe la mente propia",   example:"He descended into a kind of solipsism.", source:"core" },
+  { word:"Perspicacious",  level:"B2", topic:"basics",     ipa:"/ˌpɜːr.spɪˈkeɪ.ʃəs/",  meaning:"having a sharp and ready insight; shrewd",        es:"perspicaz — que comprende rápido y con agudeza",             example:"The perspicacious investor saw the crash coming.", source:"core" },
+  { word:"Mellifluous",    level:"B2", topic:"art",        ipa:"/məˈlɪf.lu.əs/",        meaning:"sweet or musical; pleasant to hear",              es:"melifluo — de sonido dulce y agradable al oído",             example:"Her mellifluous voice calmed the room.", source:"core" },
+  { word:"Condescending",  level:"B2", topic:"basics",     ipa:"/ˌkɒn.dɪˈsend.ɪŋ/",    meaning:"showing a sense of superiority over others",      es:"condescendiente / altanero — actitud de superioridad",       example:"His tone was condescending and rude.", source:"core" },
+  { word:"Ambivalent",     level:"B2", topic:"basics",     ipa:"/æmˈbɪv.ə.lənt/",       meaning:"having mixed or contradictory feelings",          es:"ambivalente — con sentimientos contradictorios al mismo tiempo", example:"She felt ambivalent about the job offer.", source:"core" },
+  { word:"Contemplate",    level:"B2", topic:"basics",     ipa:"/ˈkɒn.tɪm.pleɪt/",      meaning:"to think deeply about something; to consider",    es:"contemplar / reflexionar — pensar profundamente sobre algo",  example:"He sat quietly to contemplate his future.", source:"core" },
+  { word:"Sycophant",      level:"C1", topic:"basics",     ipa:"/ˈsɪk.ə.fənt/",         meaning:"a person who flatters powerful people for gain",  es:"adulador / sycophant — persona que halaga al poderoso por interés", example:"The leader was surrounded by sycophants.", source:"core" },
+  { word:"Laconic",        level:"C1", topic:"literature", ipa:"/ləˈkɒn.ɪk/",           meaning:"using very few words; brief and concise",         es:"lacónico — que dice mucho con pocas palabras",               example:"His laconic reply ended the debate.", source:"core" },
+  { word:"Ennui",          level:"C1", topic:"philosophy", ipa:"/ɒnˈwiː/",              meaning:"deep listlessness and dissatisfaction; boredom",  es:"tedio / hastío — aburrimiento profundo y falta de interés",  example:"A profound ennui settled over the city.", source:"core" },
+  { word:"Perfidious",     level:"C1", topic:"basics",     ipa:"/pəˈfɪd.i.əs/",         meaning:"deceitful and untrustworthy; treacherous",        es:"pérfido — traicionero, desleal",                             example:"He was betrayed by his perfidious ally.", source:"core" },
+  { word:"Obfuscate",      level:"C1", topic:"basics",     ipa:"/ˈɒb.fʌs.keɪt/",        meaning:"to make something unclear or confusing",          es:"ofuscar — hacer algo confuso o difícil de entender",         example:"Politicians often obfuscate the truth.", source:"core" },
+  { word:"Recalcitrant",   level:"C1", topic:"basics",     ipa:"/rɪˈkæl.sɪ.trənt/",     meaning:"obstinately refusing to obey authority",          es:"recalcitrante — que se resiste obstinadamente a obedecer",   example:"The recalcitrant student refused to cooperate.", source:"core" },
+  { word:"Zeitgeist",      level:"C2", topic:"philosophy", ipa:"/ˈzaɪt.ɡaɪst/",         meaning:"the defining spirit or mood of a particular era", es:"zeitgeist — el espíritu o clima cultural de una época",      example:"That film captured the zeitgeist perfectly.", source:"core" },
+  { word:"Palimpsest",     level:"C2", topic:"literature", ipa:"/ˈpæl.ɪmp.sest/",       meaning:"something bearing visible traces of an earlier form", es:"palimpsesto — algo que conserva huellas de formas anteriores", example:"The city is a palimpsest of its own history.", source:"core" },
+  { word:"Apophenia",      level:"C2", topic:"philosophy", ipa:"/æpəˈfiːnɪə/",          meaning:"seeing meaningful patterns in unrelated things",   es:"apofenia — ver patrones significativos en cosas no relacionadas", example:"Conspiracy theories thrive on apophenia.", source:"core" },
+  { word:"Liminal",        level:"C2", topic:"philosophy", ipa:"/ˈlɪm.ɪ.nəl/",          meaning:"relating to a threshold or transitional stage",    es:"liminal — relativo a un umbral o etapa de transición",       example:"Adolescence is a liminal phase of life.", source:"core" },
+  { word:"Solecism",       level:"C2", topic:"literature", ipa:"/ˈsɒl.ɪ.sɪ.z(ə)m/",    meaning:"a grammatical mistake or social blunder",         es:"solecismo — error gramatical o desliz social inapropiado",   example:"Ending a sentence with a preposition is a classic solecism.", source:"core" }
 ];
 
 let VOCAB = [...CORE_VOCAB];
 
+// ============ DYNAMIC TRANSLATION CACHE ============
+let userTranslations = {}; // { word: "translation" }
+function loadUserTranslations() {
+  try {
+    const stored = localStorage.getItem(`lxp_translations_${userName}`);
+    if (stored) userTranslations = JSON.parse(stored);
+  } catch(e) { userTranslations = {}; }
+}
+function saveUserTranslations() {
+  localStorage.setItem(`lxp_translations_${userName}`, JSON.stringify(userTranslations));
+}
+// Fetch Spanish translation using MyMemory (free API)
+async function fetchSpanishTranslation(word) {
+  try {
+    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(word)}&langpair=en|es`;
+    const res = await fetch(url);
+    const data = await res.json();
+    if (data && data.responseData && data.responseData.translatedText) {
+      let translated = data.responseData.translatedText;
+      // Clean up: avoid returning the same word if no translation
+      if (translated.toLowerCase() !== word.toLowerCase()) {
+        return translated;
+      }
+    }
+    return null;
+  } catch(e) {
+    console.warn("Translation failed", e);
+    return null;
+  }
+}
+// Ensure a word object has an `es` field, fetching if needed
+async function ensureTranslation(wordObj) {
+  if (wordObj.es && wordObj.es.trim() !== "") return true;
+  if (userTranslations[wordObj.word]) {
+    wordObj.es = userTranslations[wordObj.word];
+    return true;
+  }
+  // Fetch from API
+  const translation = await fetchSpanishTranslation(wordObj.word);
+  if (translation) {
+    wordObj.es = translation;
+    userTranslations[wordObj.word] = translation;
+    saveUserTranslations();
+    return true;
+  }
+  return false;
+}
+// Batch translate all words lacking es
+async function batchTranslateMissing(limit = 50) {
+  const missing = VOCAB.filter(w => !w.es || w.es.trim() === "");
+  if (missing.length === 0) {
+    toast("All words already have Spanish translations!", "var(--green)");
+    return;
+  }
+  toast(`Translating ${Math.min(limit, missing.length)} words...`, "var(--blue)");
+  let done = 0;
+  for (let i = 0; i < Math.min(limit, missing.length); i++) {
+    const w = missing[i];
+    await ensureTranslation(w);
+    done++;
+    if (done % 10 === 0) {
+      toast(`Translated ${done}/${Math.min(limit, missing.length)}`, "var(--gold)");
+      // Re-render vocab if we're on that page
+      if (document.getElementById('page-vocab').classList.contains('active')) renderVocab();
+    }
+  }
+  toast(`✅ Added ${done} new Spanish translations!`, "var(--green)");
+  if (document.getElementById('page-vocab').classList.contains('active')) renderVocab();
+}
+
+// ============ END TRANSLATION ADDON ============
+
+let showES = false;
 const VERBS = [
   { base:"begin",   past:"began",    part:"begun",    meaning:"empezar / start" },
   { base:"seek",    past:"sought",   part:"sought",   meaning:"buscar / search for" },
@@ -564,13 +668,49 @@ const GRAMMAR = [
   { tag:"PREPOSITIONS", title:"In / On / At — Time", rule:"Use 'in' for months, years, seasons, centuries. Use 'on' for days and dates. Use 'at' for specific times and holiday periods.", example:"<em>In</em> July, <em>on</em> Monday, <em>at</em> 9pm, <em>at</em> Christmas." }
 ];
 
+// ============ EXPANDED BOOK LIST (MORE TITLES) ============
 const PUBLIC_DOMAIN_BOOKS = [
-  { title:"Pride and Prejudice", author:"Jane Austen", year:1813, color:"#e8b86d", url:"https://www.gutenberg.org/files/1342/1342-0.txt", desc:"A witty exploration of love, class, and marriage in Regency England." },
-  { title:"Moby Dick", author:"Herman Melville", year:1851, color:"#5eaeff", url:"https://www.gutenberg.org/files/2701/2701-0.txt", desc:"The obsessive hunt for the white whale — an epic American masterpiece." },
-  { title:"Sherlock Holmes", author:"Arthur Conan Doyle", year:1892, color:"#ff9a3c", url:"https://www.gutenberg.org/files/1661/1661-0.txt", desc:"Twelve classic adventures with the world's greatest detective." },
-  { title:"Alice in Wonderland", author:"Lewis Carroll", year:1865, color:"#3ddc84", url:"https://www.gutenberg.org/files/11/11-0.txt", desc:"A fantastical journey through a world of impossible logic and wonder." },
-  { title:"The Great Gatsby", author:"F. Scott Fitzgerald", year:1925, color:"#ff5a1f", url:"https://www.gutenberg.org/files/64317/64317-0.txt", desc:"The Jazz Age, excess, and the impossibility of the American Dream." },
-  { title:"Frankenstein", author:"Mary Shelley", year:1818, color:"#9b59b6", url:"https://www.gutenberg.org/files/84/84-0.txt", desc:"The original science-fiction horror story about creation and responsibility." }
+  { title:"Pride and Prejudice", author:"Jane Austen", year:1813, color:"#e8b86d", level:"B1", url:"https://www.gutenberg.org/files/1342/1342-0.txt", desc:"Amor, clase social y matrimonio en la Inglaterra de la Regencia." },
+  { title:"Sense and Sensibility", author:"Jane Austen", year:1811, color:"#d4a853", level:"B1", url:"https://www.gutenberg.org/files/161/161-0.txt", desc:"Dos hermanas con caracteres opuestos buscan el amor verdadero." },
+  { title:"Emma", author:"Jane Austen", year:1815, color:"#c49a4a", level:"B2", url:"https://www.gutenberg.org/files/158/158-0.txt", desc:"Una joven entrometida aprende que el amor no se puede planear." },
+  { title:"Moby Dick", author:"Herman Melville", year:1851, color:"#5eaeff", level:"C1", url:"https://www.gutenberg.org/files/2701/2701-0.txt", desc:"La obsesiva persecución de la ballena blanca — épica americana." },
+  { title:"Sherlock Holmes", author:"Arthur Conan Doyle", year:1892, color:"#ff9a3c", level:"B2", url:"https://www.gutenberg.org/files/1661/1661-0.txt", desc:"Doce aventuras clásicas con el detective más famoso del mundo." },
+  { title:"Alice in Wonderland", author:"Lewis Carroll", year:1865, color:"#3ddc84", level:"A2", url:"https://www.gutenberg.org/files/11/11-0.txt", desc:"Un viaje fantástico por un mundo de lógica imposible y maravillas." },
+  { title:"The Great Gatsby", author:"F. Scott Fitzgerald", year:1925, color:"#ff5a1f", level:"B2", url:"https://www.gutenberg.org/files/64317/64317-0.txt", desc:"El Jazz Age, el exceso y la imposibilidad del sueño americano." },
+  { title:"Frankenstein", author:"Mary Shelley", year:1818, color:"#9b59b6", level:"B2", url:"https://www.gutenberg.org/files/84/84-0.txt", desc:"La novela original de ciencia ficción sobre creación y responsabilidad." },
+  { title:"The Picture of Dorian Gray", author:"Oscar Wilde", year:1890, color:"#e74c3c", level:"C1", url:"https://www.gutenberg.org/files/174/174-0.txt", desc:"La belleza eterna a cambio del alma — decadencia victoriana." },
+  { title:"The Importance of Being Earnest", author:"Oscar Wilde", year:1895, color:"#f39c12", level:"B2", url:"https://www.gutenberg.org/files/844/844-0.txt", desc:"Comedia de enredos sobre identidades falsas y el matrimonio." },
+  { title:"Jane Eyre", author:"Charlotte Brontë", year:1847, color:"#8e44ad", level:"B2", url:"https://www.gutenberg.org/files/1260/1260-0.txt", desc:"Una institutriz valiente encuentra amor y lucha por su independencia." },
+  { title:"Wuthering Heights", author:"Emily Brontë", year:1847, color:"#2c3e50", level:"C1", url:"https://www.gutenberg.org/files/768/768-0.txt", desc:"Un amor salvaje y destructivo en los páramos ingleses." },
+  { title:"Great Expectations", author:"Charles Dickens", year:1861, color:"#27ae60", level:"B2", url:"https://www.gutenberg.org/files/1400/1400-0.txt", desc:"El huérfano Pip y su camino hacia la riqueza y el autoconocimiento." },
+  { title:"A Tale of Two Cities", author:"Charles Dickens", year:1859, color:"#c0392b", level:"C1", url:"https://www.gutenberg.org/files/98/98-0.txt", desc:"Londres y París durante la Revolución Francesa — amor y sacrificio." },
+  { title:"Oliver Twist", author:"Charles Dickens", year:1838, color:"#16a085", level:"B1", url:"https://www.gutenberg.org/files/730/730-0.txt", desc:"Un huérfano escapa de la pobreza en el Londres victoriano." },
+  { title:"The Adventures of Tom Sawyer", author:"Mark Twain", year:1876, color:"#e67e22", level:"A2", url:"https://www.gutenberg.org/files/74/74-0.txt", desc:"Las travesuras de un niño travieso a orillas del Mississippi." },
+  { title:"The Adventures of Huckleberry Finn", author:"Mark Twain", year:1884, color:"#d35400", level:"B1", url:"https://www.gutenberg.org/files/76/76-0.txt", desc:"Un viaje río abajo por la América pre-guerra civil." },
+  { title:"Dracula", author:"Bram Stoker", year:1897, color:"#922b21", level:"B2", url:"https://www.gutenberg.org/files/345/345-0.txt", desc:"El vampiro más famoso de la literatura: épico y aterrador." },
+  { title:"The War of the Worlds", author:"H.G. Wells", year:1898, color:"#1abc9c", level:"B1", url:"https://www.gutenberg.org/files/36/36-0.txt", desc:"La invasión marciana que revolucionó la ciencia ficción." },
+  { title:"The Time Machine", author:"H.G. Wells", year:1895, color:"#2980b9", level:"B1", url:"https://www.gutenberg.org/files/35/35-0.txt", desc:"El primer viaje en el tiempo de la literatura moderna." },
+  { title:"The Invisible Man", author:"H.G. Wells", year:1897, color:"#7f8c8d", level:"B1", url:"https://www.gutenberg.org/files/5230/5230-0.txt", desc:"Un científico se vuelve invisible y pierde su humanidad." },
+  { title:"Treasure Island", author:"Robert Louis Stevenson", year:1883, color:"#f1c40f", level:"A2", url:"https://www.gutenberg.org/files/120/120-0.txt", desc:"Piratas, mapas del tesoro y aventuras en alta mar." },
+  { title:"Dr Jekyll and Mr Hyde", author:"R.L. Stevenson", year:1886, color:"#6c3483", level:"B2", url:"https://www.gutenberg.org/files/43/43-0.txt", desc:"El bien y el mal conviven en un mismo hombre." },
+  { title:"Romeo and Juliet", author:"William Shakespeare", year:1597, color:"#e91e63", level:"B2", url:"https://www.gutenberg.org/files/1112/1112-0.txt", desc:"El romance más trágico de la historia de la literatura." },
+  { title:"Hamlet", author:"William Shakespeare", year:1603, color:"#455a64", level:"C2", url:"https://www.gutenberg.org/files/1524/1524-0.txt", desc:"Venganza, locura y la pregunta existencial por excelencia." },
+  { title:"A Midsummer Night's Dream", author:"William Shakespeare", year:1600, color:"#26a69a", level:"B2", url:"https://www.gutenberg.org/files/1514/1514-0.txt", desc:"Magia, amor y confusión en el bosque encantado." },
+  { title:"The Jungle Book", author:"Rudyard Kipling", year:1894, color:"#4caf50", level:"A2", url:"https://www.gutenberg.org/files/236/236-0.txt", desc:"Mowgli y sus amigos animales en la selva india." },
+  { title:"Around the World in 80 Days", author:"Jules Verne", year:1872, color:"#03a9f4", level:"B1", url:"https://www.gutenberg.org/files/103/103-0.txt", desc:"Una apuesta lleva a Phileas Fogg a dar la vuelta al mundo." },
+  { title:"The Count of Monte Cristo", author:"Alexandre Dumas", year:1844, color:"#bf360c", level:"C1", url:"https://www.gutenberg.org/files/1184/1184-0.txt", desc:"Traición, prisión y una venganza meticulosa e implacable." },
+  { title:"Don Quixote", author:"Miguel de Cervantes", year:1605, color:"#795548", level:"C2", url:"https://www.gutenberg.org/files/996/996-0.txt", desc:"El caballero andante que confunde molinos con gigantes." },
+  // ADDITIONAL BOOKS (more classics)
+  { title:"The Odyssey", author:"Homer", year:-800, color:"#3498db", level:"C1", url:"https://www.gutenberg.org/files/1727/1727-0.txt", desc:"El épico viaje de regreso de Odiseo después de la guerra de Troya." },
+  { title:"The Iliad", author:"Homer", year:-750, color:"#2980b9", level:"C2", url:"https://www.gutenberg.org/files/6130/6130-0.txt", desc:"La cólera de Aquiles y la guerra de Troya." },
+  { title:"Les Misérables", author:"Victor Hugo", year:1862, color:"#e67e22", level:"C1", url:"https://www.gutenberg.org/files/135/135-0.txt", desc:"La redención de Jean Valjean en la Francia revolucionaria." },
+  { title:"Anna Karenina", author:"Leo Tolstoy", year:1877, color:"#9b59b6", level:"C2", url:"https://www.gutenberg.org/files/1399/1399-0.txt", desc:"Tragedia de amor y sociedad en la Rusia imperial." },
+  { title:"War and Peace", author:"Leo Tolstoy", year:1869, color:"#8e44ad", level:"C2", url:"https://www.gutenberg.org/files/2600/2600-0.txt", desc:"El fresco histórico más grande de la literatura." },
+  { title:"The Scarlet Letter", author:"Nathaniel Hawthorne", year:1850, color:"#e74c3c", level:"B2", url:"https://www.gutenberg.org/files/33/33-0.txt", desc:"Adulterio, culpa y puritanismo en la Nueva Inglaterra colonial." },
+  { title:"The Call of the Wild", author:"Jack London", year:1903, color:"#f39c12", level:"B1", url:"https://www.gutenberg.org/files/215/215-0.txt", desc:"Un perro doméstico que redescubre sus instintos primitivos." },
+  { title:"White Fang", author:"Jack London", year:1906, color:"#e67e22", level:"B1", url:"https://www.gutenberg.org/files/910/910-0.txt", desc:"La historia de un lobezno que aprende a confiar en los humanos." },
+  { title:"The Secret Garden", author:"Frances Hodgson Burnett", year:1911, color:"#2ecc71", level:"A2", url:"https://www.gutenberg.org/files/17396/17396-0.txt", desc:"Un jardín abandonado transforma la vida de dos niños." },
+  { title:"Little Women", author:"Louisa May Alcott", year:1868, color:"#e84393", level:"B1", url:"https://www.gutenberg.org/files/514/514-0.txt", desc:"Las hermanas March crecen en la Guerra Civil americana." }
 ];
 
 // ============================================================
@@ -584,7 +724,6 @@ let qqCorrect=0, qqWrong=0, qqStreak=0, qqCurrent=null;
 let pracCorrect=0, pracWrong=0, pracStreak=0, pracTotal=0, pracDone=0;
 let showMasteredOnly=false, showOxfordOnly=false, vocabLevelFilter='all', vocabSearch='';
 let chatHistory=[];
-let voiceListening=false;
 
 function getAllUsers(){try{return JSON.parse(localStorage.getItem('lxp_users')||'{}')}catch(e){return{}}}
 function saveAllUsers(u){localStorage.setItem('lxp_users',JSON.stringify(u))}
@@ -604,6 +743,7 @@ function loadUser(name){
   oxfordWords=u.oxfordWords||[];
   VOCAB=[...CORE_VOCAB];
   if(oxfordWords.length) VOCAB.push(...oxfordWords);
+  loadUserTranslations(); // load saved translations
   return true;
 }
 function getActiveUser(){return localStorage.getItem('lxp_active_user')||''}
@@ -686,21 +826,25 @@ function goPage(id){
 }
 
 // ============================================================
-// VOCAB RENDER
+// VOCAB RENDER (with dynamic ES button that fetches translation)
 // ============================================================
-function renderVocab(){
+async function renderVocab(){
   let words=VOCAB;
   if(vocabLevelFilter!=='all') words=words.filter(w=>w.level===vocabLevelFilter);
   if(showMasteredOnly) words=words.filter(w=>mastered.includes(w.word));
   if(showOxfordOnly) words=words.filter(w=>w.source==='oxford');
-  if(vocabSearch) words=words.filter(w=>w.word.toLowerCase().includes(vocabSearch)||w.meaning.toLowerCase().includes(vocabSearch));
+  if(vocabSearch) words=words.filter(w=>
+    w.word.toLowerCase().includes(vocabSearch) ||
+    w.meaning.toLowerCase().includes(vocabSearch) ||
+    (w.es && w.es.toLowerCase().includes(vocabSearch))
+  );
   const g=document.getElementById('vocabGrid');
   if(!words.length){g.innerHTML='<div class="no-words">No words found. Try different filters.</div>';return;}
   const tagCls={A1:'tag-a1',A2:'tag-a2',B1:'tag-b1',B2:'tag-b2',C1:'tag-c1',C2:'tag-c2'};
   g.innerHTML=words.map(w=>{
     const isOxford=w.source==='oxford';
     const isMastered=mastered.includes(w.word);
-    // Usar data-word en vez de onclick inline para evitar problemas con comillas
+    const hasES = !!w.es;
     return `
     <div class="word-card${isMastered?' mastered-card':''}${isOxford&&!isMastered?' oxford-card':''}">
       <div class="wc-top">
@@ -713,26 +857,59 @@ function renderVocab(){
       </div>
       <div class="wc-ipa">${w.ipa||''}</div>
       <div class="wc-meaning">${w.meaning}</div>
+      ${hasES?`<div class="wc-es${showES?' show':''}"><span class="es-label">🇪🇸 Español</span>${w.es}</div>`:'<div class="wc-es" style="display:none"><span class="es-label">🇪🇸 Español</span></div>'}
       <div class="wc-example">"${w.example}"</div>
       <div class="wc-actions">
         <button class="wc-btn speak-btn" data-word="${w.word}">🔊 Listen</button>
+        <button class="wc-btn es-btn" data-word="${w.word}">🇪🇸 ES</button>
         ${!isMastered
           ?`<button class="wc-btn gold master-btn" data-word="${w.word}">✦ Master</button>`
           :'<button class="wc-btn" style="color:var(--green);border-color:rgba(61,220,132,0.2)" disabled>✓ Mastered</button>'}
       </div>
     </div>`;
   }).join('');
-  // Bind events después de renderizar (evita problemas de escape con onclick inline)
   document.querySelectorAll('#vocabGrid .speak-btn').forEach(el=>{
     el.addEventListener('click',()=>speak(el.dataset.word));
   });
   document.querySelectorAll('#vocabGrid .master-btn').forEach(el=>{
     el.addEventListener('click',()=>masterWord(el.dataset.word));
   });
+  // Enhanced ES button: fetches translation if missing
+  document.querySelectorAll('#vocabGrid .es-btn').forEach(async btn => {
+    const wordText = btn.dataset.word;
+    const wordObj = VOCAB.find(w => w.word === wordText);
+    if (!wordObj) return;
+    btn.addEventListener('click', async () => {
+      const card = btn.closest('.word-card');
+      const esBox = card.querySelector('.wc-es');
+      if (wordObj.es && wordObj.es.trim() !== "") {
+        // already have translation
+        const visible = esBox.classList.toggle('show');
+        btn.classList.toggle('active', visible);
+        if (visible) esBox.innerHTML = `<span class="es-label">🇪🇸 Español</span>${wordObj.es}`;
+      } else {
+        // need to fetch
+        btn.textContent = "⏳ ES";
+        const ok = await ensureTranslation(wordObj);
+        btn.textContent = "🇪🇸 ES";
+        if (ok && wordObj.es) {
+          esBox.innerHTML = `<span class="es-label">🇪🇸 Español</span>${wordObj.es}`;
+          esBox.classList.add('show');
+          btn.classList.add('active');
+          // Also re-render in case other cards need the same translation
+          if (document.getElementById('page-vocab').classList.contains('active')) renderVocab();
+        } else {
+          esBox.innerHTML = `<span class="es-label">🇪🇸 Español</span><em>No translation available</em>`;
+          esBox.classList.add('show');
+          setTimeout(() => esBox.classList.remove('show'), 2000);
+        }
+      }
+    });
+  });
 }
 
 // ============================================================
-// VERBS RENDER
+// VERBS RENDER (unchanged)
 // ============================================================
 function renderVerbs(){
   document.getElementById('verbsGrid').innerHTML=VERBS.map(v=>`
@@ -755,9 +932,6 @@ function renderVerbs(){
   });
 }
 
-// ============================================================
-// GRAMMAR RENDER
-// ============================================================
 function renderGrammar(){
   document.getElementById('grammarGrid').innerHTML=GRAMMAR.map(g=>`
     <div class="gc-card">
@@ -769,39 +943,37 @@ function renderGrammar(){
   `).join('');
 }
 
-// ============================================================
-// LIBRARY RENDER
-// ============================================================
 function renderLibrary(){
   updateUI();
-  document.getElementById('libraryGrid').innerHTML=PUBLIC_DOMAIN_BOOKS.map((b,i)=>`
+  const levelColors={A1:'#3ddc84',A2:'#3daade',B1:'#e8b86d',B2:'#ff9a3c',C1:'#ff5a1f',C2:'#ff4757'};
+  document.getElementById('libraryGrid').innerHTML=PUBLIC_DOMAIN_BOOKS.map((b,i)=>{
+    const lvlColor = levelColors[b.level]||'var(--text3)';
+    return `
     <div class="book-card">
       <div class="book-spine" style="background:${b.color}"></div>
       <div class="book-title">${b.title}</div>
       <div class="book-author">${b.author} · ${b.year}</div>
       <div class="book-meta">
         <span class="book-tag" style="background:${b.color}22;color:${b.color}">CLASSIC</span>
+        <span class="book-tag" style="background:${lvlColor}22;color:${lvlColor}">${b.level||'B1'}</span>
         <span class="book-tag" style="background:rgba(61,220,132,0.1);color:var(--green)">FREE</span>
       </div>
       <div class="book-status" style="margin-bottom:12px">${b.desc}</div>
-      <button class="book-btn" data-book-idx="${i}" id="book-btn-${i}">
-        📖 Extract vocabulary
-      </button>
-    </div>
-  `).join('');
+      <button class="book-btn" data-book-idx="${i}">📖 Extract vocabulary</button>
+    </div>`;
+  }).join('');
 
-  // Bind eventos usando data attributes (no onclick inline)
   document.querySelectorAll('.book-btn').forEach(btn=>{
     btn.addEventListener('click',function(){
       const idx=parseInt(this.dataset.bookIdx);
       const book=PUBLIC_DOMAIN_BOOKS[idx];
-      loadGutenbergBook(book.url, book.title, this);
+      loadGutenbergBook(book.url,book.title,this);
     });
   });
 }
 
 // ============================================================
-// OXFORD WORD LIST LOADER (con proxy CORS)
+// OXFORD LOADER (unchanged)
 // ============================================================
 async function loadOxfordList(version){
   const btn=document.getElementById(`loadOxford${version}Btn`);
@@ -809,70 +981,48 @@ async function loadOxfordList(version){
   const fill=document.getElementById('olProgressFill');
   const status=document.getElementById('olStatus');
   const corsInfo=document.getElementById('corsInfo');
-
-  btn.disabled=true;
-  btn.textContent='⏳ Loading…';
-  prog.style.display='block';
-  status.style.display='block';
-  corsInfo.classList.remove('show');
-  status.textContent='Connecting…';
-  fill.style.width='10%';
-
-  // URLs directas en GitHub Raw
+  btn.disabled=true; btn.textContent='⏳ Loading…';
+  prog.style.display='block'; status.style.display='block';
+  corsInfo.classList.remove('show'); status.textContent='Connecting…'; fill.style.width='10%';
   const urls={
     '3000':'https://raw.githubusercontent.com/ittuann/The-Oxford-5000-Word-Lists/main/The%20Oxford%203000.txt',
     '5000':'https://raw.githubusercontent.com/ittuann/The-Oxford-5000-Word-Lists/main/The%20Oxford%205000.txt'
   };
-
   try{
-    status.textContent=`Fetching Oxford ${version} list…`;
-    fill.style.width='30%';
-
+    status.textContent=`Fetching Oxford ${version} list…`; fill.style.width='30%';
     const res=await fetchWithProxy(urls[version]);
-    const text=await res.text();
-    fill.style.width='60%';
+    const text=await res.text(); fill.style.width='60%';
     status.textContent='Processing words…';
-
     await new Promise(r=>setTimeout(r,80));
     const newWords=parseOxfordList(text,version);
-    fill.style.width='85%';
-    status.textContent='Adding to vocabulary…';
+    fill.style.width='85%'; status.textContent='Adding to vocabulary…';
     await new Promise(r=>setTimeout(r,80));
-
     let added=0;
     for(const w of newWords){
       if(!VOCAB.some(v=>v.word.toLowerCase()===w.word.toLowerCase())){
-        VOCAB.push(w);
-        oxfordWords.push(w);
-        added++;
+        VOCAB.push(w); oxfordWords.push(w); added++;
       }
     }
-
     fill.style.width='100%';
     if(version==='3000') oxford3000Loaded=true;
     else oxford5000Loaded=true;
-    saveCurrentUser();updateUI();
-
+    saveCurrentUser(); updateUI();
     showOxfordModal(newWords.slice(0,40),added,version);
     status.textContent=`✅ Added ${added} new words from Oxford ${version}!`;
     toast(`📚 Oxford ${version}: +${added} new words!`,'var(--blue)');
     btn.textContent=`✅ Oxford ${version} loaded`;
-
   }catch(err){
-    console.error(err);
-    fill.style.width='0%';
-    status.textContent='❌ Error de red. Intentando de nuevo con proxy…';
-    corsInfo.classList.add('show');
-    btn.disabled=false;
+    console.error(err); fill.style.width='0%';
+    status.textContent='❌ Network error. Retry with proxy…';
+    corsInfo.classList.add('show'); btn.disabled=false;
     btn.textContent=`↻ Retry Oxford ${version}`;
-    toast('No se pudo cargar. Intenta de nuevo.','var(--red)');
+    toast('Could not load Oxford list.','var(--red)');
   }
 }
 
 function parseOxfordList(text,version){
   const words=[];
   const lines=text.split('\n');
-  const cefr={A1:'A1',A2:'A2',B1:'B1',B2:'B2',C1:'C1',C2:'C2'};
   for(const line of lines){
     const trimmed=line.trim();
     if(!trimmed||trimmed.startsWith('#')||trimmed.startsWith('The Oxford'))continue;
@@ -881,7 +1031,7 @@ function parseOxfordList(text,version){
       const word=match[1];
       const pos=match[2].trim();
       const level=match[3].toUpperCase();
-      if(!cefr[level])continue;
+      if(!['A1','A2','B1','B2','C1','C2'].includes(level)) continue;
       words.push({word,level,ipa:'',meaning:`(${pos}) — Oxford ${version} word`,example:`"${word}" is a common English word (${pos}).`,source:'oxford',topic:'oxford'});
     }else{
       const wordMatch=trimmed.match(/^([a-zA-Z][a-zA-Z\-']+)/);
@@ -897,8 +1047,7 @@ function showOxfordModal(sampleWords,totalAdded,version){
   const existing=document.getElementById('oxfordModal');
   if(existing)existing.remove();
   const modal=document.createElement('div');
-  modal.className='modal-overlay';
-  modal.id='oxfordModal';
+  modal.className='modal-overlay'; modal.id='oxfordModal';
   modal.innerHTML=`
     <div class="modal-box">
       <button class="modal-close" id="oxfordModalClose">✕</button>
@@ -917,7 +1066,7 @@ function showOxfordModal(sampleWords,totalAdded,version){
 }
 
 // ============================================================
-// PROJECT GUTENBERG BOOK LOADER (con proxy CORS)
+// GUTENBERG BOOK LOADER (unchanged)
 // ============================================================
 async function loadGutenbergBook(url,title,btnEl){
   if(btnEl){btnEl.disabled=true;btnEl.textContent='⏳ Loading…';}
@@ -962,9 +1111,7 @@ function showBookVocabModal(words,title){
   const existing=document.getElementById('bookModal');
   if(existing)existing.remove();
   const modal=document.createElement('div');
-  modal.className='modal-overlay';
-  modal.id='bookModal';
-  // Guardamos las palabras en un atributo global temporal para evitar JSON inline
+  modal.className='modal-overlay'; modal.id='bookModal';
   window._pendingBookWords=words;
   modal.innerHTML=`
     <div class="modal-box">
@@ -993,16 +1140,16 @@ function addBookWords(words){
   let added=0;
   for(const w of words){
     if(!VOCAB.some(v=>v.word.toLowerCase()===w.word.toLowerCase())){
-      VOCAB.push(w);oxfordWords.push(w);added++;
+      VOCAB.push(w); oxfordWords.push(w); added++;
     }
   }
-  saveCurrentUser();updateUI();
+  saveCurrentUser(); updateUI();
   toast(`📚 Added ${added} new words from classic literature!`,'var(--amber)');
   goPage('vocab');
 }
 
 // ============================================================
-// QUICK QUIZ
+// QUICK QUIZ (unchanged)
 // ============================================================
 function initQQ(){
   let words=shuffle(VOCAB),idx=0;
@@ -1051,7 +1198,7 @@ function checkQQ(sel){
 }
 
 // ============================================================
-// PRACTICE
+// PRACTICE (unchanged)
 // ============================================================
 let pracQueue=[],pracIdx=0;
 function initPractice(){
@@ -1113,7 +1260,7 @@ function updatePracStats(){
 }
 
 // ============================================================
-// AI CHAT
+// AI CHAT (unchanged)
 // ============================================================
 async function sendChat(msg){
   if(!msg.trim())return;
@@ -1164,7 +1311,7 @@ function appendTyping(){
 }
 
 // ============================================================
-// VOICE
+// VOICE (unchanged)
 // ============================================================
 function initVoice(){
   const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
@@ -1180,7 +1327,7 @@ function initVoice(){
 }
 
 // ============================================================
-// AMBIENT
+// AMBIENT (unchanged)
 // ============================================================
 document.addEventListener('mousemove',e=>{
   const el=document.getElementById('ambient');
@@ -1188,15 +1335,13 @@ document.addEventListener('mousemove',e=>{
 });
 
 // ============================================================
-// THEME
+// THEME (unchanged)
 // ============================================================
 function toggleTheme(){
   document.body.classList.toggle('light-theme');
   const isLight=document.body.classList.contains('light-theme');
   localStorage.setItem('lexis_theme',isLight?'light':'dark');
   const btn=document.getElementById('themeToggleBtn');
-  if(btn)btn.querySelector(':not(.tooltip)');
-  // Reemplazar solo el emoji
   if(btn) btn.innerHTML=(isLight?'🌙':'☀️')+'<span class="tooltip">Theme</span>';
 }
 
@@ -1209,15 +1354,12 @@ function initApp(){
   renderGrammar();
   initQQ();
 
-  // Navegación sidebar
   document.querySelectorAll('.nav-item[data-page]').forEach(n=>{
     n.addEventListener('click',()=>goPage(n.dataset.page));
   });
-  // Mini cards home
   document.querySelectorAll('.mini-card[data-page]').forEach(card=>{
     card.addEventListener('click',()=>goPage(card.dataset.page));
   });
-  // Filtros vocab
   document.querySelectorAll('#levelFilters .filter-chip').forEach(btn=>{
     btn.addEventListener('click',()=>{
       document.querySelectorAll('#levelFilters .filter-chip').forEach(b=>b.classList.remove('active'));
@@ -1240,42 +1382,44 @@ function initApp(){
     vocabSearch=e.target.value.toLowerCase();
     renderVocab();
   });
-  // Practice
+  // Translate missing button
+  document.getElementById('translateMissingBtn').addEventListener('click',()=>batchTranslateMissing(100));
   document.getElementById('pracNextBtn').addEventListener('click',nextPrac);
-  // Chat
   document.getElementById('chatSendBtn').addEventListener('click',()=>sendChat(document.getElementById('chatInput').value));
   document.getElementById('chatInput').addEventListener('keydown',e=>{
     if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChat(e.target.value);}
   });
-  // Chat suggestions
   document.querySelectorAll('.sugg-chip').forEach(btn=>{
     btn.addEventListener('click',()=>{
       document.getElementById('chatInput').value=btn.textContent.trim();
       sendChat(btn.textContent.trim());
     });
   });
-  // Reset
   document.getElementById('resetBtn').addEventListener('click',()=>{
     if(!confirm(`Reset all progress for ${userName}?`))return;
     mastered=[];xp=0;streak=0;
     saveCurrentUser();updateUI();
     toast('Progress reset','var(--text2)');
   });
-  // Switch user
   document.getElementById('switchUserBtn').addEventListener('click',showLogin);
-  // Theme
   document.getElementById('themeToggleBtn').addEventListener('click',toggleTheme);
   const savedTheme=localStorage.getItem('lexis_theme');
   if(savedTheme==='light') document.body.classList.add('light-theme');
-  // Oxford buttons
   document.getElementById('loadOxford3000Btn').addEventListener('click',()=>loadOxfordList('3000'));
   document.getElementById('loadOxford5000Btn').addEventListener('click',()=>loadOxfordList('5000'));
-
+  // Global ES toggle
+  document.getElementById('langToggleBtn').addEventListener('click',()=>{
+    showES=!showES;
+    const btn=document.getElementById('langToggleBtn');
+    if(showES) btn.classList.add('on');
+    else btn.classList.remove('on');
+    renderVocab();
+  });
   initVoice();
 }
 
 // ============================================================
-// LOGIN / MULTI-USER
+// LOGIN / MULTI-USER (unchanged)
 // ============================================================
 function showLogin(){
   document.getElementById('app').style.display='none';
@@ -1345,4 +1489,4 @@ if(activeUser&&loadUser(activeUser)){
 }
 </script>
 </body>
-  </html>
+</html>
