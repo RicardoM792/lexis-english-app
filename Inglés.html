@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover"/>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="LEXIS">
+<title>LEXIS PRO · AI English Intelligence</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Syne+Mono&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --void:#0a0908;--surface:#111009;--card:#17140f;--card2:#1d1912;
+  --border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.12);
+  --gold:#e8b86d;--gold2:#f5d08a;--gold-dim:#a07d3f;--amber:#ff9a3c;--ember:#ff5a1f;
+  --green:#3ddc84;--green-dim:rgba(61,220,132,0.15);--red:#ff4757;--red-dim:rgba(255,71,87,0.15);
+  --blue:#5eaeff;--blue-dim:rgba(94,174,255,0.15);--text:#f0ebe1;--text2:#9a9080;--text3:#5a5248;
+  --glow:rgba(232,184,109,0.15);--r:16px;--r2:12px;--t:all 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+body.light-theme{--void:#f8f6f2;--surface:#ffffff;--card:#ffffff;--card2:#fefaf5;--border:rgba(0,0,0,0.08);--border2:rgba(0,0,0,0.12);--text:#1a1612;--text2:#5c554b;--text3:#8e867c;--gold:#b87c3a;--gold2:#d49c54;--gold-dim:#c49a6c;}
+html{background:var(--void)}
+body{font-family:'Syne',sans-serif;color:var(--text);background:var(--void);min-height:100vh}
+/* Desktop: scroll fijo en .content */
+@media(min-width:769px){
+  html,body{height:100%;overflow:hidden}
+  body{overscroll-behavior:none}
+  .shell{height:100vh}
+}
+/* Móvil: scroll natural en todo el body, sidebar fijo abajo */
+@media(max-width:768px){
+  html,body{height:auto;overflow:auto;-webkit-overflow-scrolling:touch}
+  .shell{min-height:100svh;display:flex;flex-direction:column}
+  .main{flex:1}
+  .content{padding-bottom:80px}
+}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;opacity:0.4}
+.ambient{position:fixed;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(232,184,109,0.06) 0%,transparent 70%);pointer-events:none;z-index:0;transition:transform 0.8s ease}
+.shell{display:grid;grid-template-columns:72px 1fr;position:relative;z-index:1}
+@media(max-width:768px){.shell{grid-template-columns:1fr;grid-template-rows:auto 1fr auto}}
+.sidebar{background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;align-items:center;padding:24px 0;gap:8px;position:relative;z-index:10}
+@media(max-width:768px){.sidebar{order:3;flex-direction:row;justify-content:space-around;padding:0 8px;border-right:none;border-top:1px solid var(--border);height:58px;position:sticky;bottom:0;left:0;right:0;background:var(--surface);margin-top:auto;z-index:100}}
+.logo-s{font-family:'DM Serif Display',serif;font-size:22px;background:linear-gradient(135deg,var(--gold),var(--amber));-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:16px;writing-mode:vertical-rl;text-orientation:mixed}
+@media(max-width:768px){.logo-s{display:none}}
+.nav-item{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;transition:var(--t);color:var(--text3);position:relative;border:1px solid transparent}
+.nav-item:hover{color:var(--text2);background:rgba(255,255,255,0.04)}
+.nav-item.active{color:var(--gold);background:rgba(232,184,109,0.1);border-color:rgba(232,184,109,0.2)}
+.nav-item .tooltip{position:absolute;left:calc(100% + 12px);background:var(--card2);border:1px solid var(--border2);padding:4px 10px;border-radius:8px;font-size:11px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity 0.2s}
+.nav-item:hover .tooltip{opacity:1}
+@media(max-width:768px){.nav-item .tooltip{display:none}}
+.sidebar-spacer{flex:1}
+@media(max-width:768px){.sidebar-spacer{display:none}}
+.main{display:grid;grid-template-rows:64px 1fr;overflow:hidden}
+@media(max-width:768px){.main{display:flex;flex-direction:column;height:auto;overflow:visible}}
+.topbar{display:flex;align-items:center;gap:12px;padding:0 20px;border-bottom:1px solid var(--border);background:var(--surface);min-height:64px;flex-shrink:0}
+@media(max-width:768px){.topbar{padding:0 14px;min-height:54px;position:sticky;top:0;z-index:50}}
+.topbar-logo{font-family:'DM Serif Display',serif;font-size:20px;background:linear-gradient(135deg,var(--gold),var(--amber));-webkit-background-clip:text;background-clip:text;color:transparent;display:none}
+@media(max-width:768px){.topbar-logo{display:block}}
+.page-title{font-size:14px;font-weight:600;color:var(--text2);letter-spacing:0.08em;text-transform:uppercase}
+.topbar-spacer{flex:1}
+.streak-pill{display:flex;align-items:center;gap:6px;background:rgba(255,90,31,0.12);border:1px solid rgba(255,90,31,0.2);padding:5px 10px;border-radius:40px;font-size:11px;font-weight:700;color:var(--amber)}
+.xp-pill{display:flex;align-items:center;gap:6px;background:rgba(232,184,109,0.1);border:1px solid rgba(232,184,109,0.2);padding:5px 10px;border-radius:40px;font-size:11px;font-weight:700;color:var(--gold)}
+.topbar-btn{width:34px;height:34px;border-radius:10px;border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;transition:var(--t);display:flex;align-items:center;justify-content:center;font-size:15px}
+.topbar-btn:hover{border-color:var(--gold);color:var(--gold)}
+.content{overflow-y:auto;overflow-x:hidden;scroll-behavior:smooth;padding:28px;-webkit-overflow-scrolling:touch}
+@media(max-width:768px){.content{overflow:visible;padding:14px;padding-bottom:80px}}
+.page{display:none;animation:fadeIn 0.3s ease}
+.page.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.hero-section{display:grid;grid-template-columns:1fr 340px;gap:24px;margin-bottom:28px}
+@media(max-width:1100px){.hero-section{grid-template-columns:1fr}}
+.hero-card{background:linear-gradient(135deg,var(--card) 0%,rgba(30,24,16,1) 100%);border:1px solid var(--border2);border-radius:24px;padding:32px;position:relative;overflow:hidden}
+.hero-card::before{content:'';position:absolute;top:-60px;right:-60px;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(232,184,109,0.12),transparent 70%)}
+.hero-greeting{font-size:13px;color:var(--gold-dim);font-weight:600;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px}
+.hero-name{font-family:'DM Serif Display',serif;font-size:clamp(28px,4vw,42px);line-height:1.1;margin-bottom:12px}
+.hero-name em{font-style:italic;color:var(--gold)}
+.hero-sub{font-size:14px;color:var(--text2);max-width:420px;line-height:1.7;margin-bottom:28px}
+.hero-xp-bar{margin-bottom:8px}
+.xp-label{display:flex;justify-content:space-between;font-size:11px;color:var(--text3);margin-bottom:6px}
+.xp-track{height:3px;background:rgba(255,255,255,0.08);border-radius:4px;overflow:hidden}
+.xp-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--amber));border-radius:4px;transition:width 1s cubic-bezier(0.4,0,0.2,1)}
+.hero-stats{display:flex;gap:28px;margin-top:24px}
+.h-stat{text-align:center}
+.h-stat-val{font-family:'DM Serif Display',serif;font-size:28px;color:var(--gold);line-height:1}
+.h-stat-lbl{font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:var(--text3);margin-top:2px}
+.quick-quiz-card{background:var(--card);border:1px solid var(--border);border-radius:24px;padding:24px;display:flex;flex-direction:column;gap:16px}
+.qcard-label{font-size:11px;text-transform:uppercase;letter-spacing:0.1em;color:var(--text3);font-weight:600}
+.qcard-word{font-family:'DM Serif Display',serif;font-size:36px;color:var(--gold);line-height:1;text-align:center;padding:16px 0}
+.qcard-ipa{font-family:'Syne Mono',monospace;font-size:12px;color:var(--text3);text-align:center;margin-top:-12px;margin-bottom:4px}
+.qcard-eg{font-size:12px;color:var(--text2);font-style:italic;text-align:center;background:rgba(255,255,255,0.04);padding:10px 12px;border-radius:10px}
+.q-opts{display:flex;flex-direction:column;gap:8px}
+.q-opt{padding:10px 14px;border-radius:10px;border:1px solid var(--border);background:rgba(255,255,255,0.03);cursor:pointer;font-size:13px;transition:var(--t);display:flex;align-items:center;gap:10px;text-align:left}
+.q-opt:hover{border-color:rgba(232,184,109,0.3);background:rgba(232,184,109,0.06);transform:translateX(3px)}
+.q-opt.correct{border-color:var(--green);background:var(--green-dim);color:var(--green)}
+.q-opt.wrong{border-color:var(--red);background:var(--red-dim);color:var(--red);text-decoration:line-through}
+.q-letter{width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,0.06);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.q-score-row{display:flex;justify-content:space-between;padding-top:8px;border-top:1px solid var(--border);font-size:11px;color:var(--text3)}
+.q-next-btn{padding:10px;border-radius:10px;border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;font-family:'Syne',sans-serif;font-size:12px;font-weight:600;transition:var(--t)}
+.q-next-btn:hover{border-color:var(--gold);color:var(--gold)}
+.section-title{font-size:11px;text-transform:uppercase;letter-spacing:0.12em;color:var(--text3);font-weight:700;margin-bottom:16px}
+.cards-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-bottom:28px}
+.mini-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:20px;cursor:pointer;transition:var(--t);position:relative;overflow:hidden}
+.mini-card::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(232,184,109,0.04),transparent);opacity:0;transition:opacity 0.3s}
+.mini-card:hover{border-color:var(--border2);transform:translateY(-3px);box-shadow:0 16px 40px rgba(0,0,0,0.4)}
+.mini-card:hover::after{opacity:1}
+.mc-icon{font-size:22px;margin-bottom:12px}
+.mc-title{font-size:13px;font-weight:700;margin-bottom:4px}
+.mc-sub{font-size:11px;color:var(--text3)}
+.mc-badge{display:inline-block;font-size:9px;padding:2px 8px;border-radius:20px;background:rgba(232,184,109,0.12);color:var(--gold);font-weight:700;margin-top:8px;letter-spacing:0.05em}
+.vocab-toolbar{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap;align-items:center}
+.search-input{flex:1;min-width:200px;padding:10px 16px;background:var(--card);border:1px solid var(--border);border-radius:40px;color:var(--text);font-family:'Syne',sans-serif;font-size:13px;outline:none;transition:var(--t)}
+.search-input:focus{border-color:rgba(232,184,109,0.3);box-shadow:0 0 0 3px rgba(232,184,109,0.06)}
+.filter-chip{padding:8px 14px;border-radius:40px;border:1px solid var(--border);background:transparent;color:var(--text2);font-family:'Syne',sans-serif;font-size:11px;font-weight:600;cursor:pointer;transition:var(--t);letter-spacing:0.05em}
+.filter-chip:hover{border-color:var(--border2);color:var(--text)}
+.filter-chip.active{background:rgba(232,184,109,0.1);border-color:rgba(232,184,109,0.3);color:var(--gold)}
+.vocab-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.word-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:20px;transition:var(--t);position:relative;overflow:hidden}
+.word-card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.word-card.mastered-card{border-color:rgba(61,220,132,0.2)}
+.word-card.mastered-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--green),transparent)}
+.wc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
+.wc-word{font-family:'DM Serif Display',serif;font-size:22px;color:var(--gold);cursor:pointer;line-height:1.1}
+.wc-word:hover{color:var(--gold2)}
+.wc-badges{display:flex;gap:6px;flex-wrap:wrap}
+.level-tag{font-size:9px;padding:2px 7px;border-radius:20px;font-weight:700;letter-spacing:0.05em}
+.tag-a1{background:rgba(61,220,132,0.12);color:#3ddc84}.tag-a2{background:rgba(61,170,220,0.12);color:#3daade}.tag-b1{background:rgba(232,184,109,0.12);color:var(--gold)}.tag-b2{background:rgba(255,154,60,0.12);color:var(--amber)}.tag-c1{background:rgba(255,90,31,0.12);color:var(--ember)}.tag-c2{background:rgba(255,71,87,0.12);color:var(--red)}
+.mastered-tag{background:rgba(61,220,132,0.12);color:var(--green);font-size:9px;padding:2px 7px;border-radius:20px;font-weight:700}
+.wc-ipa{font-family:'Syne Mono',monospace;font-size:11px;color:var(--text3);margin-bottom:6px}
+.wc-meaning{font-size:13px;color:var(--text2);margin-bottom:8px;line-height:1.5}
+.wc-example{font-size:12px;color:var(--text3);font-style:italic;border-left:2px solid rgba(232,184,109,0.3);padding-left:10px;margin-bottom:12px;line-height:1.6}
+.wc-actions{display:flex;gap:8px;flex-wrap:wrap}
+.wc-btn{padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text3);font-family:'Syne',sans-serif;font-size:10px;font-weight:700;cursor:pointer;transition:var(--t);letter-spacing:0.05em}
+.wc-btn:hover{border-color:var(--border2);color:var(--text)}
+.wc-btn.gold{background:rgba(232,184,109,0.1);border-color:rgba(232,184,109,0.25);color:var(--gold)}
+.wc-btn.gold:hover{background:rgba(232,184,109,0.18)}
+.no-words{text-align:center;padding:60px;color:var(--text3);font-size:14px}
+.verbs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
+.verb-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:20px;transition:var(--t);cursor:pointer}
+.verb-card:hover{border-color:var(--border2)}
+.vc-base{font-family:'DM Serif Display',serif;font-size:22px;color:var(--gold);margin-bottom:4px}
+.vc-meaning{font-size:12px;color:var(--text3);margin-bottom:12px}
+.vc-forms{display:flex;gap:8px;flex-wrap:wrap}
+.vc-form-group{display:flex;flex-direction:column;gap:4px}
+.vc-form-lbl{font-size:9px;color:var(--text3)}
+.vc-form{padding:4px 12px;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid var(--border);font-family:'Syne Mono',monospace;font-size:11px;color:var(--text2)}
+.grammar-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px}
+.gc-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:24px;transition:var(--t)}
+.gc-card:hover{border-color:var(--border2)}
+.gc-tag{display:inline-block;font-size:10px;padding:3px 10px;border-radius:20px;background:rgba(232,184,109,0.1);color:var(--gold);font-weight:700;margin-bottom:12px;letter-spacing:0.05em}
+.gc-title{font-family:'DM Serif Display',serif;font-size:22px;margin-bottom:12px;color:var(--text)}
+.gc-rule{font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:12px;padding:12px;background:rgba(255,255,255,0.03);border-radius:10px;border-left:2px solid var(--gold-dim)}
+.gc-example{font-size:12px;color:var(--text3);font-style:italic}
+.gc-example em{color:var(--gold2);font-style:normal}
+.chat-shell{display:flex;flex-direction:column;height:calc(100vh - 64px - 56px);max-height:700px}
+@media(max-width:768px){.chat-shell{height:calc(100svh - 64px - 80px);max-height:none}}
+.chat-messages{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:16px;padding-bottom:16px}
+.msg{display:flex;gap:12px;align-items:flex-start}
+.msg.user{flex-direction:row-reverse}
+.msg-avatar{width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.msg-avatar.ai{background:rgba(232,184,109,0.15);border:1px solid rgba(232,184,109,0.2)}
+.msg-avatar.user{background:rgba(255,255,255,0.06);border:1px solid var(--border)}
+.msg-bubble{max-width:80%;padding:12px 16px;border-radius:14px;font-size:13px;line-height:1.7}
+.msg.ai .msg-bubble{background:var(--card);border:1px solid var(--border);color:var(--text)}
+.msg.user .msg-bubble{background:rgba(232,184,109,0.12);border:1px solid rgba(232,184,109,0.2);color:var(--text)}
+.msg-bubble strong{color:var(--gold)}
+.msg-bubble em{color:var(--gold2);font-style:italic}
+.chat-input-row{display:flex;gap:10px;padding-top:16px;border-top:1px solid var(--border)}
+.chat-input{flex:1;padding:12px 16px;background:var(--card);border:1px solid var(--border);border-radius:40px;color:var(--text);font-family:'Syne',sans-serif;font-size:13px;outline:none;transition:var(--t);resize:none}
+.chat-input:focus{border-color:rgba(232,184,109,0.3)}
+.chat-send-btn{width:44px;height:44px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--gold),var(--amber));color:#0a0908;font-size:18px;cursor:pointer;transition:var(--t);display:flex;align-items:center;justify-content:center}
+.chat-send-btn:disabled{opacity:0.5}
+.typing-indicator{display:flex;gap:4px;padding:12px 16px;background:var(--card);border:1px solid var(--border);border-radius:14px;width:fit-content}
+.typing-dot{width:6px;height:6px;border-radius:50%;background:var(--text3);animation:typingPulse 1.4s infinite}
+.typing-dot:nth-child(2){animation-delay:0.2s}
+.typing-dot:nth-child(3){animation-delay:0.4s}
+@keyframes typingPulse{0%,80%,100%{opacity:0.3;transform:scale(0.8)}40%{opacity:1;transform:scale(1)}}
+.chat-suggestions{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.sugg-chip{padding:7px 14px;border-radius:40px;border:1px solid var(--border);background:transparent;color:var(--text2);font-family:'Syne',sans-serif;font-size:11px;cursor:pointer;transition:var(--t)}
+.sugg-chip:hover{border-color:rgba(232,184,109,0.3);color:var(--gold);background:rgba(232,184,109,0.06)}
+.practice-shell{max-width:560px;margin:0 auto}
+.prac-progress{margin-bottom:28px}
+.prac-prog-row{display:flex;justify-content:space-between;font-size:11px;color:var(--text3);margin-bottom:8px}
+.prac-track{height:4px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden}
+.prac-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--amber));border-radius:4px;transition:width 0.6s ease}
+.prac-card{background:var(--card);border:1px solid var(--border);border-radius:24px;padding:32px;text-align:center;margin-bottom:20px}
+.prac-type{font-size:10px;text-transform:uppercase;letter-spacing:0.15em;color:var(--text3);font-weight:700;margin-bottom:16px}
+.prac-word{font-family:'DM Serif Display',serif;font-size:clamp(36px,8vw,56px);color:var(--gold);line-height:1;margin-bottom:6px}
+.prac-ipa{font-family:'Syne Mono',monospace;font-size:13px;color:var(--text3);margin-bottom:16px}
+.prac-context{font-size:13px;color:var(--text2);font-style:italic;background:rgba(255,255,255,0.04);padding:12px 16px;border-radius:12px}
+.prac-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:480px){.prac-opts{grid-template-columns:1fr}}
+.prac-opt{padding:14px 16px;border-radius:12px;border:1px solid var(--border);background:rgba(255,255,255,0.03);cursor:pointer;font-size:13px;font-family:'Syne',sans-serif;transition:var(--t);text-align:left;color:var(--text)}
+.prac-opt:hover{border-color:rgba(232,184,109,0.3);background:rgba(232,184,109,0.06)}
+.prac-opt.correct{border-color:var(--green);background:var(--green-dim);color:var(--green)}
+.prac-opt.wrong{border-color:var(--red);background:var(--red-dim);color:var(--red);text-decoration:line-through}
+.prac-feedback{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px 20px;font-size:13px;color:var(--text2);line-height:1.7;display:none}
+.prac-feedback.show{display:block}
+.prac-feedback strong{color:var(--gold)}
+.prac-next-btn{width:100%;padding:14px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--gold),var(--amber));color:var(--void);font-family:'Syne',sans-serif;font-weight:700;font-size:14px;cursor:pointer;transition:var(--t);margin-top:16px;display:none}
+.prac-next-btn.show{display:block}
+.prac-stats{display:flex;justify-content:center;gap:32px}
+.ps-item{text-align:center}
+.ps-val{font-family:'DM Serif Display',serif;font-size:24px;color:var(--gold)}
+.ps-lbl{font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:var(--text3)}
+.library-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-bottom:28px}
+.book-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:20px;transition:var(--t);position:relative}
+.book-card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.book-spine{width:4px;height:100%;position:absolute;left:0;top:0;border-radius:var(--r) 0 0 var(--r)}
+.book-title{font-family:'DM Serif Display',serif;font-size:18px;color:var(--text);margin-bottom:4px;line-height:1.3}
+.book-author{font-size:12px;color:var(--text3);margin-bottom:12px}
+.book-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.book-tag{font-size:9px;padding:2px 8px;border-radius:20px;font-weight:700;letter-spacing:0.05em}
+.book-status{font-size:11px;color:var(--text3)}
+.book-btn{width:100%;padding:10px;border-radius:10px;border:1px solid rgba(232,184,109,0.25);background:rgba(232,184,109,0.06);color:var(--gold);font-family:'Syne',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:var(--t)}
+.book-btn:hover{background:rgba(232,184,109,0.14)}
+.oxford-load-section{background:var(--card);border:1px solid rgba(94,174,255,0.2);border-radius:24px;padding:28px;margin-bottom:28px}
+.ol-header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.ol-icon{font-size:32px}
+.ol-title{font-family:'DM Serif Display',serif;font-size:22px;color:var(--blue)}
+.ol-sub{font-size:13px;color:var(--text2);margin-bottom:20px;line-height:1.7}
+.ol-btns{display:flex;gap:12px;flex-wrap:wrap}
+.ol-btn{padding:10px 20px;border-radius:40px;border:1px solid rgba(94,174,255,0.3);background:rgba(94,174,255,0.08);color:var(--blue);font-family:'Syne',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:var(--t)}
+.ol-btn:disabled{opacity:0.4}
+.ol-progress{height:3px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden;margin-top:12px;display:none}
+.ol-progress-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--gold));border-radius:4px;transition:width 0.3s ease;width:0%}
+.ol-status{font-size:11px;color:var(--text3);margin-top:8px;display:none}
+.cors-info{background:rgba(94,174,255,0.08);border:1px solid rgba(94,174,255,0.2);border-radius:12px;padding:12px 16px;margin-bottom:16px;font-size:12px;color:var(--blue);line-height:1.6;display:none}
+.cors-info.show{display:block}
+.wc-es{font-size:12px;color:#7ecb9a;background:rgba(61,220,132,0.06);border:1px solid rgba(61,220,132,0.15);border-radius:8px;padding:6px 10px;margin-bottom:8px;display:none;line-height:1.5}
+.wc-es.show{display:block}
+.wc-es .es-label{font-size:9px;font-weight:700;letter-spacing:0.08em;color:rgba(61,220,132,0.5);display:block;margin-bottom:2px;text-transform:uppercase}
+.wc-btn.es-btn{background:rgba(61,220,132,0.08);border-color:rgba(61,220,132,0.2);color:#7ecb9a}
+.wc-btn.es-btn.active{background:rgba(61,220,132,0.2);border-color:rgba(61,220,132,0.4)}
+.lang-pill{display:flex;align-items:center;gap:5px;background:rgba(126,203,154,0.08);border:1px solid rgba(61,220,132,0.2);padding:4px 10px;border-radius:40px;font-size:11px;font-weight:700;color:#7ecb9a;cursor:pointer}
+.login-overlay{position:fixed;inset:0;background:rgba(10,9,8,0.97);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;z-index:10000}
+.login-box{background:var(--card);border:1px solid var(--border2);border-radius:28px;padding:40px 36px;max-width:380px;width:90%;text-align:center}
+.login-logo{font-family:'DM Serif Display',serif;font-size:48px;font-style:italic;background:linear-gradient(135deg,var(--gold),var(--amber));-webkit-background-clip:text;background-clip:text;color:transparent}
+.login-tagline{font-size:11px;text-transform:uppercase;letter-spacing:0.15em;color:var(--text3);margin-bottom:32px}
+.login-input{width:100%;padding:13px 18px;background:rgba(255,255,255,0.05);border:1px solid var(--border2);border-radius:12px;color:var(--text);font-family:'Syne',sans-serif;font-size:14px;outline:none;margin-bottom:14px}
+.login-input:focus{border-color:rgba(232,184,109,0.4)}
+.login-btn{width:100%;padding:13px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--gold),var(--amber));color:var(--void);font-family:'Syne',sans-serif;font-weight:700;font-size:14px;cursor:pointer}
+.login-users{margin-top:20px;text-align:left}
+.login-users-label{font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:var(--text3);margin-bottom:10px}
+.user-pill{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:40px;border:1px solid var(--border);background:rgba(255,255,255,0.03);cursor:pointer;font-size:12px;margin:4px}
+.user-pill:hover{border-color:rgba(232,184,109,0.3);color:var(--gold)}
+::-webkit-scrollbar{width:3px}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--card2);border:1px solid var(--border2);border-radius:40px;padding:10px 20px;font-size:12px;font-weight:600;z-index:99999;animation:toastIn 0.3s ease;white-space:nowrap}
+@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+.voice-btn{width:44px;height:44px;border-radius:12px;border:1px solid var(--border);background:transparent;color:var(--text2);font-size:18px;cursor:pointer;transition:var(--t);display:flex;align-items:center;justify-content:center}
+.voice-btn.listening{border-color:var(--red);color:var(--red);background:var(--red-dim);animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,71,87,0.4)}50%{box-shadow:0 0 0 8px rgba(255,71,87,0)}}
+.modal-overlay{position:fixed;inset:0;background:rgba(10,9,8,0.8);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;z-index:9000}
+.modal-box{background:var(--card2);border:1px solid var(--border2);border-radius:20px;padding:28px;max-width:500px;width:90%;max-height:80vh;overflow-y:auto}
+.modal-title{font-family:'DM Serif Display',serif;font-size:22px;color:var(--gold);margin-bottom:8px}
+.modal-sub{font-size:13px;color:var(--text2);margin-bottom:20px}
+.modal-close{float:right;background:transparent;border:none;color:var(--text3);font-size:18px;cursor:pointer}
+.word-list-preview{display:flex;flex-wrap:wrap;gap:8px;max-height:200px;overflow-y:auto;margin-bottom:20px}
+.word-preview-pill{padding:4px 10px;border-radius:20px;border:1px solid var(--border);font-size:11px;color:var(--text2)}
+.word-preview-pill.new{border-color:rgba(94,174,255,0.3);color:var(--blue);background:rgba(94,174,255,0.06)}
+.modal-btn{padding:10px 24px;border-radius:40px;border:none;background:linear-gradient(135deg,var(--gold),var(--amber));color:var(--void);font-family:'Syne',sans-serif;font-weight:700;font-size:13px;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="ambient" id="ambient"></div>
+<div class="login-overlay" id="loginOverlay">
+  <div class="login-box">
+    <div class="login-logo">lexis</div>
+    <div class="login-tagline">AI English Intelligence</div>
+    <input class="login-input" id="loginName" placeholder="Your name" autocomplete="off"/>
+    <select class="login-input" id="loginLevel">
+      <option value="A1">A1 — Beginner</option>
+      <option value="A2">A2 — Elementary</option>
+      <option value="B1">B1 — Intermediate</option>
+      <option value="B2">B2 — Upper Intermediate</option>
+      <option value="C1">C1 — Advanced</option>
+      <option value="C2">C2 — Mastery</option>
+    </select>
+    <button class="login-btn" id="loginBtn">Start learning →</button>
+    <div class="login-users" id="savedUsersBox" style="display:none"><div class="login-users-label">Continue as</div><div id="savedUsersList"></div></div>
+  </div>
+</div>
+<div class="shell" id="app" style="display:none">
+  <aside class="sidebar">
+    <div class="logo-s">L</div>
+    <div class="nav-item active" data-page="home">🏠<span class="tooltip">Home</span></div>
+    <div class="nav-item" data-page="vocab">📖<span class="tooltip">Vocabulary</span></div>
+    <div class="nav-item" data-page="verbs">⚡<span class="tooltip">Verbs</span></div>
+    <div class="nav-item" data-page="grammar">📐<span class="tooltip">Grammar</span></div>
+    <div class="nav-item" data-page="library">📚<span class="tooltip">Library</span></div>
+    <div class="nav-item" data-page="practice">🎯<span class="tooltip">Practice</span></div>
+    <div class="nav-item" data-page="chat">🤖<span class="tooltip">AI Tutor</span></div>
+    <div class="nav-item" id="themeToggleBtn">🌓<span class="tooltip">Theme</span></div>
+    <div class="sidebar-spacer"></div>
+    <div class="nav-item" id="switchUserBtn">👤<span class="tooltip">Switch user</span></div>
+  </aside>
+  <div class="main">
+    <header class="topbar">
+      <div class="topbar-logo">lexis</div>
+      <div class="page-title" id="pageTitle">Home</div>
+      <div class="topbar-spacer"></div>
+      <div class="streak-pill">🔥 <span id="streakDisplay">0</span></div>
+      <div class="xp-pill">✦ <span id="xpDisplay">0</span> XP</div>
+      <div class="lang-pill" id="langToggleBtn">🇪🇸 ES</div>
+      <button class="topbar-btn" id="resetBtn" title="Reset progress">↺</button>
+    </header>
+    <div class="content" id="content">
+      <div class="page active" id="page-home">
+        <div class="hero-section">
+          <div class="hero-card">
+            <div class="hero-greeting" id="heroGreeting">Welcome back</div>
+            <div class="hero-name" id="heroName">Scholar <em>.</em></div>
+            <div class="hero-sub">Your path to English fluency is a marathon of beautiful moments. Every word mastered brings you closer.</div>
+            <div class="hero-xp-bar"><div class="xp-label"><span>Level <span id="heroLevel">A1</span></span><span id="heroXPNext">0 / 100 XP</span></div><div class="xp-track"><div class="xp-fill" id="heroXPFill" style="width:0%"></div></div></div>
+            <div class="hero-stats"><div class="h-stat"><div class="h-stat-val" id="hsMastered">0</div><div class="h-stat-lbl">Mastered</div></div><div class="h-stat"><div class="h-stat-val" id="hsStreak">0</div><div class="h-stat-lbl">Streak</div></div><div class="h-stat"><div class="h-stat-val" id="hsTotal">0</div><div class="h-stat-lbl">Total Words</div></div></div>
+          </div>
+          <div class="quick-quiz-card"><div class="qcard-label">Quick Quiz</div><div id="qqWord" class="qcard-word">—</div><div id="qqIpa" class="qcard-ipa"></div><div id="qqEg" class="qcard-eg" style="display:none"></div><div class="q-opts" id="qqOpts"></div><div class="q-score-row"><span>✅ <span id="qqC">0</span></span><span>🔥 <span id="qqS">0</span></span><span>❌ <span id="qqW">0</span></span></div><button class="q-next-btn" id="qqNextBtn">↻ Next word</button></div>
+        </div>
+        <div class="section-title">Quick Access</div>
+        <div class="cards-row">
+          <div class="mini-card" data-page="vocab"><div class="mc-icon">📖</div><div class="mc-title">Vocabulary</div><div class="mc-sub" id="mcVocabSub">0 words total</div><div class="mc-badge">EXPLORE</div></div>
+          <div class="mini-card" data-page="verbs"><div class="mc-icon">⚡</div><div class="mc-title">Irregular Verbs</div><div class="mc-sub" id="mcVerbsSub">0 verbs</div><div class="mc-badge">STUDY</div></div>
+          <div class="mini-card" data-page="grammar"><div class="mc-icon">📐</div><div class="mc-title">Grammar</div><div class="mc-sub" id="mcGrammarSub">0 rules</div><div class="mc-badge">REVIEW</div></div>
+          <div class="mini-card" data-page="library"><div class="mc-icon">📚</div><div class="mc-title">Library</div><div class="mc-sub" id="mcLibrarySub">Oxford + Classics</div><div class="mc-badge">NEW</div></div>
+          <div class="mini-card" data-page="practice"><div class="mc-icon">🎯</div><div class="mc-title">Practice</div><div class="mc-sub">Test your knowledge</div><div class="mc-badge">TRAIN</div></div>
+          <div class="mini-card" data-page="chat"><div class="mc-icon">🤖</div><div class="mc-title">AI Tutor</div><div class="mc-sub">Corrections & explanations</div><div class="mc-badge">POWERED</div></div>
+        </div>
+      </div>
+      <div class="page" id="page-vocab"><div class="vocab-toolbar"><input class="search-input" id="vocabSearch" placeholder="🔍  Search words…"/><div id="levelFilters" style="display:flex;gap:8px;flex-wrap:wrap"><button class="filter-chip active" data-lvl="all">All</button><button class="filter-chip" data-lvl="A1">A1</button><button class="filter-chip" data-lvl="A2">A2</button><button class="filter-chip" data-lvl="B1">B1</button><button class="filter-chip" data-lvl="B2">B2</button><button class="filter-chip" data-lvl="C1">C1</button><button class="filter-chip" data-lvl="C2">C2</button></div><button class="filter-chip" id="masteredFilter">✓ Mastered only</button><button class="filter-chip" id="oxfordFilter">📘 Oxford only</button></div><div class="vocab-grid" id="vocabGrid"></div></div>
+      <div class="page" id="page-verbs"><div class="verbs-grid" id="verbsGrid"></div></div>
+      <div class="page" id="page-grammar"><div class="grammar-grid" id="grammarGrid"></div></div>
+      <div class="page" id="page-library"><div class="oxford-load-section"><div class="ol-header"><div class="ol-icon">📘</div><div><div class="ol-title">Oxford Word Lists</div><div style="font-size:11px;color:var(--text3)">3,000 & 5,000 most important English words</div></div></div><div class="ol-sub">Load the official Oxford word lists to expand your vocabulary with the most essential English words, classified by CEFR level (A1–C1).</div><div class="cors-info" id="corsInfo">⚠️ <strong>Si ves errores de red:</strong> GitHub y Gutenberg pueden bloquearse por CORS en algunos navegadores cuando el archivo se abre localmente. Sube el archivo a GitHub Pages, Netlify o cualquier hosting para que funcione perfectamente.</div><div class="ol-btns"><button class="ol-btn" id="loadOxford3000Btn">📖 Load Oxford 3000</button><button class="ol-btn" id="loadOxford5000Btn">📗 Load Oxford 5000</button></div><div class="ol-progress" id="olProgress"><div class="ol-progress-fill" id="olProgressFill"></div></div><div class="ol-status" id="olStatus"></div></div><div class="section-title">Classic Books — Project Gutenberg</div><div class="library-grid" id="libraryGrid"></div></div>
+      <div class="page" id="page-practice"><div class="practice-shell"><div class="prac-progress"><div class="prac-prog-row"><span>Practice Session</span><span id="pracCount">0 / 0</span></div><div class="prac-track"><div class="prac-fill" id="pracFill" style="width:0%"></div></div></div><div class="prac-card"><div class="prac-type" id="pracType">MEANING</div><div class="prac-word" id="pracWord">—</div><div class="prac-ipa" id="pracIpa"></div><div class="prac-context" id="pracCtx" style="display:none"></div></div><div class="prac-opts" id="pracOpts"></div><div class="prac-feedback" id="pracFeedback"></div><button class="prac-next-btn" id="pracNextBtn">Next →</button><div class="prac-stats" style="margin-top:28px"><div class="ps-item"><div class="ps-val" id="psC">0</div><div class="ps-lbl">Correct</div></div><div class="ps-item"><div class="ps-val" id="psS">0</div><div class="ps-lbl">Streak</div></div><div class="ps-item"><div class="ps-val" id="psW">0</div><div class="ps-lbl">Wrong</div></div></div></div></div>
+      <div class="page" id="page-chat"><div class="chat-shell"><div class="chat-suggestions" id="chatSugg"><button class="sugg-chip">Correct my sentence</button><button class="sugg-chip">Explain Present Perfect</button><button class="sugg-chip">Give me 5 new words</button><button class="sugg-chip">make vs do — difference?</button><button class="sugg-chip">Practice conversation</button></div><div class="chat-messages" id="chatMessages"><div class="msg ai"><div class="msg-avatar ai">🤖</div><div class="msg-bubble">Hello! I'm your AI English tutor. I can help you with <strong>vocabulary</strong>, <strong>grammar</strong>, correct your sentences, and explain anything you need. What would you like to work on today?</div></div></div><div class="chat-input-row"><button class="voice-btn" id="voiceBtn" title="Voice input">🎤</button><input class="chat-input" id="chatInput" placeholder="Ask me anything in English…" autocomplete="off"/><button class="chat-send-btn" id="chatSendBtn">➤</button></div></div></div>
+    </div>
+  </div>
+</div>
+<script>
+// --------------------- CORS PROXY ---------------------
+const CORS_PROXIES = [url=>`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`, url=>`https://corsproxy.io/?${encodeURIComponent(url)}`, url=>`https://cors-anywhere.herokuapp.com/${url}`];
+async function fetchWithProxy(originalUrl){
+  try{const res=await fetch(originalUrl,{signal:AbortSignal.timeout(6000)});if(res.ok)return res;}catch(e){}
+  for(const proxyFn of CORS_PROXIES){try{const res=await fetch(proxyFn(originalUrl),{signal:AbortSignal.timeout(10000)});if(res.ok)return res;}catch(e){continue;}}
+  throw new Error('No se pudo conectar. Verifica tu conexión.');
+}
+// --------------------- VOCABULARIO COMPLETO A1-C2 ---------------------
+function buildFullVocab(){
+  const basics=[
+    // A1 básico: números, colores, estaciones, tiempo, pronombres, adjetivos, sustantivos
+    {word:"one",level:"A1",ipa:"/wʌn/",meaning:"the number 1",es:"uno — el número 1",example:"I have one apple.",source:"core",topic:"numbers"},
+    {word:"two",level:"A1",ipa:"/tuː/",meaning:"the number 2",es:"dos — el número 2",example:"Two books are on the table.",source:"core",topic:"numbers"},
+    {word:"three",level:"A1",ipa:"/θriː/",meaning:"the number 3",es:"tres — el número 3",example:"Three cats ran away.",source:"core",topic:"numbers"},
+    {word:"four",level:"A1",ipa:"/fɔːr/",meaning:"the number 4",es:"cuatro — el número 4",example:"Four seasons in a year.",source:"core",topic:"numbers"},
+    {word:"five",level:"A1",ipa:"/faɪv/",meaning:"the number 5",es:"cinco — el número 5",example:"Five fingers on a hand.",source:"core",topic:"numbers"},
+    {word:"red",level:"A1",ipa:"/red/",meaning:"color of blood or fire",es:"rojo — color de la sangre",example:"She wore a red dress.",source:"core",topic:"colors"},
+    {word:"blue",level:"A1",ipa:"/bluː/",meaning:"color of the sky",es:"azul — color del cielo",example:"The ocean is blue.",source:"core",topic:"colors"},
+    {word:"green",level:"A1",ipa:"/ɡriːn/",meaning:"color of grass",es:"verde — color de la hierba",example:"Leaves are green.",source:"core",topic:"colors"},
+    {word:"yellow",level:"A1",ipa:"/ˈjel.oʊ/",meaning:"color of the sun",es:"amarillo — color del sol",example:"She bought a yellow umbrella.",source:"core",topic:"colors"},
+    {word:"spring",level:"A1",ipa:"/sprɪŋ/",meaning:"season after winter",es:"primavera — estación tras el invierno",example:"Flowers bloom in spring.",source:"core",topic:"seasons"},
+    {word:"summer",level:"A1",ipa:"/ˈsʌm.ər/",meaning:"hottest season",es:"verano — estación más calurosa",example:"We go to the beach in summer.",source:"core",topic:"seasons"},
+    {word:"autumn",level:"A1",ipa:"/ˈɔː.təm/",meaning:"season between summer and winter",es:"otoño — estación entre verano e invierno",example:"Leaves fall in autumn.",source:"core",topic:"seasons"},
+    {word:"winter",level:"A1",ipa:"/ˈwɪn.tər/",meaning:"coldest season",es:"invierno — estación más fría",example:"It snows in winter.",source:"core",topic:"seasons"},
+    {word:"morning",level:"A1",ipa:"/ˈmɔːr.nɪŋ/",meaning:"early part of the day",es:"mañana — parte temprana del día",example:"I drink coffee in the morning.",source:"core",topic:"time"},
+    {word:"afternoon",level:"A1",ipa:"/ˌæf.tərˈnuːn/",meaning:"time after midday",es:"tarde — después del mediodía",example:"We meet in the afternoon.",source:"core",topic:"time"},
+    {word:"evening",level:"A1",ipa:"/ˈiːv.nɪŋ/",meaning:"late part of the day",es:"atardecer / tarde-noche",example:"She reads in the evening.",source:"core",topic:"time"},
+    {word:"night",level:"A1",ipa:"/naɪt/",meaning:"time of darkness",es:"noche — período sin luz solar",example:"Stars shine at night.",source:"core",topic:"time"},
+    {word:"hour",level:"A1",ipa:"/aʊər/",meaning:"60 minutes",es:"hora — 60 minutos",example:"I studied for an hour.",source:"core",topic:"time"},
+    {word:"minute",level:"A1",ipa:"/ˈmɪn.ɪt/",meaning:"60 seconds",es:"minuto — 60 segundos",example:"Wait a minute.",source:"core",topic:"time"},
+    {word:"I",level:"A1",ipa:"/aɪ/",meaning:"first person singular pronoun",es:"yo — pronombre primera persona",example:"I like apples.",source:"core",topic:"pronouns"},
+    {word:"you",level:"A1",ipa:"/juː/",meaning:"second person pronoun",es:"tú / usted — pronombre segunda persona",example:"You are my friend.",source:"core",topic:"pronouns"},
+    {word:"he",level:"A1",ipa:"/hiː/",meaning:"third person masculine pronoun",es:"él — pronombre masculino",example:"He is tall.",source:"core",topic:"pronouns"},
+    {word:"she",level:"A1",ipa:"/ʃiː/",meaning:"third person feminine pronoun",es:"ella — pronombre femenino",example:"She sings beautifully.",source:"core",topic:"pronouns"},
+    {word:"it",level:"A1",ipa:"/ɪt/",meaning:"third person neutral pronoun",es:"ello / eso — pronombre neutro",example:"It is a dog.",source:"core",topic:"pronouns"},
+    {word:"we",level:"A1",ipa:"/wiː/",meaning:"first person plural pronoun",es:"nosotros — pronombre primera persona plural",example:"We are learning.",source:"core",topic:"pronouns"},
+    {word:"they",level:"A1",ipa:"/ðeɪ/",meaning:"third person plural pronoun",es:"ellos / ellas — pronombre tercera persona plural",example:"They play soccer.",source:"core",topic:"pronouns"},
+    {word:"big",level:"A1",ipa:"/bɪɡ/",meaning:"large in size",es:"grande — de gran tamaño",example:"A big house.",source:"core",topic:"adjectives"},
+    {word:"small",level:"A1",ipa:"/smɔːl/",meaning:"little in size",es:"pequeño — de tamaño reducido",example:"A small car.",source:"core",topic:"adjectives"},
+    {word:"happy",level:"A1",ipa:"/ˈhæp.i/",meaning:"feeling joy",es:"feliz — que siente alegría",example:"She is happy.",source:"core",topic:"adjectives"},
+    {word:"sad",level:"A1",ipa:"/sæd/",meaning:"feeling sorrow",es:"triste — que siente pena",example:"He looks sad.",source:"core",topic:"adjectives"},
+    {word:"hot",level:"A1",ipa:"/hɒt/",meaning:"high temperature",es:"caliente — temperatura alta",example:"The soup is hot.",source:"core",topic:"adjectives"},
+    {word:"cold",level:"A1",ipa:"/koʊld/",meaning:"low temperature",es:"frío — temperatura baja",example:"Ice is cold.",source:"core",topic:"adjectives"},
+    {word:"house",level:"A1",ipa:"/haʊs/",meaning:"building for living",es:"casa — edificio para vivir",example:"My house is big.",source:"core",topic:"nouns"},
+    {word:"car",level:"A1",ipa:"/kɑːr/",meaning:"automobile",es:"coche / auto — vehículo",example:"He drives a car.",source:"core",topic:"nouns"},
+    {word:"book",level:"A1",ipa:"/bʊk/",meaning:"set of written pages",es:"libro — conjunto de páginas escritas",example:"I read a book.",source:"core",topic:"nouns"},
+    {word:"water",level:"A1",ipa:"/ˈwɔː.tər/",meaning:"clear liquid",es:"agua — líquido transparente",example:"Drink water.",source:"core",topic:"nouns"}
+  ];
+  const advanced=[...CORE_VOCAB_ORIGINAL]; // se definirá después
+  return [...basics,...advanced];
+}
+const CORE_VOCAB_ORIGINAL = [
+  { word:"Ephemeral", level:"A1", ipa:"/ɪˈfem.ər.əl/", meaning:"lasting for a very short time", es:"efímero — que dura muy poco tiempo", example:"The beauty of cherry blossoms is ephemeral.", source:"core" },
+  { word:"Ubiquitous", level:"A1", ipa:"/juːˈbɪk.wɪ.təs/", meaning:"present everywhere", es:"ubicuo — que está en todas partes", example:"Smartphones have become ubiquitous.", source:"core" },
+  { word:"Serendipity", level:"A1", ipa:"/ˌser.ənˈdɪp.ə.ti/", meaning:"fortunate chance", es:"serendipia — hallazgo afortunado", example:"Finding that book was pure serendipity.", source:"core" },
+  { word:"Cogent", level:"A1", ipa:"/ˈkoʊ.dʒənt/", meaning:"clear and convincing", es:"convincente — claro y lógico", example:"Her argument was cogent.", source:"core" },
+  { word:"Nuance", level:"A1", ipa:"/ˈnjuː.ɑːns/", meaning:"subtle distinction", es:"matiz — diferencia sutil", example:"He understood every nuance.", source:"core" },
+  { word:"Allusion", level:"A2", ipa:"/əˈluː.ʒən/", meaning:"indirect reference", es:"alusión — referencia indirecta", example:"The poem contains classical allusions.", source:"core" },
+  { word:"Metaphor", level:"A2", ipa:"/ˈmet.ə.fɔːr/", meaning:"implied comparison", es:"metáfora — comparación implícita", example:"Life is a journey is a metaphor.", source:"core" },
+  { word:"Resilience", level:"A2", ipa:"/rɪˈzɪl.i.əns/", meaning:"ability to recover", es:"resiliencia — capacidad de recuperarse", example:"Her resilience inspired everyone.", source:"core" },
+  { word:"Ambiguous", level:"A2", ipa:"/æmˈbɪɡ.ju.əs/", meaning:"open to interpretation", es:"ambiguo — que admite varias interpretaciones", example:"His response was ambiguous.", source:"core" },
+  { word:"Eloquent", level:"A2", ipa:"/ˈel.ə.kwənt/", meaning:"fluent and persuasive", es:"elocuente — que habla con fluidez", example:"She gave an eloquent speech.", source:"core" },
+  { word:"Aesthetic", level:"B1", ipa:"/esˈθet.ɪk/", meaning:"concerned with beauty", es:"estético — relativo a la belleza", example:"The gallery has a minimalist aesthetic.", source:"core" },
+  { word:"Avant-garde", level:"B1", ipa:"/ˌæv.ɒ̃ˈɡɑːd/", meaning:"innovative", es:"vanguardista — innovador", example:"Her work is avant-garde.", source:"core" },
+  { word:"Dichotomy", level:"B1", ipa:"/daɪˈkɒt.ə.mi/", meaning:"division into two", es:"dicotomía — división en dos partes", example:"There is a stark dichotomy.", source:"core" },
+  { word:"Pragmatic", level:"B1", ipa:"/præɡˈmæt.ɪk/", meaning:"practical", es:"pragmático — práctico", example:"We need a pragmatic approach.", source:"core" },
+  { word:"Imply", level:"B1", ipa:"/ɪmˈplaɪ/", meaning:"suggest without saying", es:"implicar — dar a entender", example:"His silence implied agreement.", source:"core" },
+  { word:"Contrary", level:"B1", ipa:"/ˈkɒn.trər.i/", meaning:"opposite", es:"contrario — opuesto", example:"Contrary to popular belief.", source:"core" },
+  { word:"Solipsism", level:"B2", ipa:"/ˈsɒl.ɪp.sɪ.z(ə)m/", meaning:"belief only one's mind exists", es:"solipsismo — solo existe la mente propia", example:"He descended into solipsism.", source:"core" },
+  { word:"Perspicacious", level:"B2", ipa:"/ˌpɜːr.spɪˈkeɪ.ʃəs/", meaning:"sharp insight", es:"perspicaz — agudo", example:"The perspicacious investor saw the crash.", source:"core" },
+  { word:"Mellifluous", level:"B2", ipa:"/məˈlɪf.lu.əs/", meaning:"sweet sound", es:"melifluo — sonido dulce", example:"Her mellifluous voice calmed the room.", source:"core" },
+  { word:"Condescending", level:"B2", ipa:"/ˌkɒn.dɪˈsend.ɪŋ/", meaning:"showing superiority", es:"condescendiente — altanero", example:"His tone was condescending.", source:"core" },
+  { word:"Ambivalent", level:"B2", ipa:"/æmˈbɪv.ə.lənt/", meaning:"mixed feelings", es:"ambivalente — sentimientos encontrados", example:"She felt ambivalent about the offer.", source:"core" },
+  { word:"Contemplate", level:"B2", ipa:"/ˈkɒn.tɪm.pleɪt/", meaning:"think deeply", es:"contemplar — reflexionar", example:"He sat to contemplate his future.", source:"core" },
+  { word:"Sycophant", level:"C1", ipa:"/ˈsɪk.ə.fənt/", meaning:"flatterer for gain", es:"adulador — persona que halaga", example:"The leader was surrounded by sycophants.", source:"core" },
+  { word:"Laconic", level:"C1", ipa:"/ləˈkɒn.ɪk/", meaning:"using few words", es:"lacónico — de pocas palabras", example:"His laconic reply ended the debate.", source:"core" },
+  { word:"Ennui", level:"C1", ipa:"/ɒnˈwiː/", meaning:"boredom", es:"tedio — aburrimiento profundo", example:"A profound ennui settled over the city.", source:"core" },
+  { word:"Perfidious", level:"C1", ipa:"/pəˈfɪd.i.əs/", meaning:"treacherous", es:"pérfido — traicionero", example:"He was betrayed by his perfidious ally.", source:"core" },
+  { word:"Obfuscate", level:"C1", ipa:"/ˈɒb.fʌs.keɪt/", meaning:"make unclear", es:"ofuscar — confundir", example:"Politicians often obfuscate the truth.", source:"core" },
+  { word:"Recalcitrant", level:"C1", ipa:"/rɪˈkæl.sɪ.trənt/", meaning:"stubbornly disobedient", es:"recalcitrante — que se resiste", example:"The recalcitrant student refused.", source:"core" },
+  { word:"Zeitgeist", level:"C2", ipa:"/ˈzaɪt.ɡaɪst/", meaning:"spirit of the era", es:"zeitgeist — espíritu de la época", example:"That film captured the zeitgeist.", source:"core" },
+  { word:"Palimpsest", level:"C2", ipa:"/ˈpæl.ɪmp.sest/", meaning:"visible traces of earlier form", es:"palimpsesto — huellas de formas anteriores", example:"The city is a palimpsest.", source:"core" },
+  { word:"Apophenia", level:"C2", ipa:"/æpəˈfiːnɪə/", meaning:"seeing patterns in unrelated things", es:"apofenia — ver patrones donde no los hay", example:"Conspiracy theories thrive on apophenia.", source:"core" },
+  { word:"Liminal", level:"C2", ipa:"/ˈlɪm.ɪ.nəl/", meaning:"transitional stage", es:"liminal — etapa de transición", example:"Adolescence is liminal.", source:"core" },
+  { word:"Solecism", level:"C2", ipa:"/ˈsɒl.ɪ.sɪ.z(ə)m/", meaning:"grammatical mistake", es:"solecismo — error gramatical", example:"Ending with a preposition is a solecism.", source:"core" }
+];
+let VOCAB = [...buildFullVocab()];
+let showES = false;
+const VERBS = [ { base:"begin", past:"began", part:"begun", meaning:"empezar" }, { base:"seek", past:"sought", part:"sought", meaning:"buscar" }, { base:"arise", past:"arose", part:"arisen", meaning:"surgir" }, { base:"strive", past:"strove", part:"striven", meaning:"esforzarse" }, { base:"weave", past:"wove", part:"woven", meaning:"tejer" }, { base:"forsake", past:"forsook", part:"forsaken", meaning:"abandonar" }, { base:"behold", past:"beheld", part:"beheld", meaning:"contemplar" }, { base:"speak", past:"spoke", part:"spoken", meaning:"hablar" }, { base:"write", past:"wrote", part:"written", meaning:"escribir" }, { base:"think", past:"thought", part:"thought", meaning:"pensar" }, { base:"know", past:"knew", part:"known", meaning:"saber" }, { base:"grow", past:"grew", part:"grown", meaning:"crecer" }, { base:"break", past:"broke", part:"broken", meaning:"romper" }, { base:"choose", past:"chose", part:"chosen", meaning:"elegir" }, { base:"drive", past:"drove", part:"driven", meaning:"conducir" }, { base:"fall", past:"fell", part:"fallen", meaning:"caer" }, { base:"give", past:"gave", part:"given", meaning:"dar" }, { base:"hide", past:"hid", part:"hidden", meaning:"esconder" }, { base:"rise", past:"rose", part:"risen", meaning:"subir" }, { base:"take", past:"took", part:"taken", meaning:"tomar" } ];
+const GRAMMAR = [ { tag:"TENSES", title:"Present Perfect", rule:"Connects past to present. Form: HAVE/HAS + past participle.", example:"I <em>have visited</em> Tokyo." }, { tag:"MOOD", title:"Subjunctive", rule:"Expresses wishes, demands. Use base infinitive.", example:"I suggest that he <em>apply</em>." }, { tag:"ARTICLES", title:"Definite vs Indefinite", rule:"a/an for first mention, the for specific.", example:"I saw <em>a</em> cat. <em>The</em> cat was black." }, { tag:"CONDITIONALS", title:"Third Conditional", rule:"Hypothetical past. IF + past perfect, WOULD HAVE + past participle.", example:"If she <em>had studied</em>, she <em>would have passed</em>." }, { tag:"PASSIVE", title:"Passive Voice", rule:"Focus on action. BE + past participle.", example:"The novel <em>was written</em> by Borges." }, { tag:"CLAUSES", title:"Relative Clauses", rule:"Add info about a noun.", example:"The book <em>that changed my life</em> is here." }, { tag:"TENSES", title:"Past Perfect", rule:"Action before another past action. HAD + past participle.", example:"He <em>had already left</em> when she arrived." }, { tag:"PREPOSITIONS", title:"In / On / At — Time", rule:"in for months/years, on for days, at for times.", example:"<em>In</em> July, <em>on</em> Monday, <em>at</em> 9pm." } ];
+const PUBLIC_DOMAIN_BOOKS = [ { title:"Pride and Prejudice", author:"Jane Austen", year:1813, color:"#e8b86d", level:"B1", url:"https://www.gutenberg.org/files/1342/1342-0.txt", desc:"Amor y matrimonio en la Inglaterra de la Regencia." }, { title:"Sense and Sensibility", author:"Jane Austen", year:1811, color:"#d4a853", level:"B1", url:"https://www.gutenberg.org/files/161/161-0.txt", desc:"Dos hermanas con caracteres opuestos." }, { title:"Emma", author:"Jane Austen", year:1815, color:"#c49a4a", level:"B2", url:"https://www.gutenberg.org/files/158/158-0.txt", desc:"Una joven entrometida aprende sobre el amor." }, { title:"Moby Dick", author:"Herman Melville", year:1851, color:"#5eaeff", level:"C1", url:"https://www.gutenberg.org/files/2701/2701-0.txt", desc:"La obsesiva persecución de la ballena blanca." }, { title:"Sherlock Holmes", author:"Arthur Conan Doyle", year:1892, color:"#ff9a3c", level:"B2", url:"https://www.gutenberg.org/files/1661/1661-0.txt", desc:"Doce aventuras del detective más famoso." }, { title:"Alice in Wonderland", author:"Lewis Carroll", year:1865, color:"#3ddc84", level:"A2", url:"https://www.gutenberg.org/files/11/11-0.txt", desc:"Viaje fantástico por un mundo de maravillas." }, { title:"The Great Gatsby", author:"F. Scott Fitzgerald", year:1925, color:"#ff5a1f", level:"B2", url:"https://www.gutenberg.org/files/64317/64317-0.txt", desc:"El Jazz Age y el sueño americano." }, { title:"Frankenstein", author:"Mary Shelley", year:1818, color:"#9b59b6", level:"B2", url:"https://www.gutenberg.org/files/84/84-0.txt", desc:"Ciencia ficción sobre creación y responsabilidad." }, { title:"The Picture of Dorian Gray", author:"Oscar Wilde", year:1890, color:"#e74c3c", level:"C1", url:"https://www.gutenberg.org/files/174/174-0.txt", desc:"La belleza eterna a cambio del alma." }, { title:"Jane Eyre", author:"Charlotte Brontë", year:1847, color:"#8e44ad", level:"B2", url:"https://www.gutenberg.org/files/1260/1260-0.txt", desc:"Una institutriz valiente lucha por su independencia." }, { title:"Wuthering Heights", author:"Emily Brontë", year:1847, color:"#2c3e50", level:"C1", url:"https://www.gutenberg.org/files/768/768-0.txt", desc:"Amor salvaje en los páramos ingleses." }, { title:"Great Expectations", author:"Charles Dickens", year:1861, color:"#27ae60", level:"B2", url:"https://www.gutenberg.org/files/1400/1400-0.txt", desc:"El huérfano Pip y su camino hacia la riqueza." }, { title:"Dracula", author:"Bram Stoker", year:1897, color:"#922b21", level:"B2", url:"https://www.gutenberg.org/files/345/345-0.txt", desc:"El vampiro más famoso de la literatura." }, { title:"The War of the Worlds", author:"H.G. Wells", year:1898, color:"#1abc9c", level:"B1", url:"https://www.gutenberg.org/files/36/36-0.txt", desc:"Invasión marciana." }, { title:"The Time Machine", author:"H.G. Wells", year:1895, color:"#2980b9", level:"B1", url:"https://www.gutenberg.org/files/35/35-0.txt", desc:"El primer viaje en el tiempo." }, { title:"Treasure Island", author:"Robert Louis Stevenson", year:1883, color:"#f1c40f", level:"A2", url:"https://www.gutenberg.org/files/120/120-0.txt", desc:"Piratas y mapas del tesoro." } ];
+// Estado
+let userName='', userLevel='A1', mastered=[], xp=0, streak=0, oxford3000Loaded=false, oxford5000Loaded=false, oxfordWords=[];
+let qqCorrect=0, qqWrong=0, qqStreak=0, qqCurrent=null;
+let pracCorrect=0, pracWrong=0, pracStreak=0, pracTotal=0, pracDone=0, pracQueue=[], pracIdx=0, pracCurrent=null, wrongQueue=[];
+let showMasteredOnly=false, showOxfordOnly=false, vocabLevelFilter='all', vocabSearch='';
+let chatHistory=[], voiceListening=false;
+function getAllUsers(){try{return JSON.parse(localStorage.getItem('lxp_users')||'{}')}catch(e){return{}}}
+function saveAllUsers(u){localStorage.setItem('lxp_users',JSON.stringify(u))}
+function saveCurrentUser(){
+  const users=getAllUsers();
+  users[userName]={level:userLevel,mastered,xp,streak,oxford3000loaded:oxford3000Loaded,oxford5000loaded:oxford5000Loaded,oxfordWords,lastSeen:Date.now()};
+  saveAllUsers(users); localStorage.setItem('lxp_active_user',userName);
+}
+function loadUser(name){
+  const u=getAllUsers()[name]; if(!u) return false;
+  userName=name; userLevel=u.level||'A1'; mastered=u.mastered||[]; xp=u.xp||0; streak=u.streak||0;
+  oxford3000Loaded=u.oxford3000loaded||false; oxford5000Loaded=u.oxford5000loaded||false; oxfordWords=u.oxfordWords||[];
+  VOCAB=[...buildFullVocab()]; if(oxfordWords.length) VOCAB.push(...oxfordWords); return true;
+}
+function getActiveUser(){return localStorage.getItem('lxp_active_user')||''}
+function speak(text){if(window.speechSynthesis){window.speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(text); u.lang='en-US'; u.rate=0.85; window.speechSynthesis.speak(u);}}
+function toast(msg,color='var(--gold)'){const t=document.createElement('div');t.className='toast';t.style.color=color;t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),2600);}
+function shuffle(arr){return[...arr].sort(()=>Math.random()-0.5);}
+function masterWord(word){if(!mastered.includes(word)){mastered.push(word); xp+=15; streak++; saveCurrentUser(); updateUI(); toast(`✦ "${word}" mastered +15 XP`,'var(--gold)'); checkLevelUp();}}
+function getLevelThreshold(lv){return{A1:0,A2:100,B1:250,B2:500,C1:800,C2:1200}[lv]||0}
+function getNextLevelThreshold(lv){return{A1:100,A2:250,B1:500,B2:800,C1:1200,C2:2000}[lv]||2000}
+function checkLevelUp(){
+  const cur=getLevelThreshold(userLevel);
+  const nxt=getNextLevelThreshold(userLevel);
+  if(xp>=nxt && userLevel!=='C2'){
+    const levels=['A1','A2','B1','B2','C1','C2'];
+    const idx=levels.indexOf(userLevel);
+    if(idx!==-1 && idx+1<levels.length){
+      userLevel=levels[idx+1];
+      saveCurrentUser();
+      toast(`🏆 ¡Nivel ${userLevel} alcanzado! Sigue así.`,'var(--gold)');
+      updateUI();
+      const modal=document.createElement('div'); modal.className='modal-overlay'; modal.innerHTML=`<div class="modal-box"><div class="modal-title">✨ Level Up! ✨</div><div class="modal-sub">¡Has alcanzado el nivel ${userLevel}! Sigue practicando para llegar al siguiente.</div><button class="modal-btn" id="modalClose">Continuar</button></div>`;
+      document.body.appendChild(modal); document.getElementById('modalClose').addEventListener('click',()=>modal.remove());
+    }
+  }
+}
+function updateUI(){
+  document.getElementById('streakDisplay').textContent=streak; document.getElementById('xpDisplay').textContent=xp;
+  document.getElementById('heroName').innerHTML=`${userName} <em>.</em>`; document.getElementById('heroLevel').textContent=userLevel;
+  const nxt=getNextLevelThreshold(userLevel), cur=getLevelThreshold(userLevel);
+  const pct=Math.min(100,Math.round(((xp-cur)/(nxt-cur))*100));
+  const nextLevelName={A1:'A2',A2:'B1',B1:'B2',B2:'C1',C1:'C2',C2:'Master'}[userLevel];
+  document.getElementById('heroXPNext').textContent=`${xp} / ${nxt} XP → ${nextLevelName}`;
+  document.getElementById('heroXPFill').style.width=pct+'%';
+  document.getElementById('hsMastered').textContent=mastered.length; document.getElementById('hsStreak').textContent=streak; document.getElementById('hsTotal').textContent=VOCAB.length;
+  document.getElementById('mcVocabSub').textContent=VOCAB.length+' words total'; document.getElementById('mcVerbsSub').textContent=VERBS.length+' verbs'; document.getElementById('mcGrammarSub').textContent=GRAMMAR.length+' rules';
+  document.getElementById('mcLibrarySub').textContent=(oxford3000Loaded||oxford5000Loaded)?`${VOCAB.length} words loaded`:'Oxford + Classics';
+  const hour=new Date().getHours(); document.getElementById('heroGreeting').textContent=hour<12?'Good morning':hour<18?'Good afternoon':'Good evening';
+  const b3=document.getElementById('loadOxford3000Btn'); if(b3){b3.textContent=oxford3000Loaded?'✅ Oxford 3000 loaded':'📖 Load Oxford 3000'; b3.disabled=oxford3000Loaded;}
+  const b5=document.getElementById('loadOxford5000Btn'); if(b5){b5.textContent=oxford5000Loaded?'✅ Oxford 5000 loaded':'📗 Load Oxford 5000'; b5.disabled=oxford5000Loaded;}
+}
+const pageTitles={home:'Home',vocab:'Vocabulary',verbs:'Verbs',grammar:'Grammar',library:'Library',practice:'Practice',chat:'AI Tutor'};
+function goPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); document.querySelectorAll('.nav-item[data-page]').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active'); const navEl=document.querySelector(`.nav-item[data-page="${id}"]`); if(navEl) navEl.classList.add('active');
+  document.getElementById('pageTitle').textContent=pageTitles[id]||id;
+  if(id==='vocab') renderVocab(); if(id==='verbs') renderVerbs(); if(id==='grammar') renderGrammar(); if(id==='library') renderLibrary(); if(id==='practice') initPractice();
+  document.getElementById('content').scrollTop=0;
+}
+function renderVocab(){
+  let words=VOCAB.filter(w=>vocabLevelFilter==='all'||w.level===vocabLevelFilter);
+  if(showMasteredOnly) words=words.filter(w=>mastered.includes(w.word));
+  if(showOxfordOnly) words=words.filter(w=>w.source==='oxford');
+  if(vocabSearch) words=words.filter(w=>w.word.toLowerCase().includes(vocabSearch)||w.meaning.toLowerCase().includes(vocabSearch)||(w.es&&w.es.toLowerCase().includes(vocabSearch)));
+  const g=document.getElementById('vocabGrid'); if(!words.length){g.innerHTML='<div class="no-words">No words found.</div>';return;}
+  const tagCls={A1:'tag-a1',A2:'tag-a2',B1:'tag-b1',B2:'tag-b2',C1:'tag-c1',C2:'tag-c2'};
+  g.innerHTML=words.map(w=>`<div class="word-card${mastered.includes(w.word)?' mastered-card':''}${w.source==='oxford'&&!mastered.includes(w.word)?' oxford-card':''}"><div class="wc-top"><div class="wc-word speak-btn" data-word="${w.word}">${w.word}</div><div class="wc-badges"><span class="level-tag ${tagCls[w.level]||''}">${w.level}</span>${w.source==='oxford'?'<span class="oxford-tag">Oxford</span>':''}${mastered.includes(w.word)?'<span class="mastered-tag">✓</span>':''}</div></div><div class="wc-ipa">${w.ipa||''}</div><div class="wc-meaning">${w.meaning}</div>${w.es?`<div class="wc-es${showES?' show':''}"><span class="es-label">🇪🇸 Español</span>${w.es}</div>`:''}<div class="wc-example">"${w.example}"</div><div class="wc-actions"><button class="wc-btn speak-btn" data-word="${w.word}">🔊 Listen</button>${w.es?`<button class="wc-btn es-btn${showES?' active':''}" data-word="${w.word}">🇪🇸 ES</button>`:''}${!mastered.includes(w.word)?`<button class="wc-btn gold master-btn" data-word="${w.word}">✦ Master</button>`:'<button class="wc-btn" style="color:var(--green)" disabled>✓ Mastered</button>'}</div></div>`).join('');
+  document.querySelectorAll('#vocabGrid .speak-btn').forEach(el=>el.addEventListener('click',()=>speak(el.dataset.word)));
+  document.querySelectorAll('#vocabGrid .master-btn').forEach(el=>el.addEventListener('click',()=>masterWord(el.dataset.word)));
+  document.querySelectorAll('#vocabGrid .es-btn').forEach(el=>{el.addEventListener('click',()=>{const card=el.closest('.word-card'); const esBox=card.querySelector('.wc-es'); if(esBox){const vis=esBox.classList.toggle('show'); el.classList.toggle('active',vis);}});});
+}
+function renderVerbs(){document.getElementById('verbsGrid').innerHTML=VERBS.map(v=>`<div class="verb-card" data-base="${v.base}"><div class="vc-base">${v.base}</div><div class="vc-meaning">${v.meaning}</div><div class="vc-forms"><div class="vc-form-group"><div class="vc-form-lbl">BASE</div><div class="vc-form">${v.base}</div></div><div class="vc-form-group"><div class="vc-form-lbl">PAST</div><div class="vc-form">${v.past}</div></div><div class="vc-form-group"><div class="vc-form-lbl">PARTICIPLE</div><div class="vc-form">${v.part}</div></div></div></div>`).join(''); document.querySelectorAll('.verb-card').forEach(card=>card.addEventListener('click',()=>{const verb=VERBS.find(v=>v.base===card.dataset.base); if(verb) speak(`${verb.base}, ${verb.past}, ${verb.part}`);}));}
+function renderGrammar(){document.getElementById('grammarGrid').innerHTML=GRAMMAR.map(g=>`<div class="gc-card"><div class="gc-tag">${g.tag}</div><div class="gc-title">${g.title}</div><div class="gc-rule">${g.rule}</div><div class="gc-example">"${g.example}"</div></div>`).join('');}
+function renderLibrary(){updateUI(); const levelColors={A1:'#3ddc84',A2:'#3daade',B1:'#e8b86d',B2:'#ff9a3c',C1:'#ff5a1f',C2:'#ff4757'}; document.getElementById('libraryGrid').innerHTML=PUBLIC_DOMAIN_BOOKS.map((b,i)=>`<div class="book-card"><div class="book-spine" style="background:${b.color}"></div><div class="book-title">${b.title}</div><div class="book-author">${b.author} · ${b.year}</div><div class="book-meta"><span class="book-tag" style="background:${b.color}22;color:${b.color}">CLASSIC</span><span class="book-tag" style="background:${levelColors[b.level]||'#e8b86d'}22;color:${levelColors[b.level]||'#e8b86d'}">${b.level||'B1'}</span><span class="book-tag" style="background:rgba(61,220,132,0.1);color:var(--green)">FREE</span></div><div class="book-status" style="margin-bottom:12px">${b.desc}</div><button class="book-btn" data-book-idx="${i}">📖 Extraer vocabulario</button></div>`).join(''); document.querySelectorAll('.book-btn').forEach(btn=>{btn.addEventListener('click',function(){const idx=parseInt(this.dataset.bookIdx); const book=PUBLIC_DOMAIN_BOOKS[idx]; loadGutenbergBook(book.url,book.title,this);});});}
+async function loadOxfordList(version){const btn=document.getElementById(`loadOxford${version}Btn`); const prog=document.getElementById('olProgress'); const fill=document.getElementById('olProgressFill'); const status=document.getElementById('olStatus'); const corsInfo=document.getElementById('corsInfo'); btn.disabled=true; btn.textContent='⏳ Loading…'; prog.style.display='block'; status.style.display='block'; corsInfo.classList.remove('show'); status.textContent='Connecting…'; fill.style.width='10%'; const urls={'3000':'https://raw.githubusercontent.com/ittuann/The-Oxford-5000-Word-Lists/main/The%20Oxford%203000.txt','5000':'https://raw.githubusercontent.com/ittuann/The-Oxford-5000-Word-Lists/main/The%20Oxford%205000.txt'}; try{status.textContent=`Fetching Oxford ${version} list…`; fill.style.width='30%'; const res=await fetchWithProxy(urls[version]); const text=await res.text(); fill.style.width='60%'; status.textContent='Processing words…'; await new Promise(r=>setTimeout(r,80)); const newWords=parseOxfordList(text,version); fill.style.width='85%'; status.textContent='Adding to vocabulary…'; await new Promise(r=>setTimeout(r,80)); let added=0; for(const w of newWords){if(!VOCAB.some(v=>v.word.toLowerCase()===w.word.toLowerCase())){VOCAB.push(w); oxfordWords.push(w); added++;}} fill.style.width='100%'; if(version==='3000') oxford3000Loaded=true; else oxford5000Loaded=true; saveCurrentUser(); updateUI(); showOxfordModal(newWords.slice(0,40),added,version); status.textContent=`✅ Added ${added} new words from Oxford ${version}!`; toast(`📚 Oxford ${version}: +${added} new words!`,'var(--blue)'); btn.textContent=`✅ Oxford ${version} loaded`;}catch(err){fill.style.width='0%'; status.textContent='❌ Error de red. Intentando de nuevo…'; corsInfo.classList.add('show'); btn.disabled=false; btn.textContent=`↻ Retry Oxford ${version}`; toast('No se pudo cargar. Intenta de nuevo.','var(--red)');}}
+function parseOxfordList(text,version){const words=[]; const lines=text.split('\n'); const cefr={A1:'A1',A2:'A2',B1:'B1',B2:'B2',C1:'C1',C2:'C2'}; for(const line of lines){const trimmed=line.trim(); if(!trimmed||trimmed.startsWith('#')||trimmed.startsWith('The Oxford'))continue; const match=trimmed.match(/^([a-zA-Z][a-zA-Z\-']*)\s+([a-z.,]+(?:\s+[a-z.,]+)*)\s+([A-C][12])/i); if(match){const word=match[1]; const pos=match[2].trim(); const level=match[3].toUpperCase(); if(cefr[level]) words.push({word,level,ipa:'',meaning:`(${pos}) — Oxford ${version} word`,example:`"${word}" is a common English word (${pos}).`,source:'oxford',topic:'oxford'});}else{const wordMatch=trimmed.match(/^([a-zA-Z][a-zA-Z\-']+)/); if(wordMatch&&wordMatch[1].length>2) words.push({word:wordMatch[1],level:'B1',ipa:'',meaning:`Oxford ${version} word`,example:`"${wordMatch[1]}" is a common English word.`,source:'oxford',topic:'oxford'});}} return words;}
+function showOxfordModal(sampleWords,totalAdded,version){const existing=document.getElementById('oxfordModal'); if(existing)existing.remove(); const modal=document.createElement('div'); modal.className='modal-overlay'; modal.id='oxfordModal'; modal.innerHTML=`<div class="modal-box"><button class="modal-close" id="oxfordModalClose">✕</button><div class="modal-title">📘 Oxford ${version} Loaded!</div><div class="modal-sub">Added <strong style="color:var(--gold)">${totalAdded} new words</strong> to your vocabulary. Here's a sample:</div><div class="word-list-preview">${sampleWords.map(w=>`<span class="word-preview-pill new">${w.word} <span style="opacity:0.5">${w.level}</span></span>`).join('')}${totalAdded>40?`<span class="word-preview-pill">+ ${totalAdded-40} more…</span>`:''}</div><button class="modal-btn" id="oxfordModalGo">Browse vocabulary →</button></div>`; document.body.appendChild(modal); document.getElementById('oxfordModalClose').addEventListener('click',()=>modal.remove()); document.getElementById('oxfordModalGo').addEventListener('click',()=>{goPage('vocab');modal.remove();});}
+async function loadGutenbergBook(url,title,btnEl){if(btnEl){btnEl.disabled=true;btnEl.textContent='⏳ Loading…';} toast(`📖 Loading "${title}"…`,'var(--amber)'); try{const res=await fetchWithProxy(url); const text=await res.text(); if(btnEl){btnEl.disabled=false;btnEl.textContent='📖 Extract vocabulary';} const extracted=extractAdvancedVocabulary(text); showBookVocabModal(extracted,title);}catch(err){if(btnEl){btnEl.disabled=false;btnEl.textContent='📖 Extract vocabulary';} toast('Could not load book. Check connection.','var(--red)');}}
+function extractAdvancedVocabulary(text){const start=text.indexOf('*** START OF'); const end=text.indexOf('*** END OF'); const content=start>-1?text.slice(start,end>-1?end:undefined):text; const wordMatches=content.match(/\b[A-Za-z]{7,}\b/g)||[]; const freq={}; for(const w of wordMatches){const lower=w.toLowerCase(); freq[lower]=(freq[lower]||0)+1;} const existing=new Set(VOCAB.map(v=>v.word.toLowerCase())); return Object.entries(freq).filter(([w,c])=>c>=3&&c<=30&&w.length>=7&&!existing.has(w)).sort((a,b)=>b[1]-a[1]).slice(0,50).map(([w])=>({word:w.charAt(0).toUpperCase()+w.slice(1),level:w.length>10?'C1':w.length>8?'B2':'B1',ipa:'',meaning:'Extracted from classic literature',example:`"${w.charAt(0).toUpperCase()+w.slice(1)}" appears in this classic text.`,source:'gutenberg',topic:'literature'}));}
+function showBookVocabModal(words,title){const existing=document.getElementById('bookModal'); if(existing)existing.remove(); const modal=document.createElement('div'); modal.className='modal-overlay'; modal.id='bookModal'; window._pendingBookWords=words; modal.innerHTML=`<div class="modal-box"><button class="modal-close" id="bookModalClose">✕</button><div class="modal-title">📖 ${title}</div><div class="modal-sub">Found <strong style="color:var(--gold)">${words.length} unique advanced words</strong> not yet in your vocabulary.</div><div class="word-list-preview">${words.map(w=>`<span class="word-preview-pill new">${w.word} <span style="opacity:0.5">${w.level}</span></span>`).join('')}</div><div style="display:flex;gap:12px"><button class="modal-btn" id="bookModalAdd">✦ Add all ${words.length} words</button><button class="modal-btn" id="bookModalCancel" style="background:transparent;border:1px solid var(--border);color:var(--text2)">Cancel</button></div></div>`; document.body.appendChild(modal); document.getElementById('bookModalClose').addEventListener('click',()=>modal.remove()); document.getElementById('bookModalCancel').addEventListener('click',()=>modal.remove()); document.getElementById('bookModalAdd').addEventListener('click',()=>{addBookWords(window._pendingBookWords||[]); modal.remove();});}
+function addBookWords(words){let added=0; for(const w of words){if(!VOCAB.some(v=>v.word.toLowerCase()===w.word.toLowerCase())){VOCAB.push(w); oxfordWords.push(w); added++;}} saveCurrentUser(); updateUI(); toast(`📚 Added ${added} new words from classic literature!`,'var(--amber)'); goPage('vocab');}
+function initQQ(){let words=shuffle(VOCAB),idx=0; function nextQ(){if(!words.length)return; qqCurrent=words[idx%words.length]; idx++; document.getElementById('qqWord').textContent=qqCurrent.word; document.getElementById('qqIpa').textContent=qqCurrent.ipa||''; document.getElementById('qqEg').textContent='"'+qqCurrent.example+'"'; document.getElementById('qqEg').style.display='block'; const pool=VOCAB.filter(w=>w.word!==qqCurrent.word); let opts=[qqCurrent.meaning,...shuffle(pool).slice(0,3).map(w=>w.meaning)]; opts=shuffle(opts); const letters=['A','B','C','D']; const container=document.getElementById('qqOpts'); container.innerHTML=opts.map((o,i)=>`<div class="q-opt" data-meaning="${o.replace(/"/g,'&quot;')}"><span class="q-letter">${letters[i]}</span>${o}</div>`).join(''); container.querySelectorAll('.q-opt').forEach(el=>{el.addEventListener('click',()=>checkQQ(el.dataset.meaning));});} document.getElementById('qqNextBtn').onclick=nextQ; window._qqNext=nextQ; nextQ();}
+function checkQQ(sel){if(!qqCurrent)return; const isRight=sel===qqCurrent.meaning; document.querySelectorAll('.q-opt').forEach(el=>{el.style.pointerEvents='none'; if(el.dataset.meaning===qqCurrent.meaning)el.classList.add('correct'); if(el.dataset.meaning===sel&&!isRight)el.classList.add('wrong');}); if(isRight){qqCorrect++; qqStreak++; xp+=10; streak++; if(!mastered.includes(qqCurrent.word))mastered.push(qqCurrent.word); toast('✓ Correct! +10 XP','var(--green)');}else{qqWrong++; qqStreak=0; toast('✗ Wrong — study that word','var(--red)');} saveCurrentUser(); updateUI(); checkLevelUp(); document.getElementById('qqC').textContent=qqCorrect; document.getElementById('qqW').textContent=qqWrong; document.getElementById('qqS').textContent=qqStreak; speak(qqCurrent.word); setTimeout(()=>window._qqNext&&window._qqNext(),1500);}
+function initPractice(){pracQueue=shuffle(VOCAB); pracIdx=0; pracCorrect=0; pracWrong=0; pracStreak=0; pracTotal=pracQueue.length; pracDone=0; wrongQueue=[]; updatePracStats(); nextPrac();}
+function nextPrac(){document.getElementById('pracFeedback').classList.remove('show'); document.getElementById('pracNextBtn').classList.remove('show'); if(pracIdx>=pracQueue.length){if(wrongQueue.length){pracQueue=shuffle(wrongQueue); pracIdx=0; wrongQueue=[]; toast(`🔄 Repasando ${pracQueue.length} palabras falladas`,'var(--amber)'); nextPrac(); return;} document.getElementById('pracWord').textContent='🎉'; document.getElementById('pracIpa').textContent='Session complete!'; document.getElementById('pracOpts').innerHTML='<button class="prac-next-btn show" onclick="initPractice()" style="display:block">Start new session</button>'; return;} pracCurrent=pracQueue[pracIdx++]; pracDone++; document.getElementById('pracWord').textContent=pracCurrent.word; document.getElementById('pracIpa').textContent=pracCurrent.ipa||''; document.getElementById('pracCtx').textContent='"'+pracCurrent.example+'"'; document.getElementById('pracCtx').style.display='block'; document.getElementById('pracType').textContent='WHAT DOES THIS MEAN?'; const pool=VOCAB.filter(w=>w.word!==pracCurrent.word); let opts=[pracCurrent.meaning,...shuffle(pool).slice(0,3).map(w=>w.meaning)]; opts=shuffle(opts); const container=document.getElementById('pracOpts'); container.innerHTML=opts.map(o=>`<button class="prac-opt" data-meaning="${o.replace(/"/g,'&quot;')}">${o}</button>`).join(''); container.querySelectorAll('.prac-opt').forEach(el=>{el.addEventListener('click',()=>checkPrac(el.dataset.meaning));}); updatePracStats();}
+function checkPrac(sel){const isRight=sel===pracCurrent.meaning; document.querySelectorAll('.prac-opt').forEach(el=>{el.disabled=true; el.style.cursor='default'; if(el.dataset.meaning===pracCurrent.meaning)el.classList.add('correct'); if(el.dataset.meaning===sel&&!isRight)el.classList.add('wrong');}); if(isRight){pracCorrect++; pracStreak++; xp+=15; streak++; if(!mastered.includes(pracCurrent.word))mastered.push(pracCurrent.word);}else{pracWrong++; pracStreak=0; wrongQueue.push(pracCurrent);} saveCurrentUser(); updateUI(); updatePracStats(); checkLevelUp(); const fb=document.getElementById('pracFeedback'); fb.innerHTML=isRight?`✓ Correct! <strong>${pracCurrent.word}</strong> — ${pracCurrent.meaning}. "${pracCurrent.example}"`:`✗ The correct answer is <strong>"${pracCurrent.meaning}"</strong>. "${pracCurrent.example}"`; fb.classList.add('show'); document.getElementById('pracNextBtn').classList.add('show'); speak(pracCurrent.word);}
+function updatePracStats(){document.getElementById('psC').textContent=pracCorrect; document.getElementById('psW').textContent=pracWrong; document.getElementById('psS').textContent=pracStreak; const pct=pracTotal?Math.round((pracDone/pracTotal)*100):0; document.getElementById('pracFill').style.width=pct+'%'; document.getElementById('pracCount').textContent=pracDone+' / '+pracTotal;}
+async function sendChat(msg){if(!msg.trim())return; chatHistory.push({role:'user',content:msg}); appendMsg('user',msg); document.getElementById('chatInput').value=''; document.getElementById('chatSendBtn').disabled=true; const typEl=appendTyping(); try{const ANTHROPIC_API_KEY='YOUR_ANTHROPIC_API_KEY'; const systemPrompt=`You are LEXIS, an expert English tutor. The user is ${userName}, level ${userLevel}. Be concise, helpful, encouraging. Correct sentences clearly. Max 180 words.`; if(ANTHROPIC_API_KEY==='YOUR_ANTHROPIC_API_KEY')throw new Error('Set your Anthropic API key to enable AI Tutor.'); const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':ANTHROPIC_API_KEY,'anthropic-version':'2023-06-01'},body:JSON.stringify({model:'claude-3-haiku-20240307',max_tokens:1000,system:systemPrompt,messages:chatHistory.slice(-10)})}); const data=await res.json(); typEl.remove(); if(data.error)throw new Error(data.error.message||'API error'); const reply=(data.content||[]).filter(c=>c.type==='text').map(c=>c.text).join(''); chatHistory.push({role:'assistant',content:reply}); appendMsg('ai',reply);}catch(e){typEl.remove(); appendMsg('ai','⚠️ '+e.message);} document.getElementById('chatSendBtn').disabled=false;}
+function appendMsg(role,text){const msgs=document.getElementById('chatMessages'); const d=document.createElement('div'); d.className='msg '+role; const formatted=text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\*(.*?)\*/g,'<em>$1</em>'); d.innerHTML=`<div class="msg-avatar ${role}">${role==='ai'?'🤖':'👤'}</div><div class="msg-bubble">${formatted}</div>`; msgs.appendChild(d); msgs.scrollTop=msgs.scrollHeight;}
+function appendTyping(){const msgs=document.getElementById('chatMessages'); const d=document.createElement('div'); d.className='msg ai'; d.innerHTML=`<div class="msg-avatar ai">🤖</div><div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>`; msgs.appendChild(d); msgs.scrollTop=msgs.scrollHeight; return d;}
+function initVoice(){const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition; if(!SpeechRecognition){document.getElementById('voiceBtn').style.display='none';return;} const rec=new SpeechRecognition(); rec.lang='en-US'; rec.interimResults=false; rec.onresult=e=>{document.getElementById('chatInput').value=e.results[0][0].transcript; voiceListening=false; document.getElementById('voiceBtn').classList.remove('listening');}; rec.onend=()=>{voiceListening=false; document.getElementById('voiceBtn').classList.remove('listening');}; document.getElementById('voiceBtn').onclick=()=>{if(!voiceListening){rec.start(); voiceListening=true; document.getElementById('voiceBtn').classList.add('listening');}else{rec.stop();}};}
+function toggleTheme(){document.body.classList.toggle('light-theme'); const isLight=document.body.classList.contains('light-theme'); localStorage.setItem('lexis_theme',isLight?'light':'dark'); const btn=document.getElementById('themeToggleBtn'); if(btn) btn.innerHTML=(isLight?'🌙':'☀️')+'<span class="tooltip">Theme</span>';}
+function initApp(){updateUI(); renderVerbs(); renderGrammar(); initQQ(); document.querySelectorAll('.nav-item[data-page]').forEach(n=>n.addEventListener('click',()=>goPage(n.dataset.page))); document.querySelectorAll('.mini-card[data-page]').forEach(c=>c.addEventListener('click',()=>goPage(c.dataset.page))); document.querySelectorAll('#levelFilters .filter-chip').forEach(btn=>{btn.addEventListener('click',()=>{document.querySelectorAll('#levelFilters .filter-chip').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); vocabLevelFilter=btn.dataset.lvl; renderVocab();});}); document.getElementById('masteredFilter').addEventListener('click',function(){showMasteredOnly=!showMasteredOnly; this.classList.toggle('active',showMasteredOnly); renderVocab();}); document.getElementById('oxfordFilter').addEventListener('click',function(){showOxfordOnly=!showOxfordOnly; this.classList.toggle('active',showOxfordOnly); renderVocab();}); document.getElementById('vocabSearch').addEventListener('input',e=>{vocabSearch=e.target.value.toLowerCase(); renderVocab();}); document.getElementById('pracNextBtn').addEventListener('click',nextPrac); document.getElementById('chatSendBtn').addEventListener('click',()=>sendChat(document.getElementById('chatInput').value)); document.getElementById('chatInput').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault(); sendChat(e.target.value);}}); document.querySelectorAll('.sugg-chip').forEach(btn=>{btn.addEventListener('click',()=>{document.getElementById('chatInput').value=btn.textContent.trim(); sendChat(btn.textContent.trim());});}); document.getElementById('resetBtn').addEventListener('click',()=>{if(!confirm(`Reset all progress for ${userName}?`))return; mastered=[]; xp=0; streak=0; saveCurrentUser(); updateUI(); toast('Progress reset','var(--text2)');}); document.getElementById('switchUserBtn').addEventListener('click',showLogin); document.getElementById('themeToggleBtn').addEventListener('click',toggleTheme); const savedTheme=localStorage.getItem('lexis_theme'); if(savedTheme==='light') document.body.classList.add('light-theme'); document.getElementById('loadOxford3000Btn').addEventListener('click',()=>loadOxfordList('3000')); document.getElementById('loadOxford5000Btn').addEventListener('click',()=>loadOxfordList('5000')); initVoice();}
+function showLogin(){document.getElementById('app').style.display='none'; document.getElementById('loginOverlay').style.display='flex'; renderSavedUsers();}
+function renderSavedUsers(){const users=getAllUsers(); const keys=Object.keys(users); const box=document.getElementById('savedUsersBox'); const list=document.getElementById('savedUsersList'); if(!keys.length){box.style.display='none';return;} box.style.display='block'; list.innerHTML=keys.sort((a,b)=>(users[b].lastSeen||0)-(users[a].lastSeen||0)).map(name=>`<span class="user-pill" data-uname="${name}">👤 ${name}<span class="user-pill-level">${users[name].level||'A1'}</span><span style="color:var(--text3);font-size:9px">${users[name].xp||0}xp</span></span>`).join(''); list.querySelectorAll('.user-pill').forEach(pill=>pill.addEventListener('click',()=>continueAsUser(pill.dataset.uname)));}
+function continueAsUser(name){if(!loadUser(name)){toast('User not found','var(--red)');return;} document.getElementById('loginOverlay').style.display='none'; document.getElementById('app').style.display='grid'; initApp(); toast(`Welcome back, ${name}! 🎉`,'var(--gold)');}
+document.addEventListener('mousemove',e=>{const el=document.getElementById('ambient'); if(el){el.style.left=(e.clientX-300)+'px'; el.style.top=(e.clientY-300)+'px';}});
+const activeUser=getActiveUser(); if(activeUser&&loadUser(activeUser)){document.getElementById('loginOverlay').style.display='none'; document.getElementById('app').style.display='grid'; initApp();}else{renderSavedUsers(); document.getElementById('loginBtn').addEventListener('click',()=>{const n=document.getElementById('loginName').value.trim(); const l=document.getElementById('loginLevel').value; if(!n){toast('Enter your name','var(--red)');return;} const users=getAllUsers(); if(users[n]){continueAsUser(n);}else{userName=n; userLevel=l; mastered=[]; xp=0; streak=0; oxford3000Loaded=false; oxford5000Loaded=false; oxfordWords=[]; VOCAB=[...buildFullVocab()]; saveCurrentUser(); document.getElementById('loginOverlay').style.display='none'; document.getElementById('app').style.display='grid'; initApp(); toast(`Welcome, ${n}! Let's learn English 🚀`,'var(--gold)');}}); document.getElementById('loginName').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('loginBtn').click();});}
+</script>
+</body>
+</html>
