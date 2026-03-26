@@ -6,60 +6,23 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="LEXIS">
-<link rel="manifest" href="manifest.json">
 <title>LEXIS PRO · AI English Intelligence</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Syne+Mono&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet"/>
 <style>
-/* [MANTÉN TODOS TUS ESTILOS EXACTAMENTE COMO ESTÁN] */
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --void:#0a0908;
-  --surface:#111009;
-  --card:#17140f;
-  --card2:#1d1912;
-  --border:rgba(255,255,255,0.06);
-  --border2:rgba(255,255,255,0.12);
-  --gold:#e8b86d;
-  --gold2:#f5d08a;
-  --gold-dim:#a07d3f;
-  --amber:#ff9a3c;
-  --ember:#ff5a1f;
-  --green:#3ddc84;
-  --green-dim:rgba(61,220,132,0.15);
-  --red:#ff4757;
-  --red-dim:rgba(255,71,87,0.15);
-  --blue:#5eaeff;
-  --blue-dim:rgba(94,174,255,0.15);
-  --text:#f0ebe1;
-  --text2:#9a9080;
-  --text3:#5a5248;
-  --glow:rgba(232,184,109,0.15);
-  --r:16px;
-  --r2:12px;
-  --t:all 0.3s cubic-bezier(0.4,0,0.2,1);
+  --void:#0a0908;--surface:#111009;--card:#17140f;--card2:#1d1912;
+  --border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.12);
+  --gold:#e8b86d;--gold2:#f5d08a;--gold-dim:#a07d3f;--amber:#ff9a3c;--ember:#ff5a1f;
+  --green:#3ddc84;--green-dim:rgba(61,220,132,0.15);--red:#ff4757;--red-dim:rgba(255,71,87,0.15);
+  --blue:#5eaeff;--blue-dim:rgba(94,174,255,0.15);--text:#f0ebe1;--text2:#9a9080;--text3:#5a5248;
+  --glow:rgba(232,184,109,0.15);--r:16px;--r2:12px;--t:all 0.3s cubic-bezier(0.4,0,0.2,1);
 }
-body.light-theme {
-  --void: #f8f6f2;
-  --surface: #ffffff;
-  --card: #ffffff;
-  --card2: #fefaf5;
-  --border: rgba(0,0,0,0.08);
-  --border2: rgba(0,0,0,0.12);
-  --text: #1a1612;
-  --text2: #5c554b;
-  --text3: #8e867c;
-  --gold: #b87c3a;
-  --gold2: #d49c54;
-  --gold-dim: #c49a6c;
-}
+body.light-theme{--void:#f8f6f2;--surface:#ffffff;--card:#ffffff;--card2:#fefaf5;--border:rgba(0,0,0,0.08);--border2:rgba(0,0,0,0.12);--text:#1a1612;--text2:#5c554b;--text3:#8e867c;--gold:#b87c3a;--gold2:#d49c54;--gold-dim:#c49a6c;}
 html,body{height:100%;overflow:hidden;background:var(--void)}
 body{font-family:'Syne',sans-serif;color:var(--text);overscroll-behavior:none}
 @media(max-width:768px){body{overflow:auto;height:auto}}
-body::before{
-  content:'';position:fixed;inset:0;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-  pointer-events:none;z-index:9999;opacity:0.4
-}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;opacity:0.4}
 .ambient{position:fixed;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(232,184,109,0.06) 0%,transparent 70%);pointer-events:none;z-index:0;transition:transform 0.8s ease}
 .shell{display:grid;grid-template-columns:72px 1fr;grid-template-rows:100vh;height:100vh;position:relative;z-index:1}
 @media(max-width:768px){.shell{grid-template-columns:1fr;grid-template-rows:auto 1fr 64px;height:auto;min-height:100svh}}
@@ -91,7 +54,6 @@ body::before{
 .page{display:none;animation:fadeIn 0.3s ease}
 .page.active{display:block}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-
 /* HOME */
 .hero-section{display:grid;grid-template-columns:1fr 340px;gap:24px;margin-bottom:28px}
 @media(max-width:1100px){.hero-section{grid-template-columns:1fr}}
@@ -133,7 +95,6 @@ body::before{
 .mc-title{font-size:13px;font-weight:700;margin-bottom:4px}
 .mc-sub{font-size:11px;color:var(--text3)}
 .mc-badge{display:inline-block;font-size:9px;padding:2px 8px;border-radius:20px;background:rgba(232,184,109,0.12);color:var(--gold);font-weight:700;margin-top:8px;letter-spacing:0.05em}
-
 /* VOCAB */
 .vocab-toolbar{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap;align-items:center}
 .search-input{flex:1;min-width:200px;padding:10px 16px;background:var(--card);border:1px solid var(--border);border-radius:40px;color:var(--text);font-family:'Syne',sans-serif;font-size:13px;outline:none;transition:var(--t)}
@@ -153,12 +114,7 @@ body::before{
 .wc-word:hover{color:var(--gold2)}
 .wc-badges{display:flex;gap:6px;flex-wrap:wrap}
 .level-tag{font-size:9px;padding:2px 7px;border-radius:20px;font-weight:700;letter-spacing:0.05em}
-.tag-a1{background:rgba(61,220,132,0.12);color:#3ddc84}
-.tag-a2{background:rgba(61,170,220,0.12);color:#3daade}
-.tag-b1{background:rgba(232,184,109,0.12);color:var(--gold)}
-.tag-b2{background:rgba(255,154,60,0.12);color:var(--amber)}
-.tag-c1{background:rgba(255,90,31,0.12);color:var(--ember)}
-.tag-c2{background:rgba(255,71,87,0.12);color:var(--red)}
+.tag-a1{background:rgba(61,220,132,0.12);color:#3ddc84}.tag-a2{background:rgba(61,170,220,0.12);color:#3daade}.tag-b1{background:rgba(232,184,109,0.12);color:var(--gold)}.tag-b2{background:rgba(255,154,60,0.12);color:var(--amber)}.tag-c1{background:rgba(255,90,31,0.12);color:var(--ember)}.tag-c2{background:rgba(255,71,87,0.12);color:var(--red)}
 .mastered-tag{background:rgba(61,220,132,0.12);color:var(--green);font-size:9px;padding:2px 7px;border-radius:20px;font-weight:700}
 .oxford-tag{background:rgba(94,174,255,0.12);color:var(--blue);font-size:9px;padding:2px 7px;border-radius:20px;font-weight:700}
 .wc-ipa{font-family:'Syne Mono',monospace;font-size:11px;color:var(--text3);margin-bottom:6px}
@@ -171,7 +127,6 @@ body::before{
 .wc-btn.gold{background:rgba(232,184,109,0.1);border-color:rgba(232,184,109,0.25);color:var(--gold)}
 .wc-btn.gold:hover{background:rgba(232,184,109,0.18)}
 .no-words{text-align:center;padding:60px;color:var(--text3);font-size:14px}
-
 /* VERBS */
 .verbs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
 .verb-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:20px;transition:var(--t);cursor:pointer}
@@ -182,7 +137,6 @@ body::before{
 .vc-form-group{display:flex;flex-direction:column;gap:4px}
 .vc-form-lbl{font-size:9px;color:var(--text3)}
 .vc-form{padding:4px 12px;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid var(--border);font-family:'Syne Mono',monospace;font-size:11px;color:var(--text2)}
-
 /* GRAMMAR */
 .grammar-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px}
 .gc-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:24px;transition:var(--t)}
@@ -192,7 +146,6 @@ body::before{
 .gc-rule{font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:12px;padding:12px;background:rgba(255,255,255,0.03);border-radius:10px;border-left:2px solid var(--gold-dim)}
 .gc-example{font-size:12px;color:var(--text3);font-style:italic}
 .gc-example em{color:var(--gold2);font-style:normal}
-
 /* CHAT */
 .chat-shell{display:flex;flex-direction:column;height:calc(100vh - 64px - 56px);max-height:700px}
 @media(max-width:768px){.chat-shell{height:calc(100svh - 64px - 80px);max-height:none}}
@@ -222,7 +175,6 @@ body::before{
 .chat-suggestions{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
 .sugg-chip{padding:7px 14px;border-radius:40px;border:1px solid var(--border);background:transparent;color:var(--text2);font-family:'Syne',sans-serif;font-size:11px;cursor:pointer;transition:var(--t)}
 .sugg-chip:hover{border-color:rgba(232,184,109,0.3);color:var(--gold);background:rgba(232,184,109,0.06)}
-
 /* PRACTICE */
 .practice-shell{max-width:560px;margin:0 auto}
 .prac-progress{margin-bottom:28px}
@@ -250,8 +202,7 @@ body::before{
 .ps-item{text-align:center}
 .ps-val{font-family:'DM Serif Display',serif;font-size:24px;color:var(--gold)}
 .ps-lbl{font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:var(--text3)}
-
-/* LIBRARY PAGE */
+/* LIBRARY */
 .library-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-bottom:28px}
 .book-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:20px;transition:var(--t);position:relative}
 .book-card:hover{border-color:var(--border2);transform:translateY(-2px)}
@@ -276,7 +227,6 @@ body::before{
 .ol-progress{height:3px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden;margin-top:12px;display:none}
 .ol-progress-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--gold));border-radius:4px;transition:width 0.3s ease;width:0%}
 .ol-status{font-size:11px;color:var(--text3);margin-top:8px;display:none}
-
 /* LOGIN */
 .login-overlay{position:fixed;inset:0;background:rgba(10,9,8,0.97);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;z-index:10000;animation:fadeIn 0.4s ease}
 .login-box{background:var(--card);border:1px solid var(--border2);border-radius:28px;padding:40px 36px;max-width:380px;width:90%;text-align:center;position:relative}
@@ -292,23 +242,15 @@ body::before{
 .user-pill{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:40px;border:1px solid var(--border);background:rgba(255,255,255,0.03);cursor:pointer;font-size:12px;margin:4px;transition:var(--t)}
 .user-pill:hover{border-color:rgba(232,184,109,0.3);color:var(--gold)}
 .user-pill-level{font-size:9px;color:var(--text3);padding:1px 6px;border-radius:10px;background:rgba(255,255,255,0.06)}
-
-/* SCROLLBAR */
 ::-webkit-scrollbar{width:3px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px}
-
-/* TOAST */
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--card2);border:1px solid var(--border2);border-radius:40px;padding:10px 20px;font-size:12px;font-weight:600;z-index:99999;animation:toastIn 0.3s ease;white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,0.5)}
 @keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
-
-/* VOICE */
 .voice-btn{width:44px;height:44px;border-radius:12px;border:1px solid var(--border);background:transparent;color:var(--text2);font-size:18px;cursor:pointer;transition:var(--t);display:flex;align-items:center;justify-content:center}
 .voice-btn:hover{border-color:rgba(232,184,109,0.3);color:var(--gold)}
 .voice-btn.listening{border-color:var(--red);color:var(--red);background:var(--red-dim);animation:pulse 1s infinite}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,71,87,0.4)}50%{box-shadow:0 0 0 8px rgba(255,71,87,0)}}
-
-/* MODAL */
 .modal-overlay{position:fixed;inset:0;background:rgba(10,9,8,0.8);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;z-index:9000;animation:fadeIn 0.2s ease}
 .modal-box{background:var(--card2);border:1px solid var(--border2);border-radius:20px;padding:28px;max-width:500px;width:90%;max-height:80vh;overflow-y:auto}
 .modal-title{font-family:'DM Serif Display',serif;font-size:22px;color:var(--gold);margin-bottom:8px}
@@ -320,6 +262,9 @@ body::before{
 .word-preview-pill.new{border-color:rgba(94,174,255,0.3);color:var(--blue);background:rgba(94,174,255,0.06)}
 .modal-btn{padding:10px 24px;border-radius:40px;border:none;background:linear-gradient(135deg,var(--gold),var(--amber));color:var(--void);font-family:'Syne',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:var(--t)}
 .modal-btn:hover{transform:scale(1.02)}
+/* CORS info banner */
+.cors-info{background:rgba(94,174,255,0.08);border:1px solid rgba(94,174,255,0.2);border-radius:12px;padding:12px 16px;margin-bottom:16px;font-size:12px;color:var(--blue);line-height:1.6;display:none}
+.cors-info.show{display:block}
 </style>
 </head>
 <body>
@@ -362,7 +307,7 @@ body::before{
     <div class="nav-item" data-page="chat">🤖<span class="tooltip">AI Tutor</span></div>
     <div class="nav-item" id="themeToggleBtn">🌓<span class="tooltip">Theme</span></div>
     <div class="sidebar-spacer"></div>
-    <div class="nav-item" id="switchUserBtn" title="Switch user">👤<span class="tooltip">Switch user</span></div>
+    <div class="nav-item" id="switchUserBtn">👤<span class="tooltip">Switch user</span></div>
   </aside>
 
   <div class="main">
@@ -381,11 +326,11 @@ body::before{
       <div class="page active" id="page-home">
         <div class="hero-section">
           <div class="hero-card">
-            <div class="hero-greeting">Welcome back</div>
+            <div class="hero-greeting" id="heroGreeting">Welcome back</div>
             <div class="hero-name" id="heroName">Scholar <em>.</em></div>
             <div class="hero-sub">Your path to English fluency is a marathon of beautiful moments. Every word mastered brings you closer.</div>
             <div class="hero-xp-bar">
-              <div class="xp-label"><span>Level <span id="heroLevel">A1</span></span><span><span id="heroXP">0</span> / <span id="heroXPNext">100</span> XP</span></div>
+              <div class="xp-label"><span>Level <span id="heroLevel">A1</span></span><span id="heroXPNext">0 / 100 XP</span></div>
               <div class="xp-track"><div class="xp-fill" id="heroXPFill" style="width:0%"></div></div>
             </div>
             <div class="hero-stats">
@@ -459,6 +404,9 @@ body::before{
             </div>
           </div>
           <div class="ol-sub">Load the official Oxford word lists to expand your vocabulary with the most essential English words, classified by CEFR level (A1–C1).</div>
+          <div class="cors-info" id="corsInfo">
+            ⚠️ <strong>Si ves errores de red:</strong> GitHub y Gutenberg pueden bloquearse por CORS en algunos navegadores cuando el archivo se abre localmente. Sube el archivo a GitHub Pages, Netlify o cualquier hosting para que funcione perfectamente.
+          </div>
           <div class="ol-btns">
             <button class="ol-btn" id="loadOxford3000Btn">📖 Load Oxford 3000</button>
             <button class="ol-btn" id="loadOxford5000Btn">📗 Load Oxford 5000</button>
@@ -525,6 +473,34 @@ body::before{
 
 <script>
 // ============================================================
+// CORS PROXY — resuelve el problema de GitHub y Gutenberg
+// ============================================================
+// Se intentan múltiples proxies en orden hasta que uno funcione
+const CORS_PROXIES = [
+  url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+  url => `https://corsproxy.io/?${encodeURIComponent(url)}`,
+  url => `https://cors-anywhere.herokuapp.com/${url}`
+];
+
+async function fetchWithProxy(originalUrl) {
+  // Primero intentar directamente (funciona en GitHub Pages y servidores con CORS)
+  try {
+    const res = await fetch(originalUrl, { signal: AbortSignal.timeout(6000) });
+    if (res.ok) return res;
+  } catch(e) { /* silencioso — intentar proxies */ }
+
+  // Intentar cada proxy en orden
+  for (const proxyFn of CORS_PROXIES) {
+    try {
+      const proxyUrl = proxyFn(originalUrl);
+      const res = await fetch(proxyUrl, { signal: AbortSignal.timeout(10000) });
+      if (res.ok) return res;
+    } catch(e) { continue; }
+  }
+  throw new Error('No se pudo conectar. Verifica tu conexión.');
+}
+
+// ============================================================
 // CORE VOCAB DATA
 // ============================================================
 const CORE_VOCAB = [
@@ -552,7 +528,6 @@ const CORE_VOCAB = [
   { word:"Apophenia", level:"C2", topic:"philosophy", ipa:"/æpəˈfiːnɪə/", meaning:"tendency to perceive meaningful connections between unrelated things", example:"Conspiracy theories thrive on apophenia.", source:"core" }
 ];
 
-// Dynamic vocab (Oxford words added at runtime)
 let VOCAB = [...CORE_VOCAB];
 
 const VERBS = [
@@ -599,104 +574,68 @@ const PUBLIC_DOMAIN_BOOKS = [
 ];
 
 // ============================================================
-// MULTI-USER STATE SYSTEM
+// MULTI-USER STATE
 // ============================================================
-let userName = '', userLevel = 'A1';
-let mastered = [], xp = 0, streak = 0;
-let oxford3000Loaded = false, oxford5000Loaded = false;
-let oxfordWords = [];
+let userName='', userLevel='A1';
+let mastered=[], xp=0, streak=0;
+let oxford3000Loaded=false, oxford5000Loaded=false;
+let oxfordWords=[];
 let qqCorrect=0, qqWrong=0, qqStreak=0, qqCurrent=null;
-let pracCorrect=0, pracWrong=0, pracStreak=0, pracCurrent=null, pracTotal=0, pracDone=0;
+let pracCorrect=0, pracWrong=0, pracStreak=0, pracTotal=0, pracDone=0;
 let showMasteredOnly=false, showOxfordOnly=false, vocabLevelFilter='all', vocabSearch='';
 let chatHistory=[];
 let voiceListening=false;
 
-function getAllUsers(){
-  try { return JSON.parse(localStorage.getItem('lxp_users')||'{}'); } catch(e){ return {}; }
-}
-function saveAllUsers(users){
-  localStorage.setItem('lxp_users', JSON.stringify(users));
-}
+function getAllUsers(){try{return JSON.parse(localStorage.getItem('lxp_users')||'{}')}catch(e){return{}}}
+function saveAllUsers(u){localStorage.setItem('lxp_users',JSON.stringify(u))}
 function saveCurrentUser(){
-  const users = getAllUsers();
-  users[userName] = {
-    level: userLevel,
-    mastered: mastered,
-    xp: xp,
-    streak: streak,
-    oxford3000loaded: oxford3000Loaded,
-    oxford5000loaded: oxford5000Loaded,
-    oxfordWords: oxfordWords,
-    lastSeen: Date.now()
-  };
+  const users=getAllUsers();
+  users[userName]={level:userLevel,mastered,xp,streak,oxford3000loaded:oxford3000Loaded,oxford5000loaded:oxford5000Loaded,oxfordWords,lastSeen:Date.now()};
   saveAllUsers(users);
-  localStorage.setItem('lxp_active_user', userName);
+  localStorage.setItem('lxp_active_user',userName);
 }
 function loadUser(name){
-  const users = getAllUsers();
-  const u = users[name];
-  if(!u) return false;
-  userName = name;
-  userLevel = u.level || 'A1';
-  mastered = u.mastered || [];
-  xp = u.xp || 0;
-  streak = u.streak || 0;
-  oxford3000Loaded = u.oxford3000loaded || false;
-  oxford5000Loaded = u.oxford5000loaded || false;
-  oxfordWords = u.oxfordWords || [];
-  VOCAB = [...CORE_VOCAB];
-  if(oxfordWords.length){
-    VOCAB.push(...oxfordWords);
-  }
+  const u=getAllUsers()[name];
+  if(!u)return false;
+  userName=name; userLevel=u.level||'A1';
+  mastered=u.mastered||[]; xp=u.xp||0; streak=u.streak||0;
+  oxford3000Loaded=u.oxford3000loaded||false;
+  oxford5000Loaded=u.oxford5000loaded||false;
+  oxfordWords=u.oxfordWords||[];
+  VOCAB=[...CORE_VOCAB];
+  if(oxfordWords.length) VOCAB.push(...oxfordWords);
   return true;
 }
-function getActiveUser(){
-  return localStorage.getItem('lxp_active_user')||'';
-}
+function getActiveUser(){return localStorage.getItem('lxp_active_user')||''}
 
 // ============================================================
 // HELPERS
 // ============================================================
 function speak(text){
-  if(!window.speechSynthesis) return;
+  if(!window.speechSynthesis)return;
   window.speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang='en-US'; u.rate=0.85;
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang='en-US';u.rate=0.85;
   window.speechSynthesis.speak(u);
 }
-function toast(msg, color='var(--gold)'){
+function toast(msg,color='var(--gold)'){
   const t=document.createElement('div');
-  t.className='toast'; t.style.color=color; t.textContent=msg;
+  t.className='toast';t.style.color=color;t.textContent=msg;
   document.body.appendChild(t);
   setTimeout(()=>t.remove(),2600);
 }
-function shuffle(arr){return [...arr].sort(()=>Math.random()-0.5)}
-function masterWord(word) {
+function shuffle(arr){return[...arr].sort(()=>Math.random()-0.5)}
+
+function masterWord(word){
   if(!mastered.includes(word)){
-    mastered.push(word); xp+=15; streak++;
-    saveCurrentUser(); updateUI();
-    const cards = document.querySelectorAll('.word-card');
-    let card = null;
-    for (let c of cards) {
-      const wordElement = c.querySelector('.wc-word');
-      if (wordElement && wordElement.textContent === word) {
-        card = c;
-        break;
-      }
-    }
-    if(card) {
-      card.style.transform = 'scale(0.98)';
-      setTimeout(() => card.style.transform = '', 200);
-    }
+    mastered.push(word);xp+=15;streak++;
+    saveCurrentUser();updateUI();
     toast(`✦ "${word}" mastered +15 XP`,'var(--gold)');
   }
 }
-function getLevelThreshold(lv){
-  return {A1:0,A2:100,B1:250,B2:500,C1:800,C2:1200}[lv]||0;
-}
-function getNextLevelThreshold(lv){
-  return {A1:100,A2:250,B1:500,B2:800,C1:1200,C2:2000}[lv]||2000;
-}
+
+function getLevelThreshold(lv){return{A1:0,A2:100,B1:250,B2:500,C1:800,C2:1200}[lv]||0}
+function getNextLevelThreshold(lv){return{A1:100,A2:250,B1:500,B2:800,C1:1200,C2:2000}[lv]||2000}
 
 // ============================================================
 // UI UPDATE
@@ -706,11 +645,11 @@ function updateUI(){
   document.getElementById('xpDisplay').textContent=xp;
   document.getElementById('heroName').innerHTML=`${userName} <em>.</em>`;
   document.getElementById('heroLevel').textContent=userLevel;
-  document.getElementById('heroXP').textContent=xp;
   const nxt=getNextLevelThreshold(userLevel);
   const cur=getLevelThreshold(userLevel);
   const pct=Math.min(100,Math.round(((xp-cur)/(nxt-cur))*100));
-  document.getElementById('heroXPNext').textContent=nxt;
+  const nextLevelName={A1:'A2',A2:'B1',B1:'B2',B2:'C1',C1:'C2',C2:'Master'}[userLevel];
+  document.getElementById('heroXPNext').textContent=`${xp} / ${nxt} XP → ${nextLevelName}`;
   document.getElementById('heroXPFill').style.width=pct+'%';
   document.getElementById('hsMastered').textContent=mastered.length;
   document.getElementById('hsStreak').textContent=streak;
@@ -718,22 +657,13 @@ function updateUI(){
   document.getElementById('mcVocabSub').textContent=VOCAB.length+' words total';
   document.getElementById('mcVerbsSub').textContent=VERBS.length+' verbs';
   document.getElementById('mcGrammarSub').textContent=GRAMMAR.length+' rules';
-  document.getElementById('mcLibrarySub').textContent=
-    (oxford3000Loaded||oxford5000Loaded)?`${VOCAB.length} words loaded`:'Oxford + Classics';
-  const nextLevelName = {
-    A1: 'A2', A2: 'B1', B1: 'B2', B2: 'C1', C1: 'C2', C2: 'Master'
-  }[userLevel];
-  document.getElementById('heroXPNext').innerHTML = `${xp} / ${nxt} XP para ${nextLevelName}`;
-  const hour = new Date().getHours();
-  let greeting = 'Welcome back';
-  if (hour < 12) greeting = 'Good morning';
-  else if (hour < 18) greeting = 'Good afternoon';
-  else greeting = 'Good evening';
-  document.getElementById('heroGreeting').textContent = greeting;
+  document.getElementById('mcLibrarySub').textContent=(oxford3000Loaded||oxford5000Loaded)?`${VOCAB.length} words loaded`:'Oxford + Classics';
+  const hour=new Date().getHours();
+  document.getElementById('heroGreeting').textContent=hour<12?'Good morning':hour<18?'Good afternoon':'Good evening';
   const b3=document.getElementById('loadOxford3000Btn');
   const b5=document.getElementById('loadOxford5000Btn');
-  if(b3){ b3.textContent = oxford3000Loaded ? '✅ Oxford 3000 loaded' : '📖 Load Oxford 3000'; b3.disabled=oxford3000Loaded; }
-  if(b5){ b5.textContent = oxford5000Loaded ? '✅ Oxford 5000 loaded' : '📗 Load Oxford 5000'; b5.disabled=oxford5000Loaded; }
+  if(b3){b3.textContent=oxford3000Loaded?'✅ Oxford 3000 loaded':'📖 Load Oxford 3000';b3.disabled=oxford3000Loaded;}
+  if(b5){b5.textContent=oxford5000Loaded?'✅ Oxford 5000 loaded':'📗 Load Oxford 5000';b5.disabled=oxford5000Loaded;}
 }
 
 // ============================================================
@@ -744,7 +674,8 @@ function goPage(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-item[data-page]').forEach(n=>n.classList.remove('active'));
   document.getElementById('page-'+id).classList.add('active');
-  document.querySelector(`.nav-item[data-page="${id}"]`).classList.add('active');
+  const navEl=document.querySelector(`.nav-item[data-page="${id}"]`);
+  if(navEl) navEl.classList.add('active');
   document.getElementById('pageTitle').textContent=pageTitles[id]||id;
   if(id==='vocab') renderVocab();
   if(id==='verbs') renderVerbs();
@@ -768,28 +699,36 @@ function renderVocab(){
   const tagCls={A1:'tag-a1',A2:'tag-a2',B1:'tag-b1',B2:'tag-b2',C1:'tag-c1',C2:'tag-c2'};
   g.innerHTML=words.map(w=>{
     const isOxford=w.source==='oxford';
-    const safeName=w.word.replace(/'/g,"\\'").replace(/"/g,'&quot;');
+    const isMastered=mastered.includes(w.word);
+    // Usar data-word en vez de onclick inline para evitar problemas con comillas
     return `
-    <div class="word-card${mastered.includes(w.word)?' mastered-card':''}${isOxford&&!mastered.includes(w.word)?' oxford-card':''}">
+    <div class="word-card${isMastered?' mastered-card':''}${isOxford&&!isMastered?' oxford-card':''}">
       <div class="wc-top">
-        <div class="wc-word" onclick="speak('${safeName}')">${w.word}</div>
+        <div class="wc-word speak-btn" data-word="${w.word}">${w.word}</div>
         <div class="wc-badges">
           <span class="level-tag ${tagCls[w.level]||''}">${w.level}</span>
           ${isOxford?'<span class="oxford-tag">Oxford</span>':''}
-          ${mastered.includes(w.word)?'<span class="mastered-tag">✓</span>':''}
+          ${isMastered?'<span class="mastered-tag">✓</span>':''}
         </div>
       </div>
       <div class="wc-ipa">${w.ipa||''}</div>
       <div class="wc-meaning">${w.meaning}</div>
-      <div class="wc-example">"${w.example.replace(new RegExp(w.word,'gi'),`<em>${w.word}</em>`)}"</div>
+      <div class="wc-example">"${w.example}"</div>
       <div class="wc-actions">
-        <button class="wc-btn" onclick="speak('${safeName}')">🔊 Listen</button>
-        ${!mastered.includes(w.word)
-          ?`<button class="wc-btn gold" onclick="masterWord('${safeName}')">✦ Master</button>`
+        <button class="wc-btn speak-btn" data-word="${w.word}">🔊 Listen</button>
+        ${!isMastered
+          ?`<button class="wc-btn gold master-btn" data-word="${w.word}">✦ Master</button>`
           :'<button class="wc-btn" style="color:var(--green);border-color:rgba(61,220,132,0.2)" disabled>✓ Mastered</button>'}
       </div>
     </div>`;
   }).join('');
+  // Bind events después de renderizar (evita problemas de escape con onclick inline)
+  document.querySelectorAll('#vocabGrid .speak-btn').forEach(el=>{
+    el.addEventListener('click',()=>speak(el.dataset.word));
+  });
+  document.querySelectorAll('#vocabGrid .master-btn').forEach(el=>{
+    el.addEventListener('click',()=>masterWord(el.dataset.word));
+  });
 }
 
 // ============================================================
@@ -797,7 +736,7 @@ function renderVocab(){
 // ============================================================
 function renderVerbs(){
   document.getElementById('verbsGrid').innerHTML=VERBS.map(v=>`
-    <div class="verb-card" onclick="speak('${v.base}, ${v.past}, ${v.part}')">
+    <div class="verb-card" data-base="${v.base}">
       <div class="vc-base">${v.base}</div>
       <div class="vc-meaning">${v.meaning}</div>
       <div class="vc-forms">
@@ -807,6 +746,13 @@ function renderVerbs(){
       </div>
     </div>
   `).join('');
+  document.querySelectorAll('.verb-card').forEach(card=>{
+    card.addEventListener('click',()=>{
+      const base=card.dataset.base;
+      const verb=VERBS.find(v=>v.base===base);
+      if(verb) speak(`${verb.base}, ${verb.past}, ${verb.part}`);
+    });
+  });
 }
 
 // ============================================================
@@ -828,7 +774,7 @@ function renderGrammar(){
 // ============================================================
 function renderLibrary(){
   updateUI();
-  document.getElementById('libraryGrid').innerHTML=PUBLIC_DOMAIN_BOOKS.map(b=>`
+  document.getElementById('libraryGrid').innerHTML=PUBLIC_DOMAIN_BOOKS.map((b,i)=>`
     <div class="book-card">
       <div class="book-spine" style="background:${b.color}"></div>
       <div class="book-title">${b.title}</div>
@@ -838,52 +784,62 @@ function renderLibrary(){
         <span class="book-tag" style="background:rgba(61,220,132,0.1);color:var(--green)">FREE</span>
       </div>
       <div class="book-status" style="margin-bottom:12px">${b.desc}</div>
-      <button class="book-btn" onclick="loadGutenbergBook('${b.url}','${b.title.replace(/'/g,"\\'")}')">
+      <button class="book-btn" data-book-idx="${i}" id="book-btn-${i}">
         📖 Extract vocabulary
       </button>
     </div>
   `).join('');
+
+  // Bind eventos usando data attributes (no onclick inline)
+  document.querySelectorAll('.book-btn').forEach(btn=>{
+    btn.addEventListener('click',function(){
+      const idx=parseInt(this.dataset.bookIdx);
+      const book=PUBLIC_DOMAIN_BOOKS[idx];
+      loadGutenbergBook(book.url, book.title, this);
+    });
+  });
 }
 
 // ============================================================
-// OXFORD WORD LIST LOADER
+// OXFORD WORD LIST LOADER (con proxy CORS)
 // ============================================================
 async function loadOxfordList(version){
-  const btn = document.getElementById(`loadOxford${version}Btn`);
-  const prog = document.getElementById('olProgress');
-  const fill = document.getElementById('olProgressFill');
-  const status = document.getElementById('olStatus');
+  const btn=document.getElementById(`loadOxford${version}Btn`);
+  const prog=document.getElementById('olProgress');
+  const fill=document.getElementById('olProgressFill');
+  const status=document.getElementById('olStatus');
+  const corsInfo=document.getElementById('corsInfo');
 
-  btn.disabled = true;
-  btn.textContent = '⏳ Loading…';
-  prog.style.display = 'block';
-  status.style.display = 'block';
-  status.textContent = 'Connecting to Oxford word list…';
-  fill.style.width = '10%';
+  btn.disabled=true;
+  btn.textContent='⏳ Loading…';
+  prog.style.display='block';
+  status.style.display='block';
+  corsInfo.classList.remove('show');
+  status.textContent='Connecting…';
+  fill.style.width='10%';
 
-  const urls = {
-    '3000': 'https://raw.githubusercontent.com/ittuann/The-Oxford-5000-Word-Lists/main/The%20Oxford%203000.txt',
-    '5000': 'https://raw.githubusercontent.com/ittuann/The-Oxford-5000-Word-Lists/main/The%20Oxford%205000.txt'
+  // URLs directas en GitHub Raw
+  const urls={
+    '3000':'https://raw.githubusercontent.com/ittuann/The-Oxford-5000-Word-Lists/main/The%20Oxford%203000.txt',
+    '5000':'https://raw.githubusercontent.com/ittuann/The-Oxford-5000-Word-Lists/main/The%20Oxford%205000.txt'
   };
 
-  try {
-    status.textContent = `Fetching Oxford ${version} list…`;
-    fill.style.width = '30%';
+  try{
+    status.textContent=`Fetching Oxford ${version} list…`;
+    fill.style.width='30%';
 
-    const res = await fetch(urls[version]);
-    if(!res.ok) throw new Error('Network error');
-    const text = await res.text();
-    fill.style.width = '60%';
-    status.textContent = 'Processing words…';
+    const res=await fetchWithProxy(urls[version]);
+    const text=await res.text();
+    fill.style.width='60%';
+    status.textContent='Processing words…';
 
-    await new Promise(r=>setTimeout(r,100));
-    const newWords = parseOxfordList(text, version);
-    fill.style.width = '85%';
-    status.textContent = 'Adding to your vocabulary…';
+    await new Promise(r=>setTimeout(r,80));
+    const newWords=parseOxfordList(text,version);
+    fill.style.width='85%';
+    status.textContent='Adding to vocabulary…';
+    await new Promise(r=>setTimeout(r,80));
 
-    await new Promise(r=>setTimeout(r,100));
-
-    let added = 0;
+    let added=0;
     for(const w of newWords){
       if(!VOCAB.some(v=>v.word.toLowerCase()===w.word.toLowerCase())){
         VOCAB.push(w);
@@ -892,192 +848,167 @@ async function loadOxfordList(version){
       }
     }
 
-    fill.style.width = '100%';
-    if(version==='3000') oxford3000Loaded = true;
-    else oxford5000Loaded = true;
-    saveCurrentUser();
-    updateUI();
+    fill.style.width='100%';
+    if(version==='3000') oxford3000Loaded=true;
+    else oxford5000Loaded=true;
+    saveCurrentUser();updateUI();
 
-    showOxfordModal(newWords.slice(0,40), added, version);
+    showOxfordModal(newWords.slice(0,40),added,version);
+    status.textContent=`✅ Added ${added} new words from Oxford ${version}!`;
+    toast(`📚 Oxford ${version}: +${added} new words!`,'var(--blue)');
+    btn.textContent=`✅ Oxford ${version} loaded`;
 
-    status.textContent = `✅ Added ${added} new words from Oxford ${version}!`;
-    toast(`📚 Oxford ${version}: +${added} new words!`, 'var(--blue)');
-    btn.textContent = `✅ Oxford ${version} loaded`;
-
-  } catch(err){
+  }catch(err){
     console.error(err);
-    fill.style.width = '0%';
-    status.textContent = '❌ Could not load. Check your connection and try again.';
-    btn.disabled = false;
-    btn.textContent = `📖 Retry Oxford ${version}`;
-    toast('Could not load Oxford list. Check connection.', 'var(--red)');
+    fill.style.width='0%';
+    status.textContent='❌ Error de red. Intentando de nuevo con proxy…';
+    corsInfo.classList.add('show');
+    btn.disabled=false;
+    btn.textContent=`↻ Retry Oxford ${version}`;
+    toast('No se pudo cargar. Intenta de nuevo.','var(--red)');
   }
 }
 
-function parseOxfordList(text, version){
-  const words = [];
-  const lines = text.split('\n');
-  const cefr = { A1:'A1', A2:'A2', B1:'B1', B2:'B2', C1:'C1', C2:'C2' };
-
+function parseOxfordList(text,version){
+  const words=[];
+  const lines=text.split('\n');
+  const cefr={A1:'A1',A2:'A2',B1:'B1',B2:'B2',C1:'C1',C2:'C2'};
   for(const line of lines){
-    const trimmed = line.trim();
-    if(!trimmed || trimmed.startsWith('#') || trimmed.startsWith('The Oxford')) continue;
-
-    const match = trimmed.match(/^([a-zA-Z][a-zA-Z\-']*)\s+([a-z.,]+(?:\s+[a-z.,]+)*)\s+([A-C][12])/i);
+    const trimmed=line.trim();
+    if(!trimmed||trimmed.startsWith('#')||trimmed.startsWith('The Oxford'))continue;
+    const match=trimmed.match(/^([a-zA-Z][a-zA-Z\-']*)\s+([a-z.,]+(?:\s+[a-z.,]+)*)\s+([A-C][12])/i);
     if(match){
-      const word = match[1];
-      const pos = match[2].trim();
-      const level = match[3].toUpperCase();
-      if(!cefr[level]) continue;
-      words.push({
-        word: word,
-        level: level,
-        ipa: '',
-        meaning: `(${pos}) — Oxford ${version} word`,
-        example: `"${word}" is a common English word (${pos}).`,
-        source: 'oxford',
-        topic: 'oxford'
-      });
-    } else {
-      const wordMatch = trimmed.match(/^([a-zA-Z][a-zA-Z\-']+)/);
-      if(wordMatch && wordMatch[1].length > 2){
-        words.push({
-          word: wordMatch[1],
-          level: 'B1',
-          ipa: '',
-          meaning: `Oxford ${version} word`,
-          example: `"${wordMatch[1]}" is a common English word.`,
-          source: 'oxford',
-          topic: 'oxford'
-        });
+      const word=match[1];
+      const pos=match[2].trim();
+      const level=match[3].toUpperCase();
+      if(!cefr[level])continue;
+      words.push({word,level,ipa:'',meaning:`(${pos}) — Oxford ${version} word`,example:`"${word}" is a common English word (${pos}).`,source:'oxford',topic:'oxford'});
+    }else{
+      const wordMatch=trimmed.match(/^([a-zA-Z][a-zA-Z\-']+)/);
+      if(wordMatch&&wordMatch[1].length>2){
+        words.push({word:wordMatch[1],level:'B1',ipa:'',meaning:`Oxford ${version} word`,example:`"${wordMatch[1]}" is a common English word.`,source:'oxford',topic:'oxford'});
       }
     }
   }
   return words;
 }
 
-function showOxfordModal(sampleWords, totalAdded, version){
-  const existing = document.getElementById('oxfordModal');
-  if(existing) existing.remove();
-
-  const modal = document.createElement('div');
-  modal.className = 'modal-overlay';
-  modal.id = 'oxfordModal';
-  modal.innerHTML = `
+function showOxfordModal(sampleWords,totalAdded,version){
+  const existing=document.getElementById('oxfordModal');
+  if(existing)existing.remove();
+  const modal=document.createElement('div');
+  modal.className='modal-overlay';
+  modal.id='oxfordModal';
+  modal.innerHTML=`
     <div class="modal-box">
-      <button class="modal-close" onclick="document.getElementById('oxfordModal').remove()">✕</button>
+      <button class="modal-close" id="oxfordModalClose">✕</button>
       <div class="modal-title">📘 Oxford ${version} Loaded!</div>
-      <div class="modal-sub">
-        Added <strong style="color:var(--gold)">${totalAdded} new words</strong> to your vocabulary.
-        Here's a sample of what was added:
-      </div>
+      <div class="modal-sub">Added <strong style="color:var(--gold)">${totalAdded} new words</strong> to your vocabulary. Here's a sample:</div>
       <div class="word-list-preview">
         ${sampleWords.map(w=>`<span class="word-preview-pill new">${w.word} <span style="opacity:0.5">${w.level}</span></span>`).join('')}
-        ${totalAdded>40?`<span class="word-preview-pill" style="color:var(--text3)">+ ${totalAdded-40} more…</span>`:''}
+        ${totalAdded>40?`<span class="word-preview-pill">+ ${totalAdded-40} more…</span>`:''}
       </div>
-      <button class="modal-btn" onclick="goPage('vocab');document.getElementById('oxfordModal').remove()">
-        Browse vocabulary →
-      </button>
+      <button class="modal-btn" id="oxfordModalGo">Browse vocabulary →</button>
     </div>
   `;
   document.body.appendChild(modal);
+  document.getElementById('oxfordModalClose').addEventListener('click',()=>modal.remove());
+  document.getElementById('oxfordModalGo').addEventListener('click',()=>{goPage('vocab');modal.remove();});
 }
 
 // ============================================================
-// PROJECT GUTENBERG BOOK LOADER
+// PROJECT GUTENBERG BOOK LOADER (con proxy CORS)
 // ============================================================
-async function loadGutenbergBook(url, title){
-  toast(`📖 Loading "${title}"…`, 'var(--amber)');
+async function loadGutenbergBook(url,title,btnEl){
+  if(btnEl){btnEl.disabled=true;btnEl.textContent='⏳ Loading…';}
+  toast(`📖 Loading "${title}"…`,'var(--amber)');
   try{
-    const res = await fetch(url);
-    if(!res.ok) throw new Error();
-    const text = await res.text();
-    const extracted = extractAdvancedVocabulary(text);
-    showBookVocabModal(extracted, title);
+    const res=await fetchWithProxy(url);
+    const text=await res.text();
+    if(btnEl){btnEl.disabled=false;btnEl.textContent='📖 Extract vocabulary';}
+    const extracted=extractAdvancedVocabulary(text);
+    showBookVocabModal(extracted,title);
   }catch(err){
-    toast('Could not load book. Check connection.', 'var(--red)');
+    console.error(err);
+    if(btnEl){btnEl.disabled=false;btnEl.textContent='📖 Extract vocabulary';}
+    toast('Could not load book. Check connection.','var(--red)');
   }
 }
 
 function extractAdvancedVocabulary(text){
-  const start = text.indexOf('*** START OF');
-  const end = text.indexOf('*** END OF');
-  const content = start>-1 ? text.slice(start, end>-1?end:undefined) : text;
-
-  const wordMatches = content.match(/\b[A-Za-z]{7,}\b/g)||[];
-  const freq = {};
-  for(const w of wordMatches){
-    const lower = w.toLowerCase();
-    freq[lower] = (freq[lower]||0)+1;
-  }
-
-  const existing = new Set(VOCAB.map(v=>v.word.toLowerCase()));
-  const candidates = Object.entries(freq)
-    .filter(([w,c]) => c>=3 && c<=30 && w.length>=7 && !existing.has(w))
+  const start=text.indexOf('*** START OF');
+  const end=text.indexOf('*** END OF');
+  const content=start>-1?text.slice(start,end>-1?end:undefined):text;
+  const wordMatches=content.match(/\b[A-Za-z]{7,}\b/g)||[];
+  const freq={};
+  for(const w of wordMatches){const lower=w.toLowerCase();freq[lower]=(freq[lower]||0)+1;}
+  const existing=new Set(VOCAB.map(v=>v.word.toLowerCase()));
+  return Object.entries(freq)
+    .filter(([w,c])=>c>=3&&c<=30&&w.length>=7&&!existing.has(w))
     .sort((a,b)=>b[1]-a[1])
     .slice(0,50)
     .map(([w])=>({
-      word: w.charAt(0).toUpperCase()+w.slice(1),
-      level: w.length > 10 ? 'C1' : w.length > 8 ? 'B2' : 'B1',
-      ipa: '',
-      meaning: 'Extracted from classic literature',
-      example: `"${w.charAt(0).toUpperCase()+w.slice(1)}" appears in this classic text.`,
-      source: 'gutenberg',
-      topic: 'literature'
+      word:w.charAt(0).toUpperCase()+w.slice(1),
+      level:w.length>10?'C1':w.length>8?'B2':'B1',
+      ipa:'',
+      meaning:'Extracted from classic literature',
+      example:`"${w.charAt(0).toUpperCase()+w.slice(1)}" appears in this classic text.`,
+      source:'gutenberg',
+      topic:'literature'
     }));
-  return candidates;
 }
 
-function showBookVocabModal(words, title){
-  const existing = document.getElementById('bookModal');
-  if(existing) existing.remove();
-
-  const modal = document.createElement('div');
-  modal.className = 'modal-overlay';
-  modal.id = 'bookModal';
-  modal.innerHTML = `
+function showBookVocabModal(words,title){
+  const existing=document.getElementById('bookModal');
+  if(existing)existing.remove();
+  const modal=document.createElement('div');
+  modal.className='modal-overlay';
+  modal.id='bookModal';
+  // Guardamos las palabras en un atributo global temporal para evitar JSON inline
+  window._pendingBookWords=words;
+  modal.innerHTML=`
     <div class="modal-box">
-      <button class="modal-close" onclick="document.getElementById('bookModal').remove()">✕</button>
+      <button class="modal-close" id="bookModalClose">✕</button>
       <div class="modal-title">📖 ${title}</div>
-      <div class="modal-sub">Found <strong style="color:var(--gold)">${words.length} unique advanced words</strong> not yet in your vocabulary. Add them all to start learning?</div>
+      <div class="modal-sub">Found <strong style="color:var(--gold)">${words.length} unique advanced words</strong> not yet in your vocabulary.</div>
       <div class="word-list-preview">
         ${words.map(w=>`<span class="word-preview-pill new">${w.word} <span style="opacity:0.5">${w.level}</span></span>`).join('')}
       </div>
       <div style="display:flex;gap:12px">
-        <button class="modal-btn" onclick="addBookWords(${JSON.stringify(words).replace(/"/g,'&quot;')});document.getElementById('bookModal').remove()">
-          ✦ Add all ${words.length} words
-        </button>
-        <button class="modal-btn" style="background:transparent;border:1px solid var(--border);color:var(--text2)" onclick="document.getElementById('bookModal').remove()">
-          Cancel
-        </button>
+        <button class="modal-btn" id="bookModalAdd">✦ Add all ${words.length} words</button>
+        <button class="modal-btn" id="bookModalCancel" style="background:transparent;border:1px solid var(--border);color:var(--text2)">Cancel</button>
       </div>
     </div>
   `;
   document.body.appendChild(modal);
+  document.getElementById('bookModalClose').addEventListener('click',()=>modal.remove());
+  document.getElementById('bookModalCancel').addEventListener('click',()=>modal.remove());
+  document.getElementById('bookModalAdd').addEventListener('click',()=>{
+    addBookWords(window._pendingBookWords||[]);
+    modal.remove();
+  });
 }
 
 function addBookWords(words){
   let added=0;
   for(const w of words){
     if(!VOCAB.some(v=>v.word.toLowerCase()===w.word.toLowerCase())){
-      VOCAB.push(w);
-      oxfordWords.push(w);
-      added++;
+      VOCAB.push(w);oxfordWords.push(w);added++;
     }
   }
-  saveCurrentUser(); updateUI();
+  saveCurrentUser();updateUI();
   toast(`📚 Added ${added} new words from classic literature!`,'var(--amber)');
   goPage('vocab');
 }
 
 // ============================================================
-// QUICK QUIZ (home)
+// QUICK QUIZ
 // ============================================================
 function initQQ(){
-  let words=shuffle(VOCAB), idx=0;
+  let words=shuffle(VOCAB),idx=0;
   function nextQ(){
-    if(!words.length) return;
-    qqCurrent=words[idx%words.length]; idx++;
+    if(!words.length)return;
+    qqCurrent=words[idx%words.length];idx++;
     document.getElementById('qqWord').textContent=qqCurrent.word;
     document.getElementById('qqIpa').textContent=qqCurrent.ipa||'';
     document.getElementById('qqEg').textContent='"'+qqCurrent.example+'"';
@@ -1086,28 +1017,32 @@ function initQQ(){
     let opts=[qqCurrent.meaning,...shuffle(pool).slice(0,3).map(w=>w.meaning)];
     opts=shuffle(opts);
     const letters=['A','B','C','D'];
-    document.getElementById('qqOpts').innerHTML=opts.map((o,i)=>`
-      <div class="q-opt" onclick="checkQQ('${o.replace(/'/g,"\\'").replace(/"/g,'&quot;')}')">
+    const container=document.getElementById('qqOpts');
+    container.innerHTML=opts.map((o,i)=>`
+      <div class="q-opt" data-meaning="${o.replace(/"/g,'&quot;')}">
         <span class="q-letter">${letters[i]}</span>${o}
       </div>
     `).join('');
-    document.querySelectorAll('.q-opt').forEach(el=>el.style.pointerEvents='auto');
+    container.querySelectorAll('.q-opt').forEach(el=>{
+      el.addEventListener('click',()=>checkQQ(el.dataset.meaning));
+    });
   }
   document.getElementById('qqNextBtn').onclick=nextQ;
   window._qqNext=nextQ;
   nextQ();
 }
+
 function checkQQ(sel){
-  if(!qqCurrent) return;
+  if(!qqCurrent)return;
   const isRight=sel===qqCurrent.meaning;
   document.querySelectorAll('.q-opt').forEach(el=>{
     el.style.pointerEvents='none';
-    if(el.textContent.trim().endsWith(qqCurrent.meaning)) el.classList.add('correct');
-    if(el.textContent.trim().endsWith(sel)&&!isRight) el.classList.add('wrong');
+    if(el.dataset.meaning===qqCurrent.meaning)el.classList.add('correct');
+    if(el.dataset.meaning===sel&&!isRight)el.classList.add('wrong');
   });
   if(isRight){qqCorrect++;qqStreak++;xp+=10;streak++;if(!mastered.includes(qqCurrent.word))mastered.push(qqCurrent.word);toast('✓ Correct! +10 XP','var(--green)');}
   else{qqWrong++;qqStreak=0;toast('✗ Wrong — study that word','var(--red)');}
-  saveCurrentUser(); updateUI();
+  saveCurrentUser();updateUI();
   document.getElementById('qqC').textContent=qqCorrect;
   document.getElementById('qqW').textContent=qqWrong;
   document.getElementById('qqS').textContent=qqStreak;
@@ -1118,10 +1053,10 @@ function checkQQ(sel){
 // ============================================================
 // PRACTICE
 // ============================================================
-let pracQueue=[], pracIdx=0;
+let pracQueue=[],pracIdx=0;
 function initPractice(){
   pracQueue=shuffle(VOCAB);
-  pracIdx=0; pracCorrect=0; pracWrong=0; pracStreak=0; pracTotal=pracQueue.length; pracDone=0;
+  pracIdx=0;pracCorrect=0;pracWrong=0;pracStreak=0;pracTotal=pracQueue.length;pracDone=0;
   updatePracStats();
   nextPrac();
 }
@@ -1132,13 +1067,9 @@ function nextPrac(){
     document.getElementById('pracWord').textContent='🎉';
     document.getElementById('pracIpa').textContent='Session complete!';
     document.getElementById('pracOpts').innerHTML='<button class="prac-next-btn show" onclick="initPractice()" style="display:block">Start new session</button>';
-    const remaining = pracQueue.length - pracIdx;
-    if (remaining > 0) {
-      document.getElementById('pracCount').textContent = `${pracDone}/${pracTotal} (${remaining} left)`;
-    }
     return;
   }
-  pracCurrent=pracQueue[pracIdx++]; pracDone++;
+  pracCurrent=pracQueue[pracIdx++];pracDone++;
   document.getElementById('pracWord').textContent=pracCurrent.word;
   document.getElementById('pracIpa').textContent=pracCurrent.ipa||'';
   document.getElementById('pracCtx').textContent='"'+pracCurrent.example+'"';
@@ -1147,21 +1078,23 @@ function nextPrac(){
   const pool=VOCAB.filter(w=>w.word!==pracCurrent.word);
   let opts=[pracCurrent.meaning,...shuffle(pool).slice(0,3).map(w=>w.meaning)];
   opts=shuffle(opts);
-  document.getElementById('pracOpts').innerHTML=opts.map(o=>`
-    <button class="prac-opt" onclick="checkPrac('${o.replace(/'/g,"\\'").replace(/"/g,'&quot;')}')">${o}</button>
-  `).join('');
+  const container=document.getElementById('pracOpts');
+  container.innerHTML=opts.map(o=>`<button class="prac-opt" data-meaning="${o.replace(/"/g,'&quot;')}">${o}</button>`).join('');
+  container.querySelectorAll('.prac-opt').forEach(el=>{
+    el.addEventListener('click',()=>checkPrac(el.dataset.meaning));
+  });
   updatePracStats();
 }
 function checkPrac(sel){
   const isRight=sel===pracCurrent.meaning;
   document.querySelectorAll('.prac-opt').forEach(el=>{
-    el.disabled=true; el.style.cursor='default';
-    if(el.textContent.trim()===pracCurrent.meaning) el.classList.add('correct');
-    if(el.textContent.trim()===sel&&!isRight) el.classList.add('wrong');
+    el.disabled=true;el.style.cursor='default';
+    if(el.dataset.meaning===pracCurrent.meaning)el.classList.add('correct');
+    if(el.dataset.meaning===sel&&!isRight)el.classList.add('wrong');
   });
   if(isRight){pracCorrect++;pracStreak++;xp+=15;streak++;if(!mastered.includes(pracCurrent.word))mastered.push(pracCurrent.word);}
   else{pracWrong++;pracStreak=0;}
-  saveCurrentUser(); updateUI(); updatePracStats();
+  saveCurrentUser();updateUI();updatePracStats();
   const fb=document.getElementById('pracFeedback');
   fb.innerHTML=isRight
     ?`✓ Correct! <strong>${pracCurrent.word}</strong> — ${pracCurrent.meaning}. "${pracCurrent.example}"`
@@ -1183,56 +1116,30 @@ function updatePracStats(){
 // AI CHAT
 // ============================================================
 async function sendChat(msg){
-  if(!msg.trim()) return;
+  if(!msg.trim())return;
   chatHistory.push({role:'user',content:msg});
   appendMsg('user',msg);
   document.getElementById('chatInput').value='';
   document.getElementById('chatSendBtn').disabled=true;
   const typEl=appendTyping();
   try{
-    const apiKey = 'YOUR_ANTHROPIC_API_KEY';
-    const systemPrompt=`You are LEXIS, an expert English tutor built into a learning app. The user is ${userName}, currently at ${userLevel} level.
-Rules:
-- Be concise, helpful, and encouraging
-- When correcting sentences, show the corrected version in bold and explain briefly
-- When giving vocabulary, use bold for words and italic for examples
-- When explaining grammar, use clear structure
-- Use light formatting (bold, italic) but NO markdown headers
-- Always respond in English unless user writes in another language
-- Max 180 words per response
-- The user's mastered words: ${mastered.slice(0,20).join(', ')||'none yet'}`;
-
-    if (apiKey === 'YOUR_ANTHROPIC_API_KEY') {
-        throw new Error('Please set your Anthropic API key in the code to use the AI tutor.');
-    }
-
+    const ANTHROPIC_API_KEY='YOUR_ANTHROPIC_API_KEY';
+    const systemPrompt=`You are LEXIS, an expert English tutor. The user is ${userName}, level ${userLevel}. Be concise, helpful, encouraging. Correct sentences clearly. Max 180 words. Mastered: ${mastered.slice(0,20).join(', ')||'none yet'}`;
+    if(ANTHROPIC_API_KEY==='YOUR_ANTHROPIC_API_KEY')throw new Error('Set your Anthropic API key to enable AI Tutor.');
     const res=await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01'
-      },
-      body:JSON.stringify({
-        model:'claude-3-haiku-20240307',
-        max_tokens:1000,
-        system:systemPrompt,
-        messages:chatHistory.slice(-10)
-      })
+      headers:{'Content-Type':'application/json','x-api-key':ANTHROPIC_API_KEY,'anthropic-version':'2023-06-01'},
+      body:JSON.stringify({model:'claude-3-haiku-20240307',max_tokens:1000,system:systemPrompt,messages:chatHistory.slice(-10)})
     });
     const data=await res.json();
     typEl.remove();
-    if (data.error) {
-        console.error('API Error:', data.error);
-        throw new Error(data.error.message || 'API error');
-    }
+    if(data.error)throw new Error(data.error.message||'API error');
     const reply=(data.content||[]).filter(c=>c.type==='text').map(c=>c.text).join('');
     chatHistory.push({role:'assistant',content:reply});
     appendMsg('ai',reply);
-  } catch(e){
-    console.error(e);
+  }catch(e){
     typEl.remove();
-    appendMsg('ai','⚠️ AI Tutor error: ' + e.message + '. Please check your API key or connection.');
+    appendMsg('ai','⚠️ '+e.message);
   }
   document.getElementById('chatSendBtn').disabled=false;
 }
@@ -1240,10 +1147,7 @@ function appendMsg(role,text){
   const msgs=document.getElementById('chatMessages');
   const d=document.createElement('div');
   d.className='msg '+role;
-  const formatted=text
-    .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
-    .replace(/\*(.*?)\*/g,'<em>$1</em>')
-    .replace(/`(.*?)`/g,'<code>$1</code>');
+  const formatted=text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\*(.*?)\*/g,'<em>$1</em>').replace(/`(.*?)`/g,'<code>$1</code>');
   d.innerHTML=`<div class="msg-avatar ${role}">${role==='ai'?'🤖':'👤'}</div><div class="msg-bubble">${formatted}</div>`;
   msgs.appendChild(d);
   msgs.scrollTop=msgs.scrollHeight;
@@ -1258,10 +1162,6 @@ function appendTyping(){
   msgs.scrollTop=msgs.scrollHeight;
   return d;
 }
-function sendSugg(btn){
-  document.getElementById('chatInput').value=btn.textContent.trim();
-  document.getElementById('chatSendBtn').click();
-}
 
 // ============================================================
 // VOICE
@@ -1270,73 +1170,34 @@ function initVoice(){
   const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
   if(!SpeechRecognition){document.getElementById('voiceBtn').style.display='none';return;}
   const rec=new SpeechRecognition();
-  rec.lang='en-US'; rec.interimResults=false;
-  rec.onresult=e=>{
-    const t=e.results[0][0].transcript;
-    document.getElementById('chatInput').value=t;
-    voiceListening=false;
-    document.getElementById('voiceBtn').classList.remove('listening');
-  };
-  rec.onend=()=>{voiceListening=false;document.getElementById('voiceBtn').classList.remove('listening')};
+  rec.lang='en-US';rec.interimResults=false;
+  rec.onresult=e=>{document.getElementById('chatInput').value=e.results[0][0].transcript;voiceListening=false;document.getElementById('voiceBtn').classList.remove('listening');};
+  rec.onend=()=>{voiceListening=false;document.getElementById('voiceBtn').classList.remove('listening');};
   document.getElementById('voiceBtn').onclick=()=>{
     if(!voiceListening){rec.start();voiceListening=true;document.getElementById('voiceBtn').classList.add('listening');}
-    else{rec.stop();voiceListening=false;document.getElementById('voiceBtn').classList.remove('listening');}
+    else{rec.stop();}
   };
 }
 
 // ============================================================
-// AMBIENT GLOW
+// AMBIENT
 // ============================================================
 document.addEventListener('mousemove',e=>{
   const el=document.getElementById('ambient');
-  if(el){
-    el.style.left=(e.clientX-300)+'px';
-    el.style.top=(e.clientY-300)+'px';
-  }
+  if(el){el.style.left=(e.clientX-300)+'px';el.style.top=(e.clientY-300)+'px';}
 });
 
 // ============================================================
-// THEME SYSTEM
+// THEME
 // ============================================================
-function toggleTheme() {
+function toggleTheme(){
   document.body.classList.toggle('light-theme');
-  const isLight = document.body.classList.contains('light-theme');
-  localStorage.setItem('lexis_theme', isLight ? 'light' : 'dark');
-  const themeBtn = document.getElementById('themeToggleBtn');
-  if(themeBtn) {
-    themeBtn.innerHTML = isLight ? '🌙' : '☀️';
-  }
-}
-
-// ============================================================
-// FILTERS PERSISTENCE
-// ============================================================
-function saveFilters() {
-  localStorage.setItem('lexis_filters', JSON.stringify({
-    level: vocabLevelFilter,
-    masteredOnly: showMasteredOnly,
-    oxfordOnly: showOxfordOnly
-  }));
-}
-
-function loadFilters() {
-  const savedFilters = localStorage.getItem('lexis_filters');
-  if (savedFilters) {
-    const f = JSON.parse(savedFilters);
-    vocabLevelFilter = f.level;
-    showMasteredOnly = f.masteredOnly;
-    showOxfordOnly = f.oxfordOnly;
-    const levelBtn = document.querySelector(`.filter-chip[data-lvl="${f.level}"]`);
-    if(levelBtn) {
-        document.querySelectorAll('.filter-chip[data-lvl]').forEach(b=>b.classList.remove('active'));
-        levelBtn.classList.add('active');
-    }
-    if(f.masteredOnly) document.getElementById('masteredFilter').classList.add('active');
-    if(f.oxfordOnly) document.getElementById('oxfordFilter').classList.add('active');
-  } else {
-      const allBtn = document.querySelector('.filter-chip[data-lvl="all"]');
-      if(allBtn) allBtn.classList.add('active');
-  }
+  const isLight=document.body.classList.contains('light-theme');
+  localStorage.setItem('lexis_theme',isLight?'light':'dark');
+  const btn=document.getElementById('themeToggleBtn');
+  if(btn)btn.querySelector(':not(.tooltip)');
+  // Reemplazar solo el emoji
+  if(btn) btn.innerHTML=(isLight?'🌙':'☀️')+'<span class="tooltip">Theme</span>';
 }
 
 // ============================================================
@@ -1347,127 +1208,129 @@ function initApp(){
   renderVerbs();
   renderGrammar();
   initQQ();
-  loadFilters();
 
+  // Navegación sidebar
   document.querySelectorAll('.nav-item[data-page]').forEach(n=>{
-    n.onclick=()=>goPage(n.dataset.page);
+    n.addEventListener('click',()=>goPage(n.dataset.page));
   });
-  
-  document.querySelectorAll('.mini-card').forEach(card=>{
-    card.onclick=()=>goPage(card.dataset.page);
+  // Mini cards home
+  document.querySelectorAll('.mini-card[data-page]').forEach(card=>{
+    card.addEventListener('click',()=>goPage(card.dataset.page));
   });
-  
+  // Filtros vocab
   document.querySelectorAll('#levelFilters .filter-chip').forEach(btn=>{
-    btn.onclick=()=>{
+    btn.addEventListener('click',()=>{
       document.querySelectorAll('#levelFilters .filter-chip').forEach(b=>b.classList.remove('active'));
       btn.classList.add('active');
       vocabLevelFilter=btn.dataset.lvl;
       renderVocab();
-      saveFilters();
-    };
+    });
   });
-  document.getElementById('masteredFilter').onclick=function(){
+  document.getElementById('masteredFilter').addEventListener('click',function(){
     showMasteredOnly=!showMasteredOnly;
     this.classList.toggle('active',showMasteredOnly);
     renderVocab();
-    saveFilters();
-  };
-  document.getElementById('oxfordFilter').onclick=function(){
+  });
+  document.getElementById('oxfordFilter').addEventListener('click',function(){
     showOxfordOnly=!showOxfordOnly;
     this.classList.toggle('active',showOxfordOnly);
     renderVocab();
-    saveFilters();
-  };
-  document.getElementById('vocabSearch').oninput=e=>{
+  });
+  document.getElementById('vocabSearch').addEventListener('input',e=>{
     vocabSearch=e.target.value.toLowerCase();
     renderVocab();
-  };
-  document.getElementById('pracNextBtn').onclick=nextPrac;
-  document.getElementById('chatSendBtn').onclick=()=>sendChat(document.getElementById('chatInput').value);
-  document.getElementById('chatInput').onkeydown=e=>{
-    if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChat(e.target.value);}
-  };
-  document.getElementById('resetBtn').onclick=()=>{
-    if(!confirm('Reset all progress for '+userName+'?')) return;
-    mastered=[]; xp=0; streak=0;
-    saveCurrentUser(); updateUI();
-    toast('Progress reset','var(--text2)');
-  };
-  document.getElementById('switchUserBtn').onclick=()=>showLogin();
-  
-  document.querySelectorAll('.sugg-chip').forEach(btn=>{
-    btn.onclick=()=>sendSugg(btn);
   });
-  
-  document.getElementById('loadOxford3000Btn').onclick=()=>loadOxfordList('3000');
-  document.getElementById('loadOxford5000Btn').onclick=()=>loadOxfordList('5000');
-  
-  const themeBtn = document.getElementById('themeToggleBtn');
-  if(themeBtn) themeBtn.onclick = toggleTheme;
-  
-  const savedTheme = localStorage.getItem('lexis_theme');
-  if(savedTheme === 'light') document.body.classList.add('light-theme');
-  
+  // Practice
+  document.getElementById('pracNextBtn').addEventListener('click',nextPrac);
+  // Chat
+  document.getElementById('chatSendBtn').addEventListener('click',()=>sendChat(document.getElementById('chatInput').value));
+  document.getElementById('chatInput').addEventListener('keydown',e=>{
+    if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChat(e.target.value);}
+  });
+  // Chat suggestions
+  document.querySelectorAll('.sugg-chip').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      document.getElementById('chatInput').value=btn.textContent.trim();
+      sendChat(btn.textContent.trim());
+    });
+  });
+  // Reset
+  document.getElementById('resetBtn').addEventListener('click',()=>{
+    if(!confirm(`Reset all progress for ${userName}?`))return;
+    mastered=[];xp=0;streak=0;
+    saveCurrentUser();updateUI();
+    toast('Progress reset','var(--text2)');
+  });
+  // Switch user
+  document.getElementById('switchUserBtn').addEventListener('click',showLogin);
+  // Theme
+  document.getElementById('themeToggleBtn').addEventListener('click',toggleTheme);
+  const savedTheme=localStorage.getItem('lexis_theme');
+  if(savedTheme==='light') document.body.classList.add('light-theme');
+  // Oxford buttons
+  document.getElementById('loadOxford3000Btn').addEventListener('click',()=>loadOxfordList('3000'));
+  document.getElementById('loadOxford5000Btn').addEventListener('click',()=>loadOxfordList('5000'));
+
   initVoice();
 }
 
 // ============================================================
-// LOGIN / MULTI-USER SYSTEM
+// LOGIN / MULTI-USER
 // ============================================================
 function showLogin(){
   document.getElementById('app').style.display='none';
   document.getElementById('loginOverlay').style.display='flex';
   renderSavedUsers();
 }
-
 function renderSavedUsers(){
-  const users = getAllUsers();
-  const keys = Object.keys(users);
-  const box = document.getElementById('savedUsersBox');
-  const list = document.getElementById('savedUsersList');
+  const users=getAllUsers();
+  const keys=Object.keys(users);
+  const box=document.getElementById('savedUsersBox');
+  const list=document.getElementById('savedUsersList');
   if(!keys.length){box.style.display='none';return;}
   box.style.display='block';
-  list.innerHTML=keys.sort((a,b)=>{
-    return (users[b].lastSeen||0)-(users[a].lastSeen||0);
-  }).map(name=>`
-    <span class="user-pill" onclick="continueAsUser('${name.replace(/'/g,"\\'")}')">
-      👤 ${name}
-      <span class="user-pill-level">${users[name].level||'A1'}</span>
-      <span style="color:var(--text3);font-size:9px">${users[name].xp||0}xp</span>
-    </span>
-  `).join('');
+  list.innerHTML=keys
+    .sort((a,b)=>(users[b].lastSeen||0)-(users[a].lastSeen||0))
+    .map(name=>`
+      <span class="user-pill" data-uname="${name}">
+        👤 ${name}
+        <span class="user-pill-level">${users[name].level||'A1'}</span>
+        <span style="color:var(--text3);font-size:9px">${users[name].xp||0}xp</span>
+      </span>
+    `).join('');
+  list.querySelectorAll('.user-pill').forEach(pill=>{
+    pill.addEventListener('click',()=>continueAsUser(pill.dataset.uname));
+  });
 }
-
 function continueAsUser(name){
-  if(!loadUser(name)){
-    toast('User not found','var(--red)');
-    return;
-  }
+  if(!loadUser(name)){toast('User not found','var(--red)');return;}
   document.getElementById('loginOverlay').style.display='none';
   document.getElementById('app').style.display='grid';
   initApp();
   toast(`Welcome back, ${name}! 🎉`,'var(--gold)');
 }
 
-// Boot
-const activeUser = getActiveUser();
-if(activeUser && loadUser(activeUser)){
+// ============================================================
+// BOOT
+// ============================================================
+const activeUser=getActiveUser();
+if(activeUser&&loadUser(activeUser)){
   document.getElementById('loginOverlay').style.display='none';
   document.getElementById('app').style.display='grid';
   initApp();
-} else {
+}else{
   renderSavedUsers();
-  document.getElementById('loginBtn').onclick=()=>{
+  document.getElementById('loginBtn').addEventListener('click',()=>{
     const n=document.getElementById('loginName').value.trim();
     const l=document.getElementById('loginLevel').value;
     if(!n){toast('Enter your name','var(--red)');return;}
     const users=getAllUsers();
     if(users[n]){
       continueAsUser(n);
-    } else {
-      userName=n; userLevel=l;
-      mastered=[]; xp=0; streak=0;
-      oxford3000Loaded=false; oxford5000Loaded=false; oxfordWords=[];
+    }else{
+      userName=n;userLevel=l;
+      mastered=[];xp=0;streak=0;
+      oxford3000Loaded=false;oxford5000Loaded=false;oxfordWords=[];
       VOCAB=[...CORE_VOCAB];
       saveCurrentUser();
       document.getElementById('loginOverlay').style.display='none';
@@ -1475,11 +1338,11 @@ if(activeUser && loadUser(activeUser)){
       initApp();
       toast(`Welcome, ${n}! Let's learn English 🚀`,'var(--gold)');
     }
-  };
-  document.getElementById('loginName').onkeydown=e=>{
-    if(e.key==='Enter') document.getElementById('loginBtn').click();
-  };
+  });
+  document.getElementById('loginName').addEventListener('keydown',e=>{
+    if(e.key==='Enter')document.getElementById('loginBtn').click();
+  });
 }
 </script>
 </body>
-</html>
+  </html>
